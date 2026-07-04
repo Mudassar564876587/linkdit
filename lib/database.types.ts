@@ -48,6 +48,14 @@ export interface Database {
           review_count: number
           featured: boolean
           is_published: boolean
+          sponsored: boolean
+          is_verified: boolean
+          screenshots: any
+          features: string[]
+          pros: string[]
+          cons: string[]
+          faqs: any
+          website_label: string
           seo_title: string | null
           seo_description: string | null
           search_vector: string | null
@@ -67,6 +75,14 @@ export interface Database {
           review_count?: number
           featured?: boolean
           is_published?: boolean
+          sponsored?: boolean
+          is_verified?: boolean
+          screenshots?: any
+          features?: string[]
+          pros?: string[]
+          cons?: string[]
+          faqs?: any
+          website_label?: string
           seo_title?: string | null
           seo_description?: string | null
           created_at?: string
@@ -85,6 +101,14 @@ export interface Database {
           review_count?: number
           featured?: boolean
           is_published?: boolean
+          sponsored?: boolean
+          is_verified?: boolean
+          screenshots?: any
+          features?: string[]
+          pros?: string[]
+          cons?: string[]
+          faqs?: any
+          website_label?: string
           seo_title?: string | null
           seo_description?: string | null
           created_at?: string
@@ -444,6 +468,89 @@ export interface Database {
             foreignKeyName: "notifications_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      tags: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      tool_tags: {
+        Row: {
+          tool_id: string
+          tag_id: string
+        }
+        Insert: {
+          tool_id: string
+          tag_id: string
+        }
+        Update: {
+          tool_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_tags_tool_id_fkey"
+            columns: ["tool_id"]
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tool_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      tool_screenshots: {
+        Row: {
+          id: string
+          tool_id: string
+          url: string
+          alt: string
+          sort_order: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          tool_id: string
+          url: string
+          alt?: string
+          sort_order?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          tool_id?: string
+          url?: string
+          alt?: string
+          sort_order?: number
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_screenshots_tool_id_fkey"
+            columns: ["tool_id"]
+            referencedRelation: "tools"
             referencedColumns: ["id"]
           }
         ]

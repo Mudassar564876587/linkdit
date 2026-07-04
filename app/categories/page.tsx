@@ -1,0 +1,85 @@
+import type { Metadata } from "next"
+import Link from "next/link"
+import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getCategoryIcon } from "@/lib/utils"
+import { PenLine } from "lucide-react"
+import { cn } from "@/lib/utils"
+
+export const metadata: Metadata = {
+  title: "AI Tool Categories | LinkDit",
+  description: "Browse AI tools by category. Find the perfect AI tool for your needs.",
+  openGraph: {
+    title: "AI Tool Categories | LinkDit",
+    description: "Browse AI tools by category. Find the perfect AI tool for your needs.",
+    type: "website",
+    siteName: "LinkDit",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Tool Categories | LinkDit",
+    description: "Browse AI tools by category. Find the perfect AI tool for your needs.",
+  },
+}
+
+const iconMap: Record<string, React.ReactNode> = {
+  PenLine: <PenLine className="h-5 w-5" />,
+}
+
+export default async function CategoriesPage() {
+  const supabase = await createServerSupabaseClient()
+
+  const { data: categories } = await supabase
+    .from("categories")
+    .select("*")
+    .order("tool_count", { ascending: false })
+
+  if (!categories?.length) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8">
+          <p className="text-muted-foreground">No categories found.</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-foreground">Categories</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Browse AI tools by category.
+          </p>
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.map((cat) => (
+            <Link
+              key={cat.id}
+              href={`/categories/${cat.slug}`}
+              className="group relative overflow-hidden rounded-xl border border-border bg-background p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  {iconMap[getCategoryIcon(cat.slug)] ?? <PenLine className="h-5 w-5" />}
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                    {cat.name}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {cat.tool_count} tool{cat.tool_count !== 1 ? "s" : ""}
+                  </p>
+                </div>
+              </div>
+              <p className="mt-3 text-sm text-muted-foreground line-clamp-2">
+                {cat.description}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
