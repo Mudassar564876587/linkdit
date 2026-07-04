@@ -9,12 +9,14 @@ import {
   Bell,
   User,
   Settings,
+  Send,
   X,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const links = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard/my-submissions", label: "My Submissions", icon: Send },
   { href: "/dashboard/bookmarks", label: "Bookmarks", icon: Bookmark },
   { href: "/dashboard/reviews", label: "Reviews", icon: Star },
   { href: "/dashboard/notifications", label: "Notifications", icon: Bell },

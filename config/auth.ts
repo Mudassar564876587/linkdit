@@ -6,7 +6,7 @@ export const AUTH_ROUTES = {
   verifyEmail: "/verify-email",
 } as const
 
-export const PROTECTED_ROUTES = ["/onboarding", "/dashboard"] as const
+export const PROTECTED_ROUTES = ["/onboarding", "/dashboard", "/submit-tool", "/admin"] as const
 
 export const PUBLIC_ROUTES = [
   "/",

@@ -338,6 +338,23 @@ export interface Database {
           category_id: string | null
           status: "pending" | "approved" | "rejected"
           admin_notes: string | null
+          user_id: string | null
+          logo_url: string | null
+          cover_image_url: string | null
+          gallery_images: any
+          full_description: string | null
+          pricing: string
+          tags: any
+          features: any
+          pros: any
+          cons: any
+          faqs: any
+          contact_email: string | null
+          slug: string | null
+          submission_status: string
+          publish_status: string
+          reviewed_by: string | null
+          reviewed_at: string | null
           created_at: string
           updated_at: string
         }
@@ -350,6 +367,23 @@ export interface Database {
           category_id?: string | null
           status?: "pending" | "approved" | "rejected"
           admin_notes?: string | null
+          user_id?: string | null
+          logo_url?: string | null
+          cover_image_url?: string | null
+          gallery_images?: any
+          full_description?: string | null
+          pricing?: string
+          tags?: any
+          features?: any
+          pros?: any
+          cons?: any
+          faqs?: any
+          contact_email?: string | null
+          slug?: string | null
+          submission_status?: string
+          publish_status?: string
+          reviewed_by?: string | null
+          reviewed_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -362,6 +396,23 @@ export interface Database {
           category_id?: string | null
           status?: "pending" | "approved" | "rejected"
           admin_notes?: string | null
+          user_id?: string | null
+          logo_url?: string | null
+          cover_image_url?: string | null
+          gallery_images?: any
+          full_description?: string | null
+          pricing?: string
+          tags?: any
+          features?: any
+          pros?: any
+          cons?: any
+          faqs?: any
+          contact_email?: string | null
+          slug?: string | null
+          submission_status?: string
+          publish_status?: string
+          reviewed_by?: string | null
+          reviewed_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -436,7 +487,7 @@ export interface Database {
         Row: {
           id: string
           user_id: string
-          type: "review_reply" | "tool_approved" | "tool_rejected" | "bookmark_update" | "mention" | "system"
+          type: "review_reply" | "tool_approved" | "tool_rejected" | "submission_status" | "bookmark_update" | "mention" | "system"
           title: string
           body: string | null
           link: string | null
@@ -446,7 +497,7 @@ export interface Database {
         Insert: {
           id?: string
           user_id: string
-          type: "review_reply" | "tool_approved" | "tool_rejected" | "bookmark_update" | "mention" | "system"
+          type: "review_reply" | "tool_approved" | "tool_rejected" | "submission_status" | "bookmark_update" | "mention" | "system"
           title: string
           body?: string | null
           link?: string | null
@@ -517,6 +568,61 @@ export interface Database {
             foreignKeyName: "tool_tags_tag_id_fkey"
             columns: ["tag_id"]
             referencedRelation: "tags"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      site_settings: {
+        Row: {
+          key: string
+          value: any
+          updated_at: string
+        }
+        Insert: {
+          key: string
+          value?: any
+          updated_at?: string
+        }
+        Update: {
+          key?: string
+          value?: any
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      audit_logs: {
+        Row: {
+          id: string
+          user_id: string | null
+          action: string
+          entity_type: string
+          entity_id: string | null
+          metadata: any
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          action: string
+          entity_type: string
+          entity_id?: string | null
+          metadata?: any
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          action?: string
+          entity_type?: string
+          entity_id?: string | null
+          metadata?: any
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
             referencedColumns: ["id"]
           }
         ]
