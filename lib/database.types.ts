@@ -1,0 +1,373 @@
+export interface Database {
+  public: {
+    Tables: {
+      categories: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          description: string
+          icon_name: string
+          tool_count: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          description: string
+          icon_name: string
+          tool_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          description?: string
+          icon_name?: string
+          tool_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tools: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          description: string
+          category_id: string
+          logo_url: string | null
+          website_url: string
+          pricing: "Free" | "Freemium" | "Paid"
+          rating: number
+          review_count: number
+          featured: boolean
+          is_published: boolean
+          seo_title: string | null
+          seo_description: string | null
+          search_vector: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          description: string
+          category_id: string
+          logo_url?: string | null
+          website_url: string
+          pricing: "Free" | "Freemium" | "Paid"
+          rating?: number
+          review_count?: number
+          featured?: boolean
+          is_published?: boolean
+          seo_title?: string | null
+          seo_description?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          description?: string
+          category_id?: string
+          logo_url?: string | null
+          website_url?: string
+          pricing?: "Free" | "Freemium" | "Paid"
+          rating?: number
+          review_count?: number
+          featured?: boolean
+          is_published?: boolean
+          seo_title?: string | null
+          seo_description?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tools_category_id_fkey"
+            columns: ["category_id"]
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      articles: {
+        Row: {
+          id: string
+          title: string
+          slug: string
+          description: string
+          content: string
+          category_id: string
+          cover_image_url: string | null
+          read_time: string
+          published_at: string | null
+          author_id: string | null
+          author_name: string
+          featured: boolean
+          is_published: boolean
+          seo_title: string | null
+          seo_description: string | null
+          search_vector: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          slug: string
+          description: string
+          content: string
+          category_id: string
+          cover_image_url?: string | null
+          read_time: string
+          published_at?: string | null
+          author_id?: string | null
+          author_name: string
+          featured?: boolean
+          is_published?: boolean
+          seo_title?: string | null
+          seo_description?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          slug?: string
+          description?: string
+          content?: string
+          category_id?: string
+          cover_image_url?: string | null
+          read_time?: string
+          published_at?: string | null
+          author_id?: string | null
+          author_name?: string
+          featured?: boolean
+          is_published?: boolean
+          seo_title?: string | null
+          seo_description?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "articles_category_id_fkey"
+            columns: ["category_id"]
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      users: {
+        Row: {
+          id: string
+          email: string
+          full_name: string
+          avatar_url: string | null
+          username: string | null
+          bio: string | null
+          website: string | null
+          role: "admin" | "user"
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          email: string
+          full_name?: string
+          avatar_url?: string | null
+          username?: string | null
+          bio?: string | null
+          website?: string | null
+          role?: "admin" | "user"
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          full_name?: string
+          avatar_url?: string | null
+          username?: string | null
+          bio?: string | null
+          website?: string | null
+          role?: "admin" | "user"
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      bookmarks: {
+        Row: {
+          id: string
+          user_id: string
+          tool_id: string | null
+          article_id: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          tool_id?: string | null
+          article_id?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          tool_id?: string | null
+          article_id?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookmarks_tool_id_fkey"
+            columns: ["tool_id"]
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookmarks_article_id_fkey"
+            columns: ["article_id"]
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      reviews: {
+        Row: {
+          id: string
+          user_id: string
+          tool_id: string
+          rating: number
+          content: string | null
+          is_approved: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          tool_id: string
+          rating: number
+          content?: string | null
+          is_approved?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          tool_id?: string
+          rating?: number
+          content?: string | null
+          is_approved?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_tool_id_fkey"
+            columns: ["tool_id"]
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      tool_submissions: {
+        Row: {
+          id: string
+          submitter_email: string
+          tool_name: string
+          tool_url: string
+          description: string
+          category_id: string | null
+          status: "pending" | "approved" | "rejected"
+          admin_notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          submitter_email: string
+          tool_name: string
+          tool_url: string
+          description: string
+          category_id?: string | null
+          status?: "pending" | "approved" | "rejected"
+          admin_notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          submitter_email?: string
+          tool_name?: string
+          tool_url?: string
+          description?: string
+          category_id?: string | null
+          status?: "pending" | "approved" | "rejected"
+          admin_notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_submissions_category_id_fkey"
+            columns: ["category_id"]
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      newsletter_subscribers: {
+        Row: {
+          id: string
+          email: string
+          subscribed: boolean
+          subscribed_at: string
+          unsubscribed_at: string | null
+        }
+        Insert: {
+          id?: string
+          email: string
+          subscribed?: boolean
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+        }
+        Update: {
+          id?: string
+          email?: string
+          subscribed?: boolean
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+        }
+        Relationships: []
+      }
+    }
+    Views: Record<string, never>
+    Functions: Record<string, never>
+    Enums: Record<string, never>
+  }
+}

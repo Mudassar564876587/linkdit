@@ -1,0 +1,9 @@
+export interface Category {
+  id: string
+  name: string
+  slug: string
+  description: string
+  iconName: string
+  toolCount: number
+  createdAt: string
+}
