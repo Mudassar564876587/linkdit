@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Search, Menu, X, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Logo from "@/components/ui/logo"
+import UserMenu from "@/components/layout/user-menu"
 
 const navLinks = [
   { href: "/ai-tools", label: "AI Tools" },
@@ -47,6 +48,7 @@ export default function Navbar() {
             <Plus className="h-4 w-4" />
             Submit Tool
           </Button>
+          <UserMenu />
           <Button
             variant="ghost"
             size="icon"

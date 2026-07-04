@@ -1,11 +1,12 @@
 import { updateSession } from "@/lib/supabase/middleware"
 import {
-  AUTH_ROUTES,
   PROTECTED_ROUTES,
   LOGIN_REDIRECT,
   AUTH_REDIRECT,
 } from "@/config/auth"
 import type { NextRequest } from "next/server"
+
+const AUTH_PAGE_PATHS = ["/login", "/signup", "/forgot-password", "/reset-password", "/verify-email"]
 
 export async function middleware(request: NextRequest) {
   const { user, supabaseResponse } = await updateSession(request)
@@ -14,9 +15,7 @@ export async function middleware(request: NextRequest) {
   const isProtected = PROTECTED_ROUTES.some((route) =>
     pathname.startsWith(route)
   )
-  const isAuthPage = Object.values(AUTH_ROUTES).some((route) =>
-    pathname.startsWith(route)
-  )
+  const isAuthPage = AUTH_PAGE_PATHS.some((path) => pathname.startsWith(path))
 
   if (isProtected && !user) {
     const url = new URL(LOGIN_REDIRECT, request.url)

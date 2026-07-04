@@ -176,6 +176,9 @@ export interface Database {
           username: string | null
           bio: string | null
           website: string | null
+          twitter: string | null
+          linkedin: string | null
+          github: string | null
           role: "admin" | "user"
           created_at: string
           updated_at: string
@@ -188,6 +191,9 @@ export interface Database {
           username?: string | null
           bio?: string | null
           website?: string | null
+          twitter?: string | null
+          linkedin?: string | null
+          github?: string | null
           role?: "admin" | "user"
           created_at?: string
           updated_at?: string
@@ -200,6 +206,9 @@ export interface Database {
           username?: string | null
           bio?: string | null
           website?: string | null
+          twitter?: string | null
+          linkedin?: string | null
+          github?: string | null
           role?: "admin" | "user"
           created_at?: string
           updated_at?: string
@@ -364,6 +373,80 @@ export interface Database {
           unsubscribed_at?: string | null
         }
         Relationships: []
+      }
+      recently_viewed: {
+        Row: {
+          id: string
+          user_id: string
+          tool_id: string
+          viewed_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          tool_id: string
+          viewed_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          tool_id?: string
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recently_viewed_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recently_viewed_tool_id_fkey"
+            columns: ["tool_id"]
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      notifications: {
+        Row: {
+          id: string
+          user_id: string
+          type: "review_reply" | "tool_approved" | "tool_rejected" | "bookmark_update" | "mention" | "system"
+          title: string
+          body: string | null
+          link: string | null
+          is_read: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          type: "review_reply" | "tool_approved" | "tool_rejected" | "bookmark_update" | "mention" | "system"
+          title: string
+          body?: string | null
+          link?: string | null
+          is_read?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          type?: "review_reply" | "tool_approved" | "tool_rejected" | "bookmark_update" | "mention" | "system"
+          title?: string
+          body?: string | null
+          link?: string | null
+          is_read?: boolean
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: Record<string, never>

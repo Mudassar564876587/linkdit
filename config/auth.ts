@@ -4,10 +4,9 @@ export const AUTH_ROUTES = {
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
   verifyEmail: "/verify-email",
-  onboarding: "/onboarding",
 } as const
 
-export const PROTECTED_ROUTES = ["/onboarding"] as const
+export const PROTECTED_ROUTES = ["/onboarding", "/dashboard"] as const
 
 export const PUBLIC_ROUTES = [
   "/",
