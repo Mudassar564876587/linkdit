@@ -55,7 +55,6 @@ export interface Database {
           pros: string[]
           cons: string[]
           faqs: any
-          website_label: string
           seo_title: string | null
           seo_description: string | null
           search_vector: string | null
@@ -82,7 +81,6 @@ export interface Database {
           pros?: string[]
           cons?: string[]
           faqs?: any
-          website_label?: string
           seo_title?: string | null
           seo_description?: string | null
           created_at?: string
@@ -108,7 +106,6 @@ export interface Database {
           pros?: string[]
           cons?: string[]
           faqs?: any
-          website_label?: string
           seo_title?: string | null
           seo_description?: string | null
           created_at?: string

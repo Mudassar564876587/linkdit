@@ -23,8 +23,7 @@ alter table public.tools
   add column if not exists features   text[]    default '{}',
   add column if not exists pros       text[]    default '{}',
   add column if not exists cons       text[]    default '{}',
-  add column if not exists faqs       jsonb     default '[]'::jsonb,
-  add column if not exists website_label text   default 'Visit Website';
+  add column if not exists faqs       jsonb     default '[]'::jsonb;
 
 -- 4. Tool screenshots (alternative approach)
 create table if not exists public.tool_screenshots (
