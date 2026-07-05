@@ -15,12 +15,20 @@ export default function ComparisonCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-sm font-bold text-primary">
-            {comparison.toolA.name.charAt(0)}
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-sm font-bold text-primary overflow-hidden">
+            {comparison.toolA.logoUrl ? (
+              <img src={comparison.toolA.logoUrl} alt="" className="h-full w-full object-cover" loading="lazy" />
+            ) : (
+              comparison.toolA.name.charAt(0)
+            )}
           </div>
           <ArrowRightLeft className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-sm font-bold text-primary">
-            {comparison.toolB.name.charAt(0)}
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-sm font-bold text-primary overflow-hidden">
+            {comparison.toolB.logoUrl ? (
+              <img src={comparison.toolB.logoUrl} alt="" className="h-full w-full object-cover" loading="lazy" />
+            ) : (
+              comparison.toolB.name.charAt(0)
+            )}
           </div>
         </div>
         {comparison.isFeatured && (

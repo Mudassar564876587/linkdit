@@ -7,6 +7,7 @@ import { getFeaturedComparisons, getPopularComparisons } from "@/services/compar
 import ComparisonCard from "@/components/comparisons/comparison-card"
 import ComparisonSearch from "./comparison-search"
 import ComparisonList from "./comparison-list"
+import RecentlyCompared from "./recently-compared"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export const metadata: Metadata = {
@@ -63,6 +64,8 @@ export default async function ComparePage({
             </div>
           ) : (
             <>
+              <RecentlyCompared />
+
               <Suspense fallback={<ComparisonGridSkeleton count={3} />}>
                 <FeaturedComparisonsSection />
               </Suspense>
