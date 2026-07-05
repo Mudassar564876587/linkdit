@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Search, CheckCircle, XCircle, Star, ShieldCheck, Trash2, ExternalLink } from "lucide-react"
+import { Search, CheckCircle, XCircle, Star, ShieldCheck, Trash2, ExternalLink, Pencil } from "lucide-react"
 import { adminDeleteTool, adminTogglePublish, adminToggleFeatured, adminToggleVerified } from "@/actions/admin/tools"
 
 export default function AdminToolsClient({ tools }: { tools: any[] }) {
@@ -120,6 +120,9 @@ export default function AdminToolsClient({ tools }: { tools: any[] }) {
                   <div className="flex items-center justify-end gap-1">
                     <a href={`/tools/${t.slug}`} target="_blank" className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent" aria-label="View tool">
                       <ExternalLink className="h-4 w-4" />
+                    </a>
+                    <a href={`/admin/tools/${t.id}`} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent" aria-label="Edit tool">
+                      <Pencil className="h-4 w-4" />
                     </a>
                     <button onClick={async () => { await adminDeleteTool(t.id); router.refresh() }}
                       className="flex h-7 w-7 items-center justify-center rounded-md text-red-500 hover:bg-red-50" aria-label="Delete tool">

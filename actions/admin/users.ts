@@ -32,8 +32,8 @@ export async function adminBanUser(id: string, banned: boolean) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
-  // Soft ban: set role to a banned state - using a metadata approach for simplicity
-  await supabase.from("users").update({ role: banned ? "user" as const : "user" as const }).eq("id", id)
+  // Soft ban: set role to "banned" if banning, "user" if unbanning
+  await supabase.from("users").update({ role: banned ? "banned" as any : "user" as const }).eq("id", id)
   revalidatePath("/admin/users")
   return { success: true }
 }

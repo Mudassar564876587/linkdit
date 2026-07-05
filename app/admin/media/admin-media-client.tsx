@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Upload, Search, Trash2, ImageIcon, Loader2 } from "lucide-react"
 import { adminUploadMedia, adminDeleteMedia } from "@/actions/admin/media"
@@ -27,7 +27,7 @@ export default function AdminMediaClient() {
     setLoaded(true)
   }
 
-  if (!loaded) { loadImages(); null }
+  useEffect(() => { if (!loaded) loadImages() }, [])
 
   const filtered = images.filter((url) => !search || url.toLowerCase().includes(search.toLowerCase()))
 

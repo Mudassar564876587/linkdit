@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
-import { LayoutDashboard, Grid3X3, Users, Star, Send, Bookmark, Activity } from "lucide-react"
+import { LayoutDashboard, Grid3X3, Users, Star, Send, Bookmark } from "lucide-react"
 import Link from "next/link"
 
 export default async function AdminDashboard() {
@@ -8,8 +8,8 @@ export default async function AdminDashboard() {
   const [
     { count: totalUsers },
     { count: totalTools },
+    { count: publishedTools },
     { count: pendingSubmissions },
-    { count: approvedTools },
     { count: totalCategories },
     { count: totalReviews },
     { count: totalBookmarks },
@@ -17,9 +17,9 @@ export default async function AdminDashboard() {
     { data: recentSubmissions },
   ] = await Promise.all([
     supabase.from("users").select("*", { count: "exact", head: true }),
+    supabase.from("tools").select("*", { count: "exact", head: true }),
     supabase.from("tools").select("*", { count: "exact", head: true }).eq("is_published", true),
     supabase.from("tool_submissions").select("*", { count: "exact", head: true }).eq("submission_status", "submitted"),
-    supabase.from("tools").select("*", { count: "exact", head: true }).eq("is_published", true),
     supabase.from("categories").select("*", { count: "exact", head: true }),
     supabase.from("reviews").select("*", { count: "exact", head: true }),
     supabase.from("bookmarks").select("*", { count: "exact", head: true }),
@@ -29,7 +29,7 @@ export default async function AdminDashboard() {
 
   const stats = [
     { label: "Total Users", value: totalUsers ?? 0, icon: Users, color: "bg-blue-50 text-blue-600" },
-    { label: "Published Tools", value: totalTools ?? 0, icon: Grid3X3, color: "bg-emerald-50 text-emerald-600" },
+    { label: "Total Tools", value: totalTools ?? 0, icon: Grid3X3, color: "bg-emerald-50 text-emerald-600" },
     { label: "Pending Submissions", value: pendingSubmissions ?? 0, icon: Send, color: "bg-amber-50 text-amber-600" },
     { label: "Categories", value: totalCategories ?? 0, icon: LayoutDashboard, color: "bg-violet-50 text-violet-600" },
     { label: "Reviews", value: totalReviews ?? 0, icon: Star, color: "bg-rose-50 text-rose-600" },

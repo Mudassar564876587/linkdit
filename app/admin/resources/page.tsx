@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import Link from "next/link"
-import { Plus, ExternalLink, Pencil, Star } from "lucide-react"
+import { Plus, ExternalLink, Pencil } from "lucide-react"
 import ResourceActions from "./resource-actions"
 
 export const metadata: Metadata = { title: "Resources | Admin | LinkDit" }
@@ -41,19 +41,7 @@ export default async function AdminResourcesPage() {
                 <td className="px-4 py-3 font-medium text-foreground">{r.name}</td>
                 <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">{r.categories?.name || "—"}</td>
                 <td className="px-4 py-3 text-center">
-                  <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                    r.is_published ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-500"}`}>
-                    {r.is_published ? "Published" : "Draft"}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-center">
-                  {r.featured ? (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700">
-                      <Star className="h-3 w-3 fill-amber-500" /> Featured
-                    </span>
-                  ) : (
-                    <span className="text-muted-foreground">—</span>
-                  )}
+                  <ResourceActions id={r.id} isPublished={r.is_published} isFeatured={r.featured} />
                 </td>
                 <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">
                   {new Date(r.created_at).toLocaleDateString()}
@@ -66,7 +54,6 @@ export default async function AdminResourcesPage() {
                     <Link href={`/admin/resources/${r.id}`} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent">
                       <Pencil className="h-4 w-4" />
                     </Link>
-                    <ResourceActions id={r.id} />
                   </div>
                 </td>
               </tr>
