@@ -759,6 +759,103 @@ export interface Database {
           }
         ]
       }
+      comparisons: {
+        Row: {
+          id: string
+          slug: string
+          title: string
+          description: string
+          tool_a_id: string
+          tool_b_id: string
+          category_id: string | null
+          tool_a_notes: string | null
+          tool_b_notes: string | null
+          pros_a: string[]
+          pros_b: string[]
+          cons_a: string[]
+          cons_b: string[]
+          features_comparison: any
+          pricing_comparison: any
+          ratings_comparison: any
+          views: number
+          is_featured: boolean
+          is_published: boolean
+          seo_title: string | null
+          seo_description: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          slug: string
+          title: string
+          description?: string
+          tool_a_id: string
+          tool_b_id: string
+          category_id?: string | null
+          tool_a_notes?: string | null
+          tool_b_notes?: string | null
+          pros_a?: string[]
+          pros_b?: string[]
+          cons_a?: string[]
+          cons_b?: string[]
+          features_comparison?: any
+          pricing_comparison?: any
+          ratings_comparison?: any
+          views?: number
+          is_featured?: boolean
+          is_published?: boolean
+          seo_title?: string | null
+          seo_description?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          slug?: string
+          title?: string
+          description?: string
+          tool_a_id?: string
+          tool_b_id?: string
+          category_id?: string | null
+          tool_a_notes?: string | null
+          tool_b_notes?: string | null
+          pros_a?: string[]
+          pros_b?: string[]
+          cons_a?: string[]
+          cons_b?: string[]
+          features_comparison?: any
+          pricing_comparison?: any
+          ratings_comparison?: any
+          views?: number
+          is_featured?: boolean
+          is_published?: boolean
+          seo_title?: string | null
+          seo_description?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comparisons_tool_a_id_fkey"
+            columns: ["tool_a_id"]
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comparisons_tool_b_id_fkey"
+            columns: ["tool_b_id"]
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comparisons_category_id_fkey"
+            columns: ["category_id"]
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       tool_screenshots: {
         Row: {
           id: string

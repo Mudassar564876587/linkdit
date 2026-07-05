@@ -4,11 +4,12 @@ import { createServerSupabaseClient } from "@/lib/supabase/server"
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createServerSupabaseClient()
 
-  const [{ data: tools }, { data: categories }, { data: articles }, { data: resources }] = await Promise.all([
+  const [{ data: tools }, { data: categories }, { data: articles }, { data: resources }, { data: comparisons }] = await Promise.all([
     supabase.from("tools").select("slug, updated_at").eq("is_published", true),
     supabase.from("categories").select("slug"),
     supabase.from("articles").select("slug, updated_at").eq("is_published", true),
     supabase.from("resources").select("slug, updated_at").eq("is_published", true),
+    supabase.from("comparisons").select("slug, updated_at").eq("is_published", true),
   ])
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -17,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: "https://linkdit.vercel.app/categories", changeFrequency: "weekly", priority: 0.8 },
     { url: "https://linkdit.vercel.app/articles", changeFrequency: "daily", priority: 0.8 },
     { url: "https://linkdit.vercel.app/resources", changeFrequency: "daily", priority: 0.8 },
+    { url: "https://linkdit.vercel.app/compare", changeFrequency: "daily", priority: 0.8 },
   ]
 
   const toolPages: MetadataRoute.Sitemap = (tools ?? []).map((t) => ({
@@ -46,6 +48,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: r.updated_at ? new Date(r.updated_at) : undefined,
   }))
 
+  const comparisonPages: MetadataRoute.Sitemap = (comparisons ?? []).map((c) => ({
+    url: `https://linkdit.vercel.app/compare/${c.slug}`,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+    lastModified: c.updated_at ? new Date(c.updated_at) : undefined,
+  }))
+
   const categoryArticlePages: MetadataRoute.Sitemap = (categories ?? []).map((c) => ({
     url: `https://linkdit.vercel.app/articles/category/${c.slug}`,
     changeFrequency: "weekly" as const,
@@ -66,5 +75,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...resourcePages,
     ...categoryArticlePages,
     ...categoryResourcePages,
+    ...comparisonPages,
   ]
 }
