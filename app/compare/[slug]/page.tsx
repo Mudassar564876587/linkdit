@@ -87,7 +87,7 @@ export default async function ComparisonDetailPage({
     description: t.description,
     logoUrl: t.logo_url,
     websiteUrl: t.website_url,
-    websiteLabel: t.website_label ?? "Visit Website",
+    websiteLabel: "Visit Website",
     pricing: t.pricing,
     rating: t.rating,
     reviewCount: t.review_count || 0,

@@ -36,7 +36,7 @@ export async function getPublishedComparisons(
 
   let query = supabase
     .from("comparisons")
-    .select("*, tool_a:tools!tool_a_id(id, name, slug, description, logo_url, website_url, website_label, pricing, rating, review_count, features, pros, cons, categories(name)), tool_b:tools!tool_b_id(id, name, slug, description, logo_url, website_url, website_label, pricing, rating, review_count, features, pros, cons, categories(name)), categories(name)")
+    .select("*, tool_a:tools!tool_a_id(id, name, slug, description, logo_url, website_url, pricing, rating, review_count, features, pros, cons, categories(name)), tool_b:tools!tool_b_id(id, name, slug, description, logo_url, website_url, pricing, rating, review_count, features, pros, cons, categories(name)), categories(name)")
     .eq("is_published", true)
 
   if (filters?.search) {
@@ -71,7 +71,7 @@ export async function getComparisonBySlug(
 
   const { data, error } = await supabase
     .from("comparisons")
-    .select("*, tool_a:tools!tool_a_id(id, name, slug, description, logo_url, website_url, website_label, pricing, rating, review_count, features, pros, cons, categories(name)), tool_b:tools!tool_b_id(id, name, slug, description, logo_url, website_url, website_label, pricing, rating, review_count, features, pros, cons, categories(name)), categories(name)")
+    .select("*, tool_a:tools!tool_a_id(id, name, slug, description, logo_url, website_url, pricing, rating, review_count, features, pros, cons, categories(name)), tool_b:tools!tool_b_id(id, name, slug, description, logo_url, website_url, pricing, rating, review_count, features, pros, cons, categories(name)), categories(name)")
     .eq("slug", slug)
     .eq("is_published", true)
     .single()
@@ -92,7 +92,7 @@ function mapRowToComparisonWithTools(row: any): ComparisonWithTools {
     description: t.description,
     logoUrl: t.logo_url,
     websiteUrl: t.website_url,
-    websiteLabel: t.website_label ?? "Visit Website",
+    websiteLabel: "Visit Website",
     pricing: t.pricing,
     rating: t.rating,
     reviewCount: t.review_count,
