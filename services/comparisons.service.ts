@@ -44,7 +44,7 @@ export async function getPublishedComparisons(
   }
 
   if (filters?.category) {
-    query = query.eq("categories.slug", filters.category)
+    query = query.eq("categories.slug", filters.category.toLowerCase())
   }
 
   if (filters?.sort === "popular") {
@@ -67,6 +67,7 @@ export async function getPublishedComparisons(
 export async function getComparisonBySlug(
   slug: string
 ): Promise<ComparisonWithTools | null> {
+  slug = slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
 
   const { data, error } = await supabase

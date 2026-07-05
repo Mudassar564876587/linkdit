@@ -14,7 +14,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
 
   const { data: comparison } = await supabase
@@ -68,7 +68,7 @@ export default async function ComparisonDetailPage({
 }: {
   params: Promise<{ slug: string }>
 }) {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
 
   const { data: comparison, error } = await supabase

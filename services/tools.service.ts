@@ -65,7 +65,7 @@ export async function getTools(filters?: ToolFilters): Promise<Tool[]> {
     .eq("is_published", true)
 
   if (filters?.category) {
-    query = query.eq("categories.slug", filters.category)
+    query = query.eq("categories.slug", filters.category.toLowerCase())
   }
 
   if (filters?.search) {
@@ -96,6 +96,7 @@ export async function getTools(filters?: ToolFilters): Promise<Tool[]> {
 }
 
 export async function getToolBySlug(slug: string): Promise<Tool | null> {
+  slug = slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
 
   const { data, error } = await supabase

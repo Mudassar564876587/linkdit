@@ -8,7 +8,7 @@ import TableOfContents from "@/components/articles/table-of-contents"
 import { Calendar, Clock, ArrowLeft, ArrowRight, ChevronLeft, ExternalLink } from "lucide-react"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
   const { data: article } = await supabase
     .from("articles")
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function ArticleDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
 
   const { data: article, error } = await supabase

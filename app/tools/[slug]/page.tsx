@@ -8,7 +8,7 @@ import SimilarTools from "./similar-tools"
 import { ExternalLink, Check, X, ShieldCheck, Sparkles } from "lucide-react"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
   const { data: tool } = await supabase
     .from("tools")
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function ToolDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
 
   const { data: tool, error } = await supabase

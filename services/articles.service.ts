@@ -35,8 +35,8 @@ export async function getArticles(options: {
     .select("*, categories(name), users(avatar_url)", { count: "exact" })
     .eq("is_published", true)
 
-  if (category) {
-    query.eq("categories.slug", category)
+   if (category) {
+    query.eq("categories.slug", category.toLowerCase())
   }
   if (featured) {
     query.eq("featured", true)
@@ -76,6 +76,7 @@ export async function getLatestArticles(limit: number = 3): Promise<Article[]> {
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
+  slug = slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from("articles")
@@ -92,6 +93,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
 }
 
 export async function getArticlesByCategory(categorySlug: string, limit: number = 10): Promise<Article[]> {
+  categorySlug = categorySlug.toLowerCase()
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from("articles")

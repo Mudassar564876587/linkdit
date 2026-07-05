@@ -7,7 +7,7 @@ import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
   const { data: category } = await supabase.from("categories").select("name, description").eq("slug", slug).single()
 
@@ -32,7 +32,7 @@ export default async function CategoryResourcesPage({
   params: Promise<{ slug: string }>
   searchParams: Promise<{ page?: string }>
 }) {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const sp = await searchParams
   const supabase = await createServerSupabaseClient()
 

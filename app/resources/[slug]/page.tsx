@@ -5,7 +5,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { ExternalLink, Download, ChevronLeft, Check, Star } from "lucide-react"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
   const { data: resource } = await supabase
     .from("resources")
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function ResourceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
 
   const { data: resource, error } = await supabase

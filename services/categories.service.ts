@@ -38,6 +38,7 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
+  slug = slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
 
   const { data, error } = await supabase

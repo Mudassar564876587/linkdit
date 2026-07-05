@@ -40,8 +40,8 @@ export async function getResources(options: {
     .select("*, categories(name)", { count: "exact" })
     .eq("is_published", true)
 
-  if (category) {
-    query.eq("categories.slug", category)
+   if (category) {
+    query.eq("categories.slug", category.toLowerCase())
   }
   if (featured) {
     query.eq("featured", true)
@@ -70,6 +70,7 @@ export async function getResources(options: {
 }
 
 export async function getResourceBySlug(slug: string): Promise<Resource | null> {
+  slug = slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from("resources")
@@ -106,6 +107,7 @@ export async function getRelatedResources(currentId: string, categoryId: string 
 }
 
 export async function getResourcesByCategory(categorySlug: string, limit = 12): Promise<Resource[]> {
+  categorySlug = categorySlug.toLowerCase()
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from("resources")

@@ -44,7 +44,7 @@ export default async function ArticlesPage({
     .eq("is_published", true)
 
   if (sp.category) {
-    query.eq("categories.slug", sp.category)
+    query.eq("categories.slug", sp.category.toLowerCase())
   }
   if (sp.q) {
     query.or(`title.ilike.%${sp.q}%,description.ilike.%${sp.q}%`)

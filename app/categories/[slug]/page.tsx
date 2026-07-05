@@ -7,7 +7,7 @@ import Pagination from "@/components/tools/pagination"
 const PAGE_SIZE = 12
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
   const { data: cat } = await supabase
     .from("categories")
@@ -42,7 +42,7 @@ export default async function CategoryPage({
   params: Promise<{ slug: string }>
   searchParams: Promise<{ page?: string }>
 }) {
-  const { slug } = await params
+  const slug = (await params).slug.toLowerCase()
   const sp = await searchParams
   const supabase = await createServerSupabaseClient()
 
