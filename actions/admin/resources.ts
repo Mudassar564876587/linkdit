@@ -29,6 +29,7 @@ export async function adminCreateResource(formData: FormData) {
   const features = (formData.get("features") as string) || ""
   const tags = (formData.get("tags") as string) || ""
   const published = formData.get("published") === "true"
+  const featured = formData.get("featured") === "true"
 
   if (!name || name.length < 2) return { error: "Name must be at least 2 characters." }
 
@@ -53,6 +54,7 @@ export async function adminCreateResource(formData: FormData) {
     features: featuresArr,
     tags: tagsArr,
     is_published: published,
+    featured,
   })
 
   if (error) return { error: error.message }
@@ -93,6 +95,10 @@ export async function adminUpdateResource(id: string, formData: FormData) {
   const published = formData.get("published") as string | null
   if (published !== null) {
     updates.is_published = published === "true"
+  }
+  const featured = formData.get("featured") as string | null
+  if (featured !== null) {
+    updates.featured = featured === "true"
   }
 
   const { error } = await supabase.from("resources").update(updates).eq("id", id)

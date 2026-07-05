@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/dashboard/", "/auth/", "/api/"],
+      disallow: ["/dashboard/", "/admin/", "/auth/", "/api/"],
     },
     sitemap: "https://linkdit.vercel.app/sitemap.xml",
   }

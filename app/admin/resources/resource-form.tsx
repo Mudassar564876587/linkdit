@@ -105,11 +105,16 @@ export default function ResourceForm({ categories, initial }: Props) {
           className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-6">
         <label className="flex items-center gap-2 text-sm text-foreground">
           <input type="checkbox" name="published" value="true" defaultChecked={initial?.is_published}
             className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
           Publish
+        </label>
+        <label className="flex items-center gap-2 text-sm text-foreground">
+          <input type="checkbox" name="featured" value="true" defaultChecked={initial?.featured}
+            className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
+          Featured
         </label>
       </div>
 

@@ -27,7 +27,7 @@ export default function ArticleCard({
       )}
       aria-label={`Read ${title}`}
     >
-      {coverImageUrl && (
+      {coverImageUrl ? (
         <div className="aspect-[16/9] overflow-hidden">
           <img
             src={coverImageUrl}
@@ -35,6 +35,10 @@ export default function ArticleCard({
             className="h-full w-full object-cover transition-transform group-hover:scale-105"
             loading="lazy"
           />
+        </div>
+      ) : (
+        <div className="flex aspect-[16/9] items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+          <span className="text-3xl font-bold text-primary/30">{title.charAt(0)}</span>
         </div>
       )}
 

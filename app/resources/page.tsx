@@ -90,7 +90,7 @@ export default async function ResourcesPage({
 
         <div className="flex flex-wrap gap-2 mb-6" role="group" aria-label="Category filter">
           <a
-            href="/resources"
+            href={buildUrl("/resources", { ...searchParamsRecord, category: "" })}
             className={cn(
               "rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
               !sp.category
@@ -103,7 +103,7 @@ export default async function ResourcesPage({
           {categories?.map((c) => (
             <a
               key={c.slug}
-              href={`/resources?category=${c.slug}`}
+              href={buildUrl("/resources", { ...searchParamsRecord, category: sp.category === c.slug ? "" : c.slug })}
               className={cn(
                 "rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
                 sp.category === c.slug
@@ -118,7 +118,7 @@ export default async function ResourcesPage({
 
         <div className="flex flex-wrap items-center gap-3 mb-6">
           <a
-            href={`/resources${sp.q ? `?q=${sp.q}` : ""}`}
+            href={buildUrl("/resources", { ...searchParamsRecord, pricing: "" })}
             className={cn(
               "rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
               !sp.pricing

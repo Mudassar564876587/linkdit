@@ -87,7 +87,7 @@ export default async function ArticlesPage({
 
         <div className="flex flex-wrap gap-2 mb-6" role="group" aria-label="Category filter">
           <a
-            href="/articles"
+            href={buildUrl("/articles", { ...searchParamsRecord, category: "" })}
             className={cn(
               "rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
               !sp.category
@@ -100,7 +100,7 @@ export default async function ArticlesPage({
           {categories?.map((c) => (
             <a
               key={c.slug}
-              href={`/articles?category=${c.slug}`}
+              href={buildUrl("/articles", { ...searchParamsRecord, category: sp.category === c.slug ? "" : c.slug })}
               className={cn(
                 "rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
                 sp.category === c.slug
@@ -151,4 +151,10 @@ export default async function ArticlesPage({
       </div>
     </div>
   )
+}
+
+function buildUrl(base: string, params: Record<string, string>): string {
+  const filtered = Object.entries(params).filter(([, v]) => v)
+  if (filtered.length === 0) return base
+  return `${base}?${new URLSearchParams(Object.fromEntries(filtered)).toString()}`
 }
