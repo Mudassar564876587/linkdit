@@ -26,6 +26,7 @@ export async function adminCreateArticle(formData: FormData) {
   const readTime = formData.get("readTime") as string
   const seoTitle = formData.get("seoTitle") as string
   const seoDescription = formData.get("seoDescription") as string
+  const tags = (formData.get("tags") as string) || ""
   const published = formData.get("published") === "true"
 
   if (!title || title.length < 2) return { error: "Title must be at least 2 characters." }
@@ -38,11 +39,14 @@ export async function adminCreateArticle(formData: FormData) {
     slug = `${slugify(title)}-${counter++}`
   }
 
+  const tagsArr = tags ? tags.split(",").map((t: string) => t.trim()).filter(Boolean) : []
+
   const { error } = await supabase.from("articles").insert({
     title, slug, content, description, category_id: categoryId,
     cover_image_url: coverUrl || null, read_time: readTime || "5 min",
     author_id: user.id, author_name: user.email || "Admin",
     seo_title: seoTitle || null, seo_description: seoDescription || null,
+    tags: tagsArr,
     is_published: published, published_at: published ? new Date().toISOString() : null,
   })
 
@@ -66,13 +70,17 @@ export async function adminUpdateArticle(id: string, formData: FormData) {
   const categoryId = formData.get("categoryId")
   if (categoryId) updates.category_id = categoryId
   const coverUrl = formData.get("coverUrl")
-  if (coverUrl) updates.cover_image_url = coverUrl
+  if (coverUrl !== null) updates.cover_image_url = coverUrl || null
   const readTime = formData.get("readTime")
   if (readTime) updates.read_time = readTime
   const seoTitle = formData.get("seoTitle")
   if (seoTitle) updates.seo_title = seoTitle
   const seoDescription = formData.get("seoDescription")
   if (seoDescription) updates.seo_description = seoDescription
+  const tags = formData.get("tags") as string | null
+  if (tags !== null) {
+    updates.tags = tags ? tags.split(",").map((t: string) => t.trim()).filter(Boolean) : []
+  }
   const published = formData.get("published")
   if (published !== null) {
     updates.is_published = published === "true"
@@ -90,6 +98,26 @@ export async function adminDeleteArticle(id: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
   await supabase.from("articles").delete().eq("id", id)
+  revalidatePath("/admin/articles")
+  return { success: true }
+}
+
+export async function adminToggleArticlePublish(id: string, isPublished: boolean) {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  const payload: any = { is_published: isPublished }
+  if (isPublished) payload.published_at = new Date().toISOString()
+  await supabase.from("articles").update(payload).eq("id", id)
+  revalidatePath("/admin/articles")
+  return { success: true }
+}
+
+export async function adminToggleArticleFeatured(id: string, featured: boolean) {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  await supabase.from("articles").update({ featured }).eq("id", id)
   revalidatePath("/admin/articles")
   return { success: true }
 }

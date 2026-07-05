@@ -138,6 +138,7 @@ export interface Database {
           author_name: string
           featured: boolean
           is_published: boolean
+          tags: any
           seo_title: string | null
           seo_description: string | null
           search_vector: string | null
@@ -158,6 +159,7 @@ export interface Database {
           author_name: string
           featured?: boolean
           is_published?: boolean
+          tags?: any
           seo_title?: string | null
           seo_description?: string | null
           created_at?: string
@@ -177,6 +179,7 @@ export interface Database {
           author_name?: string
           featured?: boolean
           is_published?: boolean
+          tags?: any
           seo_title?: string | null
           seo_description?: string | null
           created_at?: string
@@ -566,6 +569,135 @@ export interface Database {
           },
           {
             foreignKeyName: "tool_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      resources: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          description: string | null
+          content: string | null
+          category_id: string | null
+          logo_url: string | null
+          cover_image_url: string | null
+          website_url: string | null
+          download_url: string | null
+          pricing: string
+          features: any
+          tags: any
+          featured: boolean
+          is_published: boolean
+          seo_title: string | null
+          seo_description: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          description?: string | null
+          content?: string | null
+          category_id?: string | null
+          logo_url?: string | null
+          cover_image_url?: string | null
+          website_url?: string | null
+          download_url?: string | null
+          pricing?: string
+          features?: any
+          tags?: any
+          featured?: boolean
+          is_published?: boolean
+          seo_title?: string | null
+          seo_description?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          description?: string | null
+          content?: string | null
+          category_id?: string | null
+          logo_url?: string | null
+          cover_image_url?: string | null
+          website_url?: string | null
+          download_url?: string | null
+          pricing?: string
+          features?: any
+          tags?: any
+          featured?: boolean
+          is_published?: boolean
+          seo_title?: string | null
+          seo_description?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resources_category_id_fkey"
+            columns: ["category_id"]
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      article_tags: {
+        Row: {
+          article_id: string
+          tag_id: string
+        }
+        Insert: {
+          article_id: string
+          tag_id: string
+        }
+        Update: {
+          article_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_tags_article_id_fkey"
+            columns: ["article_id"]
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "article_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      resource_tags: {
+        Row: {
+          resource_id: string
+          tag_id: string
+        }
+        Insert: {
+          resource_id: string
+          tag_id: string
+        }
+        Update: {
+          resource_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_tags_resource_id_fkey"
+            columns: ["resource_id"]
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "resource_tags_tag_id_fkey"
             columns: ["tag_id"]
             referencedRelation: "tags"
             referencedColumns: ["id"]

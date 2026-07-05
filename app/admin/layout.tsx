@@ -12,6 +12,7 @@ const navLinks = [
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/reviews", label: "Reviews", icon: Star },
   { href: "/admin/articles", label: "Blog", icon: FileText },
+  { href: "/admin/resources", label: "Resources", icon: FileText },
   { href: "/admin/media", label: "Media", icon: Image },
   { href: "/admin/settings", label: "Settings", icon: Settings },
   { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
