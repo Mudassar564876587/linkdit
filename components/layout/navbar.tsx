@@ -44,9 +44,11 @@ export default function Navbar() {
           <Button variant="ghost" size="icon" aria-label="Search">
             <Search className="h-5 w-5" />
           </Button>
-          <Button className="hidden sm:inline-flex items-center gap-1.5">
-            <Plus className="h-4 w-4" />
-            Submit Tool
+          <Button asChild className="hidden sm:inline-flex items-center gap-1.5">
+            <Link href="/submit-tool">
+              <Plus className="h-4 w-4" />
+              Submit Tool
+            </Link>
           </Button>
           <UserMenu />
           <Button
@@ -74,9 +76,11 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Button className="mt-4 w-full items-center gap-1.5 sm:hidden">
-              <Plus className="h-4 w-4" />
-              Submit Tool
+            <Button asChild className="mt-4 w-full items-center gap-1.5 sm:hidden">
+              <Link href="/submit-tool" onClick={closeMenu}>
+                <Plus className="h-4 w-4" />
+                Submit Tool
+              </Link>
             </Button>
           </div>
         </div>
