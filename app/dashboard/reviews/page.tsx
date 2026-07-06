@@ -9,7 +9,7 @@ export default async function ReviewsPage() {
 
   const { data: reviews } = await supabase
     .from("reviews")
-    .select("id, rating, content, is_approved, created_at, updated_at, tools!inner(name, slug)")
+    .select("id, rating, title, content, pros, cons, is_approved, created_at, updated_at, tools!inner(name, slug)")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false })
 

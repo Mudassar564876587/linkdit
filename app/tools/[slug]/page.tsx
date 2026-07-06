@@ -5,7 +5,7 @@ import RatingStars from "@/components/tools/rating-stars"
 import BookmarkButton from "@/components/tools/bookmark-button"
 import ReviewsList from "./reviews-list"
 import SimilarTools from "./similar-tools"
-import ReviewForm from "@/components/tools/review-form"
+import ReviewSection from "@/components/tools/review-section"
 import { ExternalLink, Check, X, ShieldCheck, Sparkles } from "lucide-react"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -80,6 +80,16 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
     .order("sort_order", { ascending: true })
 
   const { data: { user } } = await supabase.auth.getUser()
+
+  const { data: userReview } = user
+    ? await supabase
+        .from("reviews")
+        .select("*")
+        .eq("tool_id", tool.id)
+        .eq("user_id", user.id)
+        .maybeSingle()
+    : { data: null }
+
   let isBookmarked = false
   if (user) {
     const { data: bm } = await supabase
@@ -310,11 +320,17 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
             </div>
           )}
 
-          {/* Review Form */}
+          {/* Review Section */}
           <div className="mt-10">
-            <h2 className="text-xl font-semibold text-foreground">Write a review</h2>
+            <h2 className="text-xl font-semibold text-foreground">
+              {userReview ? "Your review" : "Write a review"}
+            </h2>
             <div className="mt-4">
-              <ReviewForm toolId={tool.id} isAuthenticated={!!user} />
+              <ReviewSection
+                toolId={tool.id}
+                isAuthenticated={!!user}
+                existingReview={userReview as any}
+              />
             </div>
           </div>
 

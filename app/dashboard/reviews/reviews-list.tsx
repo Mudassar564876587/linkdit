@@ -10,7 +10,10 @@ import { updateReview, deleteReview } from "@/actions/dashboard/reviews"
 type Review = {
   id: string
   rating: number
+  title: string | null
   content: string | null
+  pros: string[] | null
+  cons: string[] | null
   is_approved: boolean
   created_at: string
   updated_at: string
@@ -19,7 +22,10 @@ type Review = {
 
 function EditForm({ review, onDone }: { review: Review; onDone: () => void }) {
   const [rating, setRating] = useState(review.rating)
+  const [title, setTitle] = useState(review.title ?? "")
   const [content, setContent] = useState(review.content ?? "")
+  const [prosText, setProsText] = useState(review.pros?.join("\n") ?? "")
+  const [consText, setConsText] = useState(review.cons?.join("\n") ?? "")
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -29,7 +35,10 @@ function EditForm({ review, onDone }: { review: Review; onDone: () => void }) {
     setSubmitting(true)
     const fd = new FormData()
     fd.set("rating", String(rating))
+    fd.set("title", title)
     fd.set("content", content)
+    fd.set("pros", prosText)
+    fd.set("cons", consText)
     const res = await updateReview(review.id, fd)
     setSubmitting(false)
     if (res?.error) { setError(res.error); return }
@@ -46,9 +55,18 @@ function EditForm({ review, onDone }: { review: Review; onDone: () => void }) {
           </button>
         ))}
       </div>
+      <input value={title} onChange={(e) => setTitle(e.target.value)}
+        className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        placeholder="Review title" maxLength={200} />
       <textarea value={content} onChange={(e) => setContent(e.target.value)} rows={3}
         className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         placeholder="Write your review..." />
+      <textarea value={prosText} onChange={(e) => setProsText(e.target.value)} rows={2}
+        className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+        placeholder="Pros (one per line)" />
+      <textarea value={consText} onChange={(e) => setConsText(e.target.value)} rows={2}
+        className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+        placeholder="Cons (one per line)" />
       {error && <p className="text-sm text-destructive">{error}</p>}
       <div className="flex gap-2">
         <Button type="submit" size="sm" disabled={submitting}>
@@ -104,7 +122,24 @@ export default function ReviewsList({ reviews }: { reviews: Review[] }) {
                   )}
                 </div>
               </div>
-              {r.content && <p className="mt-2 text-sm text-muted-foreground">{r.content}</p>}
+              {r.title && <p className="mt-2 text-sm font-semibold text-foreground">{r.title}</p>}
+              {r.content && <p className="mt-1 text-sm text-muted-foreground">{r.content}</p>}
+              {(r.pros && r.pros.length > 0) || (r.cons && r.cons.length > 0) ? (
+                <div className="mt-2 flex gap-4">
+                  {r.pros && r.pros.length > 0 && (
+                    <div>
+                      <span className="text-xs font-medium text-emerald-600">Pros: </span>
+                      <span className="text-xs text-muted-foreground">{r.pros.join(", ")}</span>
+                    </div>
+                  )}
+                  {r.cons && r.cons.length > 0 && (
+                    <div>
+                      <span className="text-xs font-medium text-red-600">Cons: </span>
+                      <span className="text-xs text-muted-foreground">{r.cons.join(", ")}</span>
+                    </div>
+                  )}
+                </div>
+              ) : null}
               <div className="mt-3 flex items-center gap-2">
                 <Button variant="ghost" size="sm" onClick={() => setEditingId(r.id)}>
                   <Pencil className="h-3.5 w-3.5" /> Edit

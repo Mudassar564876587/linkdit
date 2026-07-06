@@ -288,7 +288,10 @@ export interface Database {
           user_id: string
           tool_id: string
           rating: number
+          title: string | null
           content: string | null
+          pros: string[] | null
+          cons: string[] | null
           is_approved: boolean
           created_at: string
           updated_at: string
@@ -298,7 +301,10 @@ export interface Database {
           user_id: string
           tool_id: string
           rating: number
+          title?: string | null
           content?: string | null
+          pros?: string[] | null
+          cons?: string[] | null
           is_approved?: boolean
           created_at?: string
           updated_at?: string
@@ -308,7 +314,10 @@ export interface Database {
           user_id?: string
           tool_id?: string
           rating?: number
+          title?: string | null
           content?: string | null
+          pros?: string[] | null
+          cons?: string[] | null
           is_approved?: boolean
           created_at?: string
           updated_at?: string
