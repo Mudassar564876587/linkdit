@@ -135,7 +135,7 @@ export default async function Categories() {
                     {category.name}
                   </h3>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {category.toolCount} {category.toolCount === 1 ? "tool" : "tools"}
+                    {category.toolCount > 0 ? `${category.toolCount} ${category.toolCount === 1 ? "tool" : "tools"}` : "Coming Soon"}
                   </p>
                 </Link>
               )

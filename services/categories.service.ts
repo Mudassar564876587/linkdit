@@ -25,16 +25,31 @@ function mapRowToCategory(row: {
 export async function getCategories(): Promise<Category[]> {
   const supabase = await createServerSupabaseClient()
 
-  const { data, error } = await supabase
+  const { data: categories, error } = await supabase
     .from("categories")
     .select("*")
-    .order("tool_count", { ascending: false })
+    .order("name")
 
   if (error) {
     throw new Error(`Failed to fetch categories: ${error.message}`)
   }
 
-  return (data ?? []).map(mapRowToCategory)
+  const { data: publishedTools } = await supabase
+    .from("tools")
+    .select("category_id")
+    .eq("is_published", true)
+
+  const countMap: Record<string, number> = {}
+  for (const t of publishedTools ?? []) {
+    countMap[t.category_id] = (countMap[t.category_id] ?? 0) + 1
+  }
+
+  return (categories ?? [])
+    .map((row) => ({
+      ...mapRowToCategory(row),
+      toolCount: countMap[row.id] ?? 0,
+    }))
+    .sort((a, b) => b.toolCount - a.toolCount)
 }
 
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
@@ -54,5 +69,11 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
     throw new Error(`Failed to fetch category: ${error.message}`)
   }
 
-  return mapRowToCategory(data)
+  const { count } = await supabase
+    .from("tools")
+    .select("*", { count: "exact", head: true })
+    .eq("category_id", data.id)
+    .eq("is_published", true)
+
+  return { ...mapRowToCategory(data), toolCount: count ?? 0 }
 }

@@ -31,7 +31,7 @@ export default async function CategoriesPage() {
   const { data: categories } = await supabase
     .from("categories")
     .select("*")
-    .order("tool_count", { ascending: false })
+    .order("name")
 
   if (!categories?.length) {
     return (
@@ -42,6 +42,23 @@ export default async function CategoriesPage() {
       </div>
     )
   }
+
+  const { data: publishedTools } = await supabase
+    .from("tools")
+    .select("category_id")
+    .eq("is_published", true)
+
+  const countMap: Record<string, number> = {}
+  for (const t of publishedTools ?? []) {
+    countMap[t.category_id] = (countMap[t.category_id] ?? 0) + 1
+  }
+
+  const enriched = categories
+    .map((cat) => ({
+      ...cat,
+      tool_count: countMap[cat.id] ?? 0,
+    }))
+    .sort((a, b) => b.tool_count - a.tool_count)
 
   return (
     <div className="min-h-screen bg-background">
@@ -54,7 +71,7 @@ export default async function CategoriesPage() {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((cat) => (
+          {enriched.map((cat) => (
             <Link
               key={cat.id}
               href={`/categories/${cat.slug}`}
@@ -69,7 +86,7 @@ export default async function CategoriesPage() {
                     {cat.name}
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    {cat.tool_count} tool{cat.tool_count !== 1 ? "s" : ""}
+                    {cat.tool_count > 0 ? `${cat.tool_count} tool${cat.tool_count !== 1 ? "s" : ""}` : "Coming Soon"}
                   </p>
                 </div>
               </div>
