@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { FolderGit2, Globe, Share2, Mail } from "lucide-react"
 import Logo from "@/components/ui/logo"
 import { Button } from "@/components/ui/button"
 
@@ -17,13 +16,6 @@ const resources = [
   { label: "Glossary" },
   { label: "Blog" },
   { label: "FAQ" },
-]
-
-const socialLinks = [
-  { href: "#", label: "GitHub", icon: FolderGit2 },
-  { href: "#", label: "Twitter", icon: Globe },
-  { href: "#", label: "LinkedIn", icon: Share2 },
-  { href: "#", label: "Email", icon: Mail },
 ]
 
 export default function Footer() {
@@ -93,22 +85,10 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-border pt-8 sm:flex-row">
+        <div className="mt-12 border-t border-border pt-8 text-center">
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} LinkDit. All rights reserved.
           </p>
-          <div className="flex items-center gap-3">
-            {socialLinks.map(({ href, label, icon: Icon }) => (
-              <Link
-                key={label}
-                href={href}
-                className="flex h-9 w-9 items-center justify-center rounded-xl text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-foreground"
-                aria-label={label}
-              >
-                <Icon className="h-4 w-4" />
-              </Link>
-            ))}
-          </div>
         </div>
       </div>
     </footer>
