@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { defaultMetadata } from "@/config/metadata";
+import { AnalyticsScript } from "@/components/layout/analytics-script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,6 +28,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-background font-sans text-foreground">
         {children}
+        <AnalyticsScript />
       </body>
     </html>
   );

@@ -5,6 +5,7 @@ import RatingStars from "@/components/tools/rating-stars"
 import BookmarkButton from "@/components/tools/bookmark-button"
 import ReviewsList from "./reviews-list"
 import SimilarTools from "./similar-tools"
+import ReviewForm from "@/components/tools/review-form"
 import { ExternalLink, Check, X, ShieldCheck, Sparkles } from "lucide-react"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -308,6 +309,14 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
               </div>
             </div>
           )}
+
+          {/* Review Form */}
+          <div className="mt-10">
+            <h2 className="text-xl font-semibold text-foreground">Write a review</h2>
+            <div className="mt-4">
+              <ReviewForm toolId={tool.id} isAuthenticated={!!user} />
+            </div>
+          </div>
 
           {/* Reviews */}
           <div className="mt-10">

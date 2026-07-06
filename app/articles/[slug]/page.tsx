@@ -5,6 +5,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server"
 import ArticleMeta from "@/components/articles/article-meta"
 import ShareButtons from "@/components/articles/share-buttons"
 import TableOfContents from "@/components/articles/table-of-contents"
+import ArticleBookmarkButton from "@/components/articles/article-bookmark-button"
 import { Calendar, Clock, ArrowLeft, ArrowRight, ChevronLeft, ExternalLink } from "lucide-react"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -84,6 +85,18 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
   const tags = Array.isArray(a.tags) ? a.tags : []
 
+  const { data: { user: currentUser } } = await supabase.auth.getUser()
+  let isArticleBookmarked = false
+  if (currentUser) {
+    const { data: abm } = await supabase
+      .from("bookmarks")
+      .select("id")
+      .eq("user_id", currentUser.id)
+      .eq("article_id", a.id)
+      .maybeSingle()
+    isArticleBookmarked = !!abm
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -134,6 +147,13 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
               publishedAt={a.published_at}
               readTime={a.read_time}
             />
+            <div className="mt-4">
+              <ArticleBookmarkButton
+                articleId={a.id}
+                isBookmarked={isArticleBookmarked}
+                isAuthenticated={!!currentUser}
+              />
+            </div>
           </header>
 
           {a.cover_image_url && (

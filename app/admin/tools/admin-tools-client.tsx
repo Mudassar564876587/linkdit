@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Search, CheckCircle, XCircle, Star, ShieldCheck, Trash2, ExternalLink, Pencil } from "lucide-react"
+import { Plus, Search, CheckCircle, XCircle, Star, ShieldCheck, Trash2, ExternalLink, Pencil } from "lucide-react"
 import { adminDeleteTool, adminTogglePublish, adminToggleFeatured, adminToggleVerified } from "@/actions/admin/tools"
 
 export default function AdminToolsClient({ tools }: { tools: any[] }) {
@@ -38,6 +38,12 @@ export default function AdminToolsClient({ tools }: { tools: any[] }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Tools ({filtered.length})</h1>
+        <a
+          href="/admin/tools/new"
+          className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+        >
+          <Plus className="h-4 w-4" /> New Tool
+        </a>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">

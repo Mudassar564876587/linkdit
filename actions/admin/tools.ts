@@ -3,10 +3,75 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 
+function slugify(text: string): string {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
+}
+
 async function isAdmin(userId: string): Promise<boolean> {
   const supabase = await createServerSupabaseClient()
   const { data } = await supabase.from("users").select("role").eq("id", userId).single()
   return data?.role === "admin"
+}
+
+export async function adminCreateTool(formData: FormData) {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+
+  const name = formData.get("name") as string
+  const description = formData.get("description") as string
+  const categoryId = formData.get("categoryId") as string
+  const websiteUrl = formData.get("websiteUrl") as string
+  const logoUrl = formData.get("logoUrl") as string
+  const pricing = (formData.get("pricing") as string) || "Free"
+  const features = (formData.get("features") as string) || ""
+  const pros = (formData.get("pros") as string) || ""
+  const cons = (formData.get("cons") as string) || ""
+  const seoTitle = formData.get("seoTitle") as string
+  const seoDescription = formData.get("seoDescription") as string
+  const published = formData.get("published") === "true"
+  const featured = formData.get("featured") === "true"
+  const sponsored = formData.get("sponsored") === "true"
+  const isVerified = formData.get("isVerified") === "true"
+
+  if (!name || name.length < 2) return { error: "Name must be at least 2 characters." }
+
+  let slug = slugify(name)
+  let counter = 1
+  while (true) {
+    const { data: existing } = await supabase.from("tools").select("id").eq("slug", slug).maybeSingle()
+    if (!existing) break
+    slug = `${slugify(name)}-${counter++}`
+  }
+
+  const featuresArr = features ? features.split("\n").map((f: string) => f.trim()).filter(Boolean) : []
+  const prosArr = pros ? pros.split("\n").map((p: string) => p.trim()).filter(Boolean) : []
+  const consArr = cons ? cons.split("\n").map((c: string) => c.trim()).filter(Boolean) : []
+
+  if (!categoryId) return { error: "Category is required." }
+
+  const { error } = await supabase.from("tools").insert({
+    name,
+    slug,
+    description,
+    category_id: categoryId,
+    website_url: websiteUrl,
+    logo_url: logoUrl || null,
+    pricing: pricing as "Free" | "Freemium" | "Paid",
+    features: featuresArr,
+    pros: prosArr,
+    cons: consArr,
+    seo_title: seoTitle || null,
+    seo_description: seoDescription || null,
+    is_published: published,
+    featured,
+    sponsored,
+    is_verified: isVerified,
+  })
+
+  if (error) return { error: error.message }
+  revalidatePath("/admin/tools")
+  return { success: true, slug }
 }
 
 export async function adminDeleteTool(id: string) {

@@ -3,14 +3,15 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
-import { adminUpdateTool } from "@/actions/admin/tools"
+import { adminUpdateTool, adminCreateTool } from "@/actions/admin/tools"
 
 type Props = {
   categories: { id: string; name: string }[]
-  initial: any
+  initial?: any
+  isNew?: boolean
 }
 
-export default function ToolForm({ categories, initial }: Props) {
+export default function ToolForm({ categories, initial, isNew }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -20,7 +21,10 @@ export default function ToolForm({ categories, initial }: Props) {
     setLoading(true); setError(null)
     const fd = new FormData(e.currentTarget)
 
-    const result = await adminUpdateTool(initial.id, fd)
+    const result = isNew
+      ? await adminCreateTool(fd)
+      : initial ? await adminUpdateTool(initial.id, fd) : { error: "No tool data." }
+
     setLoading(false)
     if (result.error) setError(result.error)
     else router.push("/admin/tools")
@@ -138,7 +142,7 @@ export default function ToolForm({ categories, initial }: Props) {
         <button type="submit" disabled={loading}
           className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-          Update Tool
+          {isNew ? "Create Tool" : "Update Tool"}
         </button>
         <button type="button" onClick={() => router.back()}
           className="h-10 rounded-lg border border-border px-5 text-sm font-medium text-muted-foreground hover:bg-accent">

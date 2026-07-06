@@ -1,6 +1,6 @@
 -- ============================================================================
 -- LinkDit Seed Data
--- 10 categories, 30 tools, 10 articles
+-- 10 categories, 30 tools, 10 articles, 6 comparisons
 -- ============================================================================
 
 -- 1. Categories
@@ -214,3 +214,49 @@ insert into public.articles (title, slug, description, content, category_id, rea
     false,
     true
   );
+
+-- 4. Comparisons
+-- ============================================================================
+do $$
+declare
+  chatgpt_id     uuid; claude_id      uuid; midjourney_id uuid; dalle3_id     uuid;
+  cursor_id      uuid; copilot_id     uuid; gamma_id      uuid; notion_ai_id  uuid;
+  runway_id      uuid; synthesia_id   uuid; elevenlabs_id  uuid; soundraw_id   uuid;
+  writing_cat    uuid; image_cat      uuid; coding_cat     uuid; productivity_cat uuid;
+  video_cat      uuid; audio_cat      uuid;
+begin
+  select id into writing_cat    from public.categories where slug = 'ai-writing' limit 1;
+  select id into image_cat      from public.categories where slug = 'image-generation' limit 1;
+  select id into coding_cat     from public.categories where slug = 'coding' limit 1;
+  select id into productivity_cat from public.categories where slug = 'productivity' limit 1;
+  select id into video_cat      from public.categories where slug = 'video' limit 1;
+  select id into audio_cat      from public.categories where slug = 'audio' limit 1;
+
+  select id into chatgpt_id     from public.tools where slug = 'chatGPT' limit 1;
+  select id into claude_id      from public.tools where slug = 'claude' limit 1;
+  select id into midjourney_id  from public.tools where slug = 'midjourney' limit 1;
+  select id into dalle3_id      from public.tools where slug = 'dall-e-3' limit 1;
+  select id into cursor_id      from public.tools where slug = 'cursor' limit 1;
+  select id into copilot_id     from public.tools where slug = 'github-copilot' limit 1;
+  select id into gamma_id       from public.tools where slug = 'gamma' limit 1;
+  select id into notion_ai_id   from public.tools where slug = 'notion-ai' limit 1;
+  select id into runway_id      from public.tools where slug = 'runway' limit 1;
+  select id into synthesia_id   from public.tools where slug = 'synthesia' limit 1;
+  select id into elevenlabs_id  from public.tools where slug = 'elevenlabs' limit 1;
+  select id into soundraw_id    from public.tools where slug = 'soundraw' limit 1;
+
+  insert into public.comparisons (slug, title, description, tool_a_id, tool_b_id, category_id, is_published, is_featured, views) values
+    ('chatgpt-vs-claude', 'ChatGPT vs Claude', 'Compare the two leading conversational AI assistants across features, pricing and capabilities.',
+      chatgpt_id, claude_id, writing_cat, true, true, 1200),
+    ('midjourney-vs-dalle3', 'Midjourney vs DALL-E 3', 'Which AI image generator produces better results? We compare output quality, pricing and features.',
+      midjourney_id, dalle3_id, image_cat, true, true, 980),
+    ('cursor-vs-copilot', 'Cursor vs GitHub Copilot', 'A detailed comparison of the two most popular AI coding assistants.',
+      cursor_id, copilot_id, coding_cat, true, true, 1500),
+    ('gamma-vs-notion-ai', 'Gamma vs Notion AI', 'Compare AI-powered productivity tools for presentations, documents and knowledge management.',
+      gamma_id, notion_ai_id, productivity_cat, true, false, 540),
+    ('runway-vs-synthesia', 'Runway vs Synthesia', 'Which AI video platform is right for your content creation needs? We break down features and pricing.',
+      runway_id, synthesia_id, video_cat, true, false, 720),
+    ('elevenlabs-vs-soundraw', 'ElevenLabs vs Soundraw', 'Compare AI audio tools for voice synthesis and music generation.',
+      elevenlabs_id, soundraw_id, audio_cat, true, false, 410)
+  on conflict (slug) do nothing;
+end $$;
