@@ -8,12 +8,11 @@ import { getAvatarColor, formatNumber } from "@/lib/utils"
 
 export default async function FeaturedTools() {
   let tools: Awaited<ReturnType<typeof getFeaturedTools>> = []
-  let error: string | null = null
 
   try {
     tools = await getFeaturedTools()
   } catch {
-    error = "Unable to load featured tools."
+    console.error("Failed to load featured tools")
   }
 
   return (
@@ -25,13 +24,9 @@ export default async function FeaturedTools() {
         />
 
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {error ? (
+          {tools.length === 0 ? (
             <p className="col-span-full text-center text-sm text-muted-foreground">
-              {error}
-            </p>
-          ) : tools.length === 0 ? (
-            <p className="col-span-full text-center text-sm text-muted-foreground">
-              No featured tools yet.
+              No featured tools available yet.
             </p>
           ) : (
             tools.map((tool) => (

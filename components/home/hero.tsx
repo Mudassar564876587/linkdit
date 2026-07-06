@@ -1,14 +1,8 @@
 import { Search, Sparkles, TrendingUp, ArrowUpRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { createServerSupabaseClient } from "@/lib/supabase/server"
 
 const popularSearches = ["ChatGPT", "Claude", "Gemini", "Midjourney", "Cursor"]
-
-const stats = [
-  { value: "10,000+", label: "AI Tools" },
-  { value: "500+", label: "Tutorials" },
-  { value: "50K+", label: "Monthly Visitors" },
-  { value: "4.9", label: "Rating" },
-]
 
 const floatingTools = [
   { name: "ChatGPT", color: "bg-emerald-500", delay: "animate-[float_3s_ease-in-out_infinite]" },
@@ -29,7 +23,21 @@ const chartBars = [
   { height: 96, color: "bg-blue-600" },
 ]
 
-export default function Hero() {
+export default async function Hero() {
+  const supabase = await createServerSupabaseClient()
+
+  const [{ count: toolCount }, { count: categoryCount }, { count: articleCount }] = await Promise.all([
+    supabase.from("tools").select("*", { count: "exact", head: true }).eq("is_published", true),
+    supabase.from("categories").select("*", { count: "exact", head: true }),
+    supabase.from("articles").select("*", { count: "exact", head: true }).eq("is_published", true),
+  ])
+
+  const stats = [
+    { value: `${toolCount ?? 0}+`, label: "AI Tools" },
+    { value: `${categoryCount ?? 0}`, label: "Categories" },
+    { value: "Free", label: "Tool Submission" },
+    { value: "Updated", label: "Weekly" },
+  ]
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-blue-50 via-white to-white" />
@@ -118,11 +126,7 @@ export default function Hero() {
                 <div className="mb-6">
                   <div className="mb-3 flex items-center justify-between">
                     <span className="text-xs font-semibold text-muted-foreground">
-                      AI Tool Discovery
-                    </span>
-                    <span className="flex items-center gap-1 text-xs font-medium text-emerald-600">
-                      <TrendingUp className="h-3 w-3" />
-                      +28.5%
+                      AI Tool Directory
                     </span>
                   </div>
                   <div className="flex items-end gap-1.5">
@@ -139,14 +143,10 @@ export default function Hero() {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-xl bg-secondary p-4">
                     <div className="text-xs text-muted-foreground">
-                      Active Tools
+                      AI Tools
                     </div>
                     <div className="mt-0.5 text-xl font-semibold text-foreground">
-                      12,847
-                    </div>
-                    <div className="mt-0.5 flex items-center gap-0.5 text-xs text-emerald-600">
-                      <ArrowUpRight className="h-3 w-3" />
-                      +12.3%
+                      {toolCount ?? 0}+
                     </div>
                   </div>
                   <div className="rounded-xl bg-secondary p-4">
@@ -154,35 +154,23 @@ export default function Hero() {
                       Categories
                     </div>
                     <div className="mt-0.5 text-xl font-semibold text-foreground">
-                      48
-                    </div>
-                    <div className="mt-0.5 flex items-center gap-0.5 text-xs text-emerald-600">
-                      <ArrowUpRight className="h-3 w-3" />
-                      +8.1%
+                      {categoryCount ?? 0}
                     </div>
                   </div>
                   <div className="rounded-xl bg-secondary p-4">
                     <div className="text-xs text-muted-foreground">
-                      Weekly Reviews
+                      Articles
                     </div>
                     <div className="mt-0.5 text-xl font-semibold text-foreground">
-                      2,431
-                    </div>
-                    <div className="mt-0.5 flex items-center gap-0.5 text-xs text-emerald-600">
-                      <ArrowUpRight className="h-3 w-3" />
-                      +5.7%
+                      {articleCount ?? 0}
                     </div>
                   </div>
                   <div className="rounded-xl bg-secondary p-4">
                     <div className="text-xs text-muted-foreground">
-                      Avg. Rating
+                      Updated
                     </div>
                     <div className="mt-0.5 text-xl font-semibold text-foreground">
-                      4.8
-                    </div>
-                    <div className="mt-0.5 flex items-center gap-0.5 text-xs text-emerald-600">
-                      <ArrowUpRight className="h-3 w-3" />
-                      +0.2
+                      Weekly
                     </div>
                   </div>
                 </div>

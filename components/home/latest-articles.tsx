@@ -35,12 +35,11 @@ const articleStyles = [
 
 export default async function LatestArticles() {
   let articles: Awaited<ReturnType<typeof getLatestArticles>> = []
-  let error: string | null = null
 
   try {
     articles = await getLatestArticles()
   } catch {
-    error = "Unable to load articles."
+    console.error("Failed to load latest articles")
   }
 
   return (
@@ -52,13 +51,9 @@ export default async function LatestArticles() {
         />
 
         <div className="mt-16 grid gap-8 md:grid-cols-3">
-          {error ? (
+          {articles.length === 0 ? (
             <p className="col-span-full text-center text-sm text-muted-foreground">
-              {error}
-            </p>
-          ) : articles.length === 0 ? (
-            <p className="col-span-full text-center text-sm text-muted-foreground">
-              No articles yet.
+              No articles published yet.
             </p>
           ) : (
             articles.map((article, index) => {

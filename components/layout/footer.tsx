@@ -12,11 +12,11 @@ const quickLinks = [
 ]
 
 const resources = [
-  { href: "/tutorials", label: "Tutorials" },
-  { href: "/guides", label: "Guides" },
-  { href: "/glossary", label: "Glossary" },
-  { href: "/blog", label: "Blog" },
-  { href: "/faq", label: "FAQ" },
+  { href: null, label: "Tutorials" },
+  { href: null, label: "Guides" },
+  { href: null, label: "Glossary" },
+  { href: null, label: "Blog" },
+  { href: null, label: "FAQ" },
 ]
 
 const socialLinks = [
@@ -64,13 +64,19 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               {resources.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {link.label}
-                  </Link>
+                <li key={link.label}>
+                  {link.href ? (
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <span className="text-sm text-muted-foreground/50 cursor-default">
+                      {link.label} — Coming soon
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
