@@ -46,23 +46,29 @@ async function callOpenAI(system: string, user: string): Promise<string> {
 
 async function callGemini(system: string, user: string): Promise<string> {
   if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY environment variable is not set.")
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: `${system}\n\n${user}` }] }],
-        generationConfig: { temperature: 0.3 },
-      }),
+  const models = ["gemini-2.0-flash", "gemini-1.5-flash"]
+  let lastError: Error | null = null
+  for (const model of models) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ role: "user", parts: [{ text: `${system}\n\n${user}` }] }],
+          generationConfig: { temperature: 0.3 },
+        }),
+      }
+    )
+    if (res.ok) {
+      const data = await res.json()
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || ""
     }
-  )
-  if (!res.ok) {
-    const err = await res.text()
-    throw new Error(`Gemini API error (${res.status}): ${err}`)
+    const errText = await res.text()
+    lastError = new Error(`Gemini API error (${res.status}) on ${model}: ${errText}`)
+    if (res.status !== 429 && res.status !== 503) break
   }
-  const data = await res.json()
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || ""
+  throw lastError || new Error("Gemini API error: all models failed.")
 }
 
 async function callOpenRouter(system: string, user: string): Promise<string> {

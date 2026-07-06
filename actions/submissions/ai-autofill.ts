@@ -44,6 +44,26 @@ export async function aiAutofill(websiteUrl: string) {
     html.match(
       /<meta\s+[^>]*property=["']og:description["'][^>]*content=["']([^"']+)["'][^>]*\/?>/i
     )?.[1]?.trim() || ""
+  const keywords =
+    html.match(
+      /<meta\s+[^>]*name=["']keywords["'][^>]*content=["']([^"']+)["'][^>]*\/?>/i
+    )?.[1]?.trim() || ""
+
+  const jsonLdScripts = html.match(
+    /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
+  )
+  let jsonLdText = ""
+  if (jsonLdScripts) {
+    jsonLdText = jsonLdScripts
+      .map((s) =>
+        s
+          .replace(/<script[^>]*>/gi, "")
+          .replace(/<\/script>/gi, "")
+          .trim()
+      )
+      .filter(Boolean)
+      .join("\n")
+  }
 
   const bodyText = html
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, " ")
@@ -52,9 +72,10 @@ export async function aiAutofill(websiteUrl: string) {
     .replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, " ")
     .replace(/<header[^>]*>[\s\S]*?<\/header>/gi, " ")
     .replace(/<[^>]+>/g, " ")
+    .replace(/&[^;]+;/g, " ")
     .replace(/\s+/g, " ")
     .trim()
-    .slice(0, 6000)
+    .slice(0, 8000)
 
   const systemPrompt =
     "You are an AI assistant that extracts structured information about an AI tool from its website content. Respond ONLY with valid JSON. No markdown, no code fences, no explanation."
@@ -79,6 +100,8 @@ Website page title: ${title}
 Meta description: ${desc}
 OG title: ${ogTitle}
 OG description: ${ogDesc}
+Meta keywords: ${keywords}
+${jsonLdText ? `Structured data: ${jsonLdText}` : ""}
 
 Website content:
 ${bodyText}`
