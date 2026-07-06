@@ -46,7 +46,7 @@ async function callOpenAI(system: string, user: string): Promise<string> {
 
 async function callGemini(system: string, user: string): Promise<string> {
   if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY environment variable is not set.")
-  const models = ["gemini-2.0-flash", "gemini-1.5-flash"]
+  const models = ["gemini-2.5-flash", "gemini-flash-latest", "gemini-2.0-flash"]
   let lastError: Error | null = null
   for (const model of models) {
     const res = await fetch(
