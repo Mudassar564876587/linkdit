@@ -1,5 +1,4 @@
-import { Search, Sparkles, TrendingUp, ArrowUpRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Search, Sparkles, ArrowUpRight, LayoutGrid, BookOpen, Mail, RefreshCw } from "lucide-react"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 
 const popularSearches = ["ChatGPT", "Claude", "Gemini", "Midjourney", "Cursor"]
@@ -33,148 +32,166 @@ export default async function Hero() {
   ])
 
   const stats = [
-    { value: `${toolCount ?? 0}+`, label: "AI Tools" },
-    { value: `${categoryCount ?? 0}`, label: "Categories" },
-    { value: "Free", label: "Tool Submission" },
-    { value: "Updated", label: "Weekly" },
+    { value: `${toolCount ?? 0}+`, label: "AI Tools", icon: LayoutGrid },
+    { value: `${categoryCount ?? 0}`, label: "Categories", icon: BookOpen },
+    { value: "Free", label: "Tool Submission", icon: Mail },
+    { value: "Updated", label: "Weekly", icon: RefreshCw },
   ]
+
+  const heroCardContent = (
+    <div className="rounded-2xl border border-border/50 bg-white p-5 shadow-premium sm:p-6 lg:shadow-xl lg:shadow-blue-500/5">
+      <div className="mb-4 flex items-center gap-1.5">
+        <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
+        <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+        <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
+      </div>
+
+      <div className="mb-5">
+        <div className="mb-3 flex items-center justify-between">
+          <span className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            AI Tool Directory
+          </span>
+        </div>
+        <div className="flex items-end gap-1.5">
+          {chartBars.map((bar, index) => (
+            <div
+              key={index}
+              className={`${bar.color} w-full rounded-t-sm transition-all duration-500`}
+              style={{ height: `${bar.height}%` }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+        <div className="rounded-xl bg-secondary p-3.5 sm:p-4">
+          <div className="text-xs text-muted-foreground">AI Tools</div>
+          <div className="mt-0.5 text-lg font-semibold text-foreground sm:text-xl">
+            {toolCount ?? 0}+
+          </div>
+        </div>
+        <div className="rounded-xl bg-secondary p-3.5 sm:p-4">
+          <div className="text-xs text-muted-foreground">Categories</div>
+          <div className="mt-0.5 text-lg font-semibold text-foreground sm:text-xl">
+            {categoryCount ?? 0}
+          </div>
+        </div>
+        <div className="rounded-xl bg-secondary p-3.5 sm:p-4">
+          <div className="text-xs text-muted-foreground">Articles</div>
+          <div className="mt-0.5 text-lg font-semibold text-foreground sm:text-xl">
+            {articleCount ?? 0}
+          </div>
+        </div>
+        <div className="rounded-xl bg-secondary p-3.5 sm:p-4">
+          <div className="text-xs text-muted-foreground">Updated</div>
+          <div className="mt-0.5 text-lg font-semibold text-foreground sm:text-xl">
+            Weekly
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-blue-50 via-white to-white" />
       <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-blue-100/40 blur-3xl" />
 
-      <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-16 sm:px-6 sm:pb-32 sm:pt-20 lg:px-8 lg:pb-40 lg:pt-24">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-14 sm:px-6 sm:pb-28 sm:pt-18 lg:px-8 lg:pb-36 lg:pt-24">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="text-center lg:text-left">
-            <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-700">
-              <Sparkles className="h-3.5 w-3.5" />
+            <div className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1.5 text-xs font-medium text-blue-700 sm:text-sm">
+              <Sparkles className="h-3 w-3" />
               Discover the Future of AI
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            <h1 className="text-[2.25rem] font-bold leading-tight tracking-tight text-foreground sm:text-[2.75rem] sm:leading-tight lg:text-[3rem] lg:leading-tight">
               Discover, Compare & Master
               <br />
               the World&apos;s Best AI Tools
             </h1>
 
-            <p className="mt-5 text-lg leading-8 text-muted-foreground sm:mt-6">
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:mt-5 sm:text-lg sm:leading-8">
               Explore AI tools, tutorials, comparisons and resources designed to
               help creators, developers, students and businesses work smarter.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-10 lg:justify-start">
-              <Button size="lg" className="h-12 px-8 text-base shadow-lg shadow-blue-500/20">
+            <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row lg:justify-start">
+              <a
+                href="/tools"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg shadow-blue-500/20 transition-all duration-200 hover:bg-primary/90 hover:shadow-blue-500/25 active:scale-[0.98] sm:px-8 sm:text-base"
+              >
                 <Sparkles className="h-4 w-4" />
                 Explore AI Tools
-              </Button>
-              <Button variant="outline" size="lg" className="h-12 px-8 text-base">
-                <TrendingUp className="h-4 w-4" />
+              </a>
+              <a
+                href="/articles"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-input bg-background px-6 text-sm font-medium text-foreground shadow-soft-sm transition-all duration-200 hover:bg-accent hover:text-accent-foreground active:scale-[0.98] sm:px-8 sm:text-base"
+              >
+                <BookOpen className="h-4 w-4" />
                 Read Articles
-              </Button>
+              </a>
             </div>
 
-            <div className="mx-auto mt-10 max-w-xl lg:mx-0">
+            <div className="mx-auto mt-8 max-w-xl lg:mx-0">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground sm:h-5 sm:w-5" />
                 <input
                   type="text"
                   placeholder="Search AI tools..."
-                  className="h-14 w-full rounded-xl border border-input bg-background pl-12 pr-36 text-sm shadow-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="h-12 w-full rounded-xl border border-input bg-background pl-11 pr-[9.5rem] text-sm shadow-soft-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:h-14 sm:pl-12 sm:text-base"
                 />
-                <Button className="absolute right-1.5 top-1/2 h-11 -translate-y-1/2 px-5">
-                  <ArrowUpRight className="h-4 w-4" />
-                  Search
-                </Button>
+                <div className="absolute right-1.5 top-1/2 -translate-y-1/2">
+                  <button className="inline-flex h-[2.625rem] items-center gap-1.5 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 active:scale-[0.98] sm:h-11 sm:px-5">
+                    <ArrowUpRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Search</span>
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm text-muted-foreground lg:justify-start">
-              <span className="font-medium text-foreground">Popular:</span>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-sm text-muted-foreground lg:justify-start">
+              <span className="text-xs font-medium text-foreground sm:text-sm">Popular:</span>
               {popularSearches.map((term) => (
                 <button
                   key={term}
-                  className="rounded-full border border-border bg-background px-3 py-1 text-sm transition-all duration-200 hover:border-primary hover:text-primary"
+                  className="min-h-[36px] rounded-full border border-border bg-background px-3 py-1.5 text-xs transition-all duration-200 hover:border-primary hover:text-primary active:scale-95 sm:text-sm"
                 >
                   {term}
                 </button>
               ))}
             </div>
 
-            <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-4 lg:mt-12">
-              {stats.map((stat) => (
-                <div key={stat.label} className="text-center lg:text-left">
-                  <div className="text-2xl font-bold tracking-tight text-foreground">
-                    {stat.value}
+            <div className="mt-8 sm:mt-10 lg:hidden">
+              {heroCardContent}
+            </div>
+
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:grid-cols-4 sm:gap-4 lg:mt-12">
+              {stats.map((stat) => {
+                const Icon = stat.icon
+                return (
+                  <div
+                    key={stat.label}
+                    className="rounded-xl bg-white/70 border border-border/60 p-3.5 text-center shadow-soft-sm backdrop-blur-sm sm:p-4 lg:text-left"
+                  >
+                    <div className="mx-auto mb-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-primary/5 sm:h-9 sm:w-9 lg:mx-0">
+                      <Icon className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
+                    </div>
+                    <div className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+                      {stat.value}
+                    </div>
+                    <div className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
+                      {stat.label}
+                    </div>
                   </div>
-                  <div className="mt-0.5 text-sm text-muted-foreground">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
 
           <div className="relative hidden lg:block">
             <div className="relative mx-auto w-full max-w-lg">
-              <div className="rounded-2xl border border-border/50 bg-white p-6 shadow-xl shadow-blue-500/5">
-                <div className="mb-5 flex items-center gap-1.5">
-                  <div className="h-3 w-3 rounded-full bg-red-400" />
-                  <div className="h-3 w-3 rounded-full bg-yellow-400" />
-                  <div className="h-3 w-3 rounded-full bg-green-400" />
-                </div>
-
-                <div className="mb-6">
-                  <div className="mb-3 flex items-center justify-between">
-                    <span className="text-xs font-semibold text-muted-foreground">
-                      AI Tool Directory
-                    </span>
-                  </div>
-                  <div className="flex items-end gap-1.5">
-                    {chartBars.map((bar, index) => (
-                      <div
-                        key={index}
-                        className={`${bar.color} w-full rounded-t-sm transition-all duration-500`}
-                        style={{ height: `${bar.height}%` }}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-xl bg-secondary p-4">
-                    <div className="text-xs text-muted-foreground">
-                      AI Tools
-                    </div>
-                    <div className="mt-0.5 text-xl font-semibold text-foreground">
-                      {toolCount ?? 0}+
-                    </div>
-                  </div>
-                  <div className="rounded-xl bg-secondary p-4">
-                    <div className="text-xs text-muted-foreground">
-                      Categories
-                    </div>
-                    <div className="mt-0.5 text-xl font-semibold text-foreground">
-                      {categoryCount ?? 0}
-                    </div>
-                  </div>
-                  <div className="rounded-xl bg-secondary p-4">
-                    <div className="text-xs text-muted-foreground">
-                      Articles
-                    </div>
-                    <div className="mt-0.5 text-xl font-semibold text-foreground">
-                      {articleCount ?? 0}
-                    </div>
-                  </div>
-                  <div className="rounded-xl bg-secondary p-4">
-                    <div className="text-xs text-muted-foreground">
-                      Updated
-                    </div>
-                    <div className="mt-0.5 text-xl font-semibold text-foreground">
-                      Weekly
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {heroCardContent}
 
               {floatingTools.map((tool, index) => {
                 const positions = [
@@ -185,7 +202,7 @@ export default async function Hero() {
                 return (
                   <div
                     key={tool.name}
-                    className={`absolute ${positions[index]} ${tool.delay} rounded-xl border border-border/60 bg-white px-4 py-2.5 shadow-lg`}
+                    className={`absolute ${positions[index]} ${tool.delay} rounded-xl border border-border/60 bg-white px-3.5 py-2.5 shadow-premium-lg`}
                   >
                     <div className="flex items-center gap-2.5">
                       <div className={`h-2.5 w-2.5 rounded-full ${tool.color}`} />

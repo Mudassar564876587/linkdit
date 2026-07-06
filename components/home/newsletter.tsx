@@ -32,7 +32,7 @@ export default function Newsletter() {
 
   return (
     <section className="border-t border-border bg-secondary/50">
-      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
         <SectionHeader
           title="Stay Ahead of the AI Curve"
           description="Get the latest AI tools, tutorials and insights delivered to your inbox every week."
@@ -42,7 +42,7 @@ export default function Newsletter() {
           {status === "success" ? (
             <div className="flex flex-col items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-8 text-center">
               <CheckCircle2 className="h-10 w-10 text-emerald-500" />
-              <p className="text-lg font-medium text-emerald-800">{message}</p>
+              <p className="text-base font-medium text-emerald-800 sm:text-lg">{message}</p>
             </div>
           ) : (
             <form
@@ -57,17 +57,16 @@ export default function Newsletter() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="h-12 w-full rounded-xl border border-input bg-background pl-10 pr-4 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="h-12 w-full rounded-xl border border-input bg-background pl-10 pr-4 text-sm shadow-soft-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
-              <Button
+              <button
                 type="submit"
-                size="lg"
-                className="h-12 shrink-0 px-6"
                 disabled={status === "loading"}
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg shadow-blue-500/15 transition-all duration-200 hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50"
               >
                 {status === "loading" ? "Subscribing..." : "Subscribe"}
-              </Button>
+              </button>
             </form>
           )}
 

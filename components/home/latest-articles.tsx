@@ -1,4 +1,4 @@
-import { Clock, CalendarDays, ArrowUpRight } from "lucide-react"
+import { Clock, CalendarDays, ArrowUpRight, Newspaper } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { SectionHeader } from "@/components/ui/section-header"
@@ -44,48 +44,61 @@ export default async function LatestArticles() {
 
   return (
     <section className="border-t border-border bg-secondary/50">
-      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
         <SectionHeader
           title="Latest Articles"
           description="Stay ahead with tutorials, comparisons and insights from the AI world."
         />
 
-        <div className="mt-16 grid gap-8 md:grid-cols-3">
+        <div className="mt-14 sm:mt-16 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {articles.length === 0 ? (
-            <p className="col-span-full text-center text-sm text-muted-foreground">
-              No articles published yet.
-            </p>
+            <div className="col-span-full mx-auto max-w-sm rounded-2xl border border-border/60 bg-background p-8 text-center shadow-soft-sm">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/5">
+                <Newspaper className="h-6 w-6 text-primary/40" />
+              </div>
+              <h3 className="mt-4 text-base font-semibold text-foreground">No articles published yet</h3>
+              <p className="mt-1.5 text-sm text-muted-foreground">
+                Articles will appear here once published.
+              </p>
+              <Link
+                href="/articles"
+                className="mt-5 inline-flex h-10 items-center gap-1.5 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 active:scale-[0.98]"
+              >
+                Browse articles
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
           ) : (
             articles.map((article, index) => {
               const style = articleStyles[index % articleStyles.length]
               return (
                 <article
                   key={article.id}
-                  className="group overflow-hidden rounded-2xl border border-border bg-background transition-all duration-200 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5"
+                  className="group overflow-hidden rounded-2xl border border-border bg-background shadow-soft-sm transition-all duration-200 hover:border-primary/20 hover:shadow-premium"
                 >
                   <div
-                    className={`flex h-48 items-center justify-center bg-gradient-to-br ${style.gradient}`}
+                    className={`flex h-40 items-center justify-center bg-gradient-to-br ${style.gradient} sm:h-48`}
                   >
-                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-background/60 backdrop-blur-sm">
-                      <CalendarDays className="h-7 w-7 text-muted-foreground" />
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-background/60 backdrop-blur-sm sm:h-16 sm:w-16">
+                      <CalendarDays className="h-6 w-6 text-muted-foreground sm:h-7 sm:w-7" />
                     </div>
                   </div>
 
-                  <div className="p-5">
+                  <div className="p-4 sm:p-5">
                     <span
                       className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${style.badge}`}
                     >
                       {article.categoryName}
                     </span>
-                    <h3 className="mt-3 text-lg font-semibold leading-snug text-foreground">
+                    <h3 className="mt-3 text-base font-semibold leading-snug text-foreground sm:text-lg">
                       {article.title}
                     </h3>
-                    <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                    <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground sm:mt-2">
                       {article.description}
                     </p>
 
-                    <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <div className="mt-3 flex items-center justify-between border-t border-border pt-3 sm:mt-4 sm:pt-4">
+                      <div className="flex items-center gap-2.5 text-xs text-muted-foreground sm:gap-3">
                         <span className="flex items-center gap-1">
                           <Clock className="h-3.5 w-3.5" />
                           {article.readTime}
@@ -95,7 +108,7 @@ export default async function LatestArticles() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
+                        className="h-8 w-8 opacity-0 transition-all group-hover:opacity-100"
                         asChild
                       >
                         <Link href={`/articles/${article.slug}`}>
@@ -117,12 +130,12 @@ export default async function LatestArticles() {
 export function ArticlesSkeleton() {
   return (
     <section className="border-t border-border bg-secondary/50">
-      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
         <div className="mx-auto max-w-2xl text-center">
-          <div className="mx-auto h-8 w-48 animate-pulse rounded bg-muted" />
-          <div className="mx-auto mt-4 h-5 w-96 animate-pulse rounded bg-muted" />
+          <div className="mx-auto h-7 w-44 animate-pulse rounded bg-muted sm:h-8 sm:w-48" />
+          <div className="mx-auto mt-3 h-4 w-72 animate-pulse rounded bg-muted sm:mt-4 sm:h-5 sm:w-96" />
         </div>
-        <div className="mt-16 grid gap-8 md:grid-cols-3">
+        <div className="mt-14 sm:mt-16 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {Array.from({ length: 3 }).map((_, i) => (
             <ArticleCardSkeleton key={i} />
           ))}
