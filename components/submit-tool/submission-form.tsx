@@ -2,8 +2,9 @@
 
 import { useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
-import { Send, Save, Loader2 } from "lucide-react"
+import { Send, Save, Loader2, Sparkles } from "lucide-react"
 import { createSubmission, saveDraft } from "@/actions/submissions"
+import { aiAutofill } from "@/actions/submissions/ai-autofill"
 import ImageUpload from "./image-upload"
 import RichEditor from "./rich-editor"
 import ListManager from "./list-manager"
@@ -17,6 +18,10 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const [aiUrl, setAiUrl] = useState("")
+  const [aiLoading, setAiLoading] = useState(false)
+  const [aiError, setAiError] = useState<string | null>(null)
 
   const [toolName, setToolName] = useState("")
   const [websiteUrl, setWebsiteUrl] = useState("")
@@ -60,6 +65,62 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
     return fd
   }, [toolName, websiteUrl, shortDescription, fullDescription, pricing, categoryId, contactEmail, parseTags, features, pros, cons, faqs, logoFile, coverFile, galleryFiles])
 
+  async function handleAutoFill() {
+    if (!aiUrl.trim()) return
+    setAiLoading(true)
+    setAiError(null)
+
+    const result = await aiAutofill(aiUrl.trim())
+
+    setAiLoading(false)
+
+    if (result.error) {
+      setAiError(result.error)
+      return
+    }
+
+    const d = result.data
+
+    if (d.toolName) setToolName(d.toolName)
+
+    setWebsiteUrl(aiUrl.trim())
+
+    if (d.shortDescription) setShortDescription(d.shortDescription)
+    if (d.fullDescription) setFullDescription(d.fullDescription)
+
+    if (d.categoryName && categories.length > 0) {
+      const match = categories.find(
+        (c) => c.name.toLowerCase() === d.categoryName.toLowerCase()
+      )
+      if (match) {
+        setCategoryId(match.id)
+      }
+    }
+
+    if (d.pricing && ["Free", "Freemium", "Paid"].includes(d.pricing)) {
+      setPricing(d.pricing)
+    }
+
+    if (d.tags && Array.isArray(d.tags)) {
+      setTags(d.tags.join(", "))
+    }
+    if (d.features && Array.isArray(d.features)) {
+      setFeatures(d.features.slice(0, 10))
+    }
+    if (d.pros && Array.isArray(d.pros)) {
+      setPros(d.pros.slice(0, 5))
+    }
+    if (d.cons && Array.isArray(d.cons)) {
+      setCons(d.cons.slice(0, 5))
+    }
+    if (d.faqs && Array.isArray(d.faqs)) {
+      setFaqs(d.faqs.slice(0, 5).map((f: { question: string; answer: string }) => ({
+        question: f.question || "",
+        answer: f.answer || "",
+      })))
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
@@ -90,6 +151,48 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
           {error}
         </div>
       )}
+
+      {/* AI Auto Fill */}
+      <section className="rounded-xl border border-blue-200 bg-blue-50 p-4 sm:p-5">
+        <div className="flex items-center gap-2 mb-3">
+          <Sparkles className="h-5 w-5 text-blue-600" />
+          <h2 className="text-sm font-semibold text-blue-900">Auto Fill with AI</h2>
+        </div>
+        <p className="mb-3 text-xs text-blue-700">
+          Enter the tool&apos;s website URL and AI will automatically fill the form below.
+        </p>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <input
+            type="url"
+            value={aiUrl}
+            onChange={(e) => setAiUrl(e.target.value)}
+            placeholder="https://example.com"
+            className="h-10 flex-1 rounded-lg border border-blue-300 bg-white px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+          <button
+            type="button"
+            onClick={handleAutoFill}
+            disabled={aiLoading || !aiUrl.trim()}
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50 transition-colors shrink-0"
+          >
+            {aiLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Sparkles className="h-4 w-4" />
+            )}
+            Auto Fill with AI
+          </button>
+        </div>
+        {aiLoading && (
+          <div className="mt-2 flex items-center gap-2 text-xs text-blue-600">
+            <Loader2 className="h-3 w-3 animate-spin" />
+            Fetching website and analyzing with AI...
+          </div>
+        )}
+        {aiError && (
+          <p className="mt-2 text-xs text-red-600">{aiError}</p>
+        )}
+      </section>
 
       {/* Basic Info */}
       <section className="space-y-4">
