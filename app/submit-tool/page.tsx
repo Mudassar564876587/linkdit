@@ -34,29 +34,17 @@ export default async function SubmitToolPage() {
     <div className="min-h-screen bg-background">
       {/* Premium Hero Card */}
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
-        <div className="w-full rounded-[24px] shadow-xl bg-gradient-to-br from-primary/5 via-background to-primary/5 ring-1 ring-black/5 overflow-hidden">
-          {/* Desktop & Tablet ≥768px */}
-          <div className="hidden md:block">
-            <Image
-              src="/images/submit-tool-hero-desktop.png"
-              alt="Submit your AI tool"
-              width={1800}
-              height={900}
-              priority
-              className="w-full h-auto"
-            />
-          </div>
-          {/* Mobile <768px */}
-          <div className="block md:hidden">
-            <Image
-              src="/images/submit-tool-hero-mobile.png"
-              alt="Submit your AI tool"
-              width={1080}
-              height={1350}
-              className="w-full h-auto"
-            />
-          </div>
-        </div>
+        <picture className="block w-full rounded-[24px] shadow-xl overflow-hidden">
+          <source media="(min-width: 768px)" srcSet="/images/submit-tool-hero-desktop.png" />
+          <Image
+            src="/images/submit-tool-hero-mobile.png"
+            alt="Submit your AI tool"
+            width={1080}
+            height={1350}
+            priority
+            className="w-full h-auto"
+          />
+        </picture>
       </div>
 
       <div className="mx-auto max-w-3xl px-4 pt-8 pb-8 sm:px-6 lg:px-8">
