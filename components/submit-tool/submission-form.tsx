@@ -14,6 +14,57 @@ type SubmissionFormProps = {
   categories: { id: string; name: string }[]
 }
 
+const CATEGORY_SYNONYMS: Record<string, string[]> = {
+  Coding: ["coding", "ai coding", "code assistant", "programming", "development", "software", "developer tools", "ide", "code generation"],
+  "AI Writing": ["writing", "ai writing", "content", "copywriting", "text generation", "content creation", "blog", "article", "essay"],
+  "Image Generation": ["image generation", "image ai", "ai art", "image generator", "art", "visual", "graphics", "dalle", "midjourney", "stable diffusion"],
+  Marketing: ["marketing", "seo", "social media", "advertising", "campaign", "email marketing", "analytics marketing"],
+  Video: ["video", "video generation", "video editing", "animation", "video creation"],
+  Audio: ["audio", "speech", "voice", "music", "sound", "text to speech", "tts"],
+  Analytics: ["analytics", "data analysis", "data", "business intelligence", "insights", "reporting"],
+  Design: ["design", "ui", "ux", "ui/ux", "graphic design", "wireframe", "prototype", "figma"],
+  Education: ["education", "learning", "tutoring", "course", "training", "elearning", "study"],
+  Productivity: ["productivity", "task", "project management", "workflow", "automation", "todo", "calendar"],
+}
+
+function matchCategory(
+  input: string,
+  categories: { id: string; name: string }[]
+): { id: string; name: string } | null {
+  const normalized = input.toLowerCase().trim()
+
+  for (const cat of categories) {
+    if (cat.name.toLowerCase() === normalized) return cat
+  }
+
+  for (const cat of categories) {
+    const synonyms = CATEGORY_SYNONYMS[cat.name]
+    if (synonyms?.some((s) => s === normalized || normalized.includes(s) || s.includes(normalized))) {
+      return cat
+    }
+  }
+
+  let bestMatch: { id: string; name: string } | null = null
+  let bestScore = 0
+  const inputWords = new Set(normalized.split(/\s+/))
+  for (const cat of categories) {
+    const synonyms = [cat.name.toLowerCase(), ...(CATEGORY_SYNONYMS[cat.name] || []).map((s) => s.toLowerCase())]
+    for (const syn of synonyms) {
+      const synWords = new Set(syn.split(/\s+/))
+      let score = 0
+      for (const w of inputWords) {
+        if (synWords.has(w)) score++
+      }
+      if (score > bestScore) {
+        bestScore = score
+        bestMatch = cat
+      }
+    }
+  }
+
+  return bestMatch
+}
+
 export default function SubmissionForm({ categories }: SubmissionFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -89,12 +140,14 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
     if (d.fullDescription) setFullDescription(d.fullDescription)
 
     if (d.categoryName && categories.length > 0) {
-      const match = categories.find(
-        (c) => c.name.toLowerCase() === d.categoryName.toLowerCase()
-      )
+      const match = matchCategory(d.categoryName, categories)
       if (match) {
         setCategoryId(match.id)
       }
+    }
+
+    if (d.contactEmail) {
+      setContactEmail(d.contactEmail)
     }
 
     if (d.pricing && ["Free", "Freemium", "Paid"].includes(d.pricing)) {
