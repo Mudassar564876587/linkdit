@@ -96,13 +96,13 @@ export async function createSubmission(formData: FormData) {
             .eq("slug", slug)
             .maybeSingle()
           if (slugErr) {
-            console.error("createSubmission: Step 8 (slug query) error", slugErr)
+            console.error("createSubmission: Step 5 (slug query) error", slugErr)
             if (slugErr instanceof Error) console.error(slugErr.stack)
             return { error: `Slug check error: ${slugErr.message}` }
           }
           if (!existing) break
         } catch (err) {
-          console.error("createSubmission: Step 8 (slug query) exception", err)
+          console.error("createSubmission: Step 5 (slug query) exception", err)
           if (err instanceof Error) console.error(err.stack)
           return { error: "Slug check failed unexpectedly." }
         }
@@ -114,7 +114,7 @@ export async function createSubmission(formData: FormData) {
       return { error: "Slug generation failed." }
     }
 
-    // ── Step 7: insert into tool_submissions ──
+    // ── Step 6: insert into tool_submissions ──
     try {
       const { error: insertErr } = await supabase.from("tool_submissions").insert({
         submitter_email: user.email!,
@@ -192,6 +192,9 @@ export async function saveDraft(formData: FormData) {
     const cons = formData.get("cons")
     const faqs = formData.get("faqs")
     const contactEmail = formData.get("contactEmail")
+    const logoUrl = formData.get("logoUrl")
+    const coverUrl = formData.get("coverUrl")
+    const galleryUrls = formData.get("galleryUrls")
 
     if (submissionId) {
       const updates: any = { ...base }
@@ -207,6 +210,9 @@ export async function saveDraft(formData: FormData) {
       if (cons) updates.cons = safeJsonParse(cons, [])
       if (faqs) updates.faqs = safeJsonParse(faqs, [])
       if (contactEmail) updates.contact_email = contactEmail
+      if (logoUrl) updates.logo_url = logoUrl
+      if (coverUrl) updates.cover_image_url = coverUrl
+      if (galleryUrls) updates.gallery_images = safeJsonParse(galleryUrls, [])
 
       const { error } = await supabase.from("tool_submissions").update(updates).eq("id", submissionId).eq("user_id", user.id)
       if (error) return { error: error.message }
@@ -224,6 +230,9 @@ export async function saveDraft(formData: FormData) {
       if (cons) insert.cons = safeJsonParse(cons, [])
       if (faqs) insert.faqs = safeJsonParse(faqs, [])
       if (contactEmail) insert.contact_email = contactEmail
+      if (logoUrl) insert.logo_url = logoUrl
+      if (coverUrl) insert.cover_image_url = coverUrl
+      if (galleryUrls) insert.gallery_images = safeJsonParse(galleryUrls, [])
 
       const { error } = await supabase.from("tool_submissions").insert(insert)
       if (error) return { error: error.message }
@@ -324,6 +333,23 @@ export async function adminApproveSubmission(id: string) {
     )
   }
 
+  // Upsert tags from submission
+  const subTags = Array.isArray(sub.tags) ? sub.tags : []
+  for (const raw of subTags) {
+    const name = (typeof raw === "string" ? raw : "").trim()
+    if (!name) continue
+    let { data: existing } = await supabase.from("tags").select("id").eq("name", name).maybeSingle()
+    let tagId = existing?.id
+    if (!tagId) {
+      const { data: inserted } = await supabase.from("tags").insert({ name, slug: slugify(name) }).select("id").single()
+      tagId = inserted?.id
+    }
+    if (tagId) {
+      const { error: ttErr } = await supabase.from("tool_tags").insert({ tool_id: newTool.id, tag_id: tagId })
+      if (ttErr && ttErr.code !== "23505") console.error("adminApproveSubmission: link tag error", ttErr)
+    }
+  }
+
   await supabase
     .from("tool_submissions")
     .update({
@@ -344,6 +370,7 @@ export async function adminApproveSubmission(id: string) {
   })
 
   revalidatePath("/admin/submissions")
+  revalidatePath("/tools")
   return { success: true }
 }
 
