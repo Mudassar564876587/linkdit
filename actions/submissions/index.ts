@@ -57,9 +57,9 @@ export async function createSubmission(formData: FormData) {
         cons: safeJsonParse(formData.get("cons"), []),
         faqs: safeJsonParse(formData.get("faqs"), []),
         contactEmail: formData.get("contactEmail") || user.email,
-        logoFile: formData.get("logoFile"),
-        coverFile: formData.get("coverFile"),
-        galleryFiles: formData.getAll("galleryFiles"),
+        logoUrl: formData.get("logoUrl") || "",
+        coverUrl: formData.get("coverUrl") || "",
+        galleryUrls: safeJsonParse(formData.get("galleryUrls"), []),
       }
     } catch (err) {
       console.error("createSubmission: Step 3 (build raw form data) exception", err)
@@ -82,47 +82,7 @@ export async function createSubmission(formData: FormData) {
       return { error: "Validation failed unexpectedly." }
     }
 
-    // ── Step 5: upload logo ──
-    let logoUrl: string | null = null
-    if (raw.logoFile instanceof File) {
-      try {
-        logoUrl = await uploadStorage("tool-logos", raw.logoFile, user.id)
-        console.log("createSubmission: Step 5 (logo upload) result", logoUrl)
-      } catch (err) {
-        console.error("createSubmission: Step 5 (logo upload) exception", err)
-        if (err instanceof Error) console.error(err.stack)
-        logoUrl = null
-      }
-    }
-
-    // ── Step 6: upload cover image ──
-    let coverUrl: string | null = null
-    if (raw.coverFile instanceof File) {
-      try {
-        coverUrl = await uploadStorage("tool-covers", raw.coverFile, user.id)
-        console.log("createSubmission: Step 6 (cover upload) result", coverUrl)
-      } catch (err) {
-        console.error("createSubmission: Step 6 (cover upload) exception", err)
-        if (err instanceof Error) console.error(err.stack)
-        coverUrl = null
-      }
-    }
-
-    // ── Step 7: upload gallery images ──
-    const galleryUrls: string[] = []
-    for (let i = 0; i < parsed.data.galleryFiles.length; i++) {
-      const f = parsed.data.galleryFiles[i]
-      try {
-        const url = await uploadStorage("tool-galleries", f, user.id)
-        console.log(`createSubmission: Step 7 (gallery upload #${i}) result`, url)
-        if (url) galleryUrls.push(url)
-      } catch (err) {
-        console.error(`createSubmission: Step 7 (gallery upload #${i}) exception`, err)
-        if (err instanceof Error) console.error(err.stack)
-      }
-    }
-
-    // ── Step 8: slug generation with dedup ──
+    // ── Step 5: slug generation with dedup ──
     let slug: string
     try {
       const baseSlug = slugify(parsed.data.toolName)
@@ -149,12 +109,12 @@ export async function createSubmission(formData: FormData) {
         slug = `${baseSlug}-${counter++}`
       }
     } catch (err) {
-      console.error("createSubmission: Step 8 (slug generation outer) exception", err)
+      console.error("createSubmission: slug generation outer exception", err)
       if (err instanceof Error) console.error(err.stack)
       return { error: "Slug generation failed." }
     }
 
-    // ── Step 9: insert into tool_submissions ──
+    // ── Step 7: insert into tool_submissions ──
     try {
       const { error: insertErr } = await supabase.from("tool_submissions").insert({
         submitter_email: user.email!,
@@ -171,29 +131,29 @@ export async function createSubmission(formData: FormData) {
         cons: parsed.data.cons,
         faqs: parsed.data.faqs,
         contact_email: parsed.data.contactEmail,
-        logo_url: logoUrl,
-        cover_image_url: coverUrl,
-        gallery_images: galleryUrls,
+        logo_url: parsed.data.logoUrl || null,
+        cover_image_url: parsed.data.coverUrl || null,
+        gallery_images: parsed.data.galleryUrls,
         slug,
         submission_status: "submitted",
         status: "pending",
       })
       if (insertErr) {
-        console.error("createSubmission: Step 9 (insert) error", insertErr)
+        console.error("createSubmission: Step 7 (insert) error", insertErr)
         if (insertErr instanceof Error) console.error(insertErr.stack)
         return { error: `Insert error: ${insertErr.message}` }
       }
     } catch (err) {
-      console.error("createSubmission: Step 9 (insert) exception", err)
+      console.error("createSubmission: Step 7 (insert) exception", err)
       if (err instanceof Error) console.error(err.stack)
       return { error: "Database insert failed unexpectedly." }
     }
 
-    // ── Step 10: revalidate ──
+    // ── Step 8: revalidate ──
     try {
       revalidatePath("/dashboard/my-submissions")
     } catch (err) {
-      console.error("createSubmission: Step 10 (revalidate) exception", err)
+      console.error("createSubmission: Step 8 (revalidate) exception", err)
       if (err instanceof Error) console.error(err.stack)
     }
 
@@ -488,21 +448,4 @@ function safeJsonParse(val: any, fallback: any) {
   return val
 }
 
-async function uploadStorage(bucket: string, file: File, userId: string): Promise<string | null> {
-  try {
-    const supabase = await createServerSupabaseClient()
-    const ext = file.name.split(".").pop()
-    const path = `${userId}/${crypto.randomUUID()}.${ext}`
-    const { error } = await supabase.storage.from(bucket).upload(path, file, { cacheControl: "3600" })
-    if (error) {
-      console.error(`uploadStorage: upload to ${bucket} failed`, error)
-      return null
-    }
-    const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(path)
-    return urlData.publicUrl
-  } catch (err) {
-    console.error(`uploadStorage: unexpected error for ${bucket}`, err)
-    if (err instanceof Error) console.error(err.stack)
-    return null
-  }
-}
+

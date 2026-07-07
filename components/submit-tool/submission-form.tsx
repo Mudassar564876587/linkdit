@@ -88,9 +88,9 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
   const [cons, setCons] = useState<string[]>([])
   const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>([])
 
-  const [logoFile, setLogoFile] = useState<File[]>([])
-  const [coverFile, setCoverFile] = useState<File[]>([])
-  const [galleryFiles, setGalleryFiles] = useState<File[]>([])
+  const [logoUrl, setLogoUrl] = useState("")
+  const [coverUrl, setCoverUrl] = useState("")
+  const [galleryUrls, setGalleryUrls] = useState<string[]>([])
 
   const parseTags = useCallback(() => {
     return tags.split(",").map((t) => t.trim()).filter(Boolean)
@@ -110,11 +110,11 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
     fd.set("pros", JSON.stringify(pros))
     fd.set("cons", JSON.stringify(cons))
     fd.set("faqs", JSON.stringify(faqs))
-    if (logoFile[0]) fd.set("logoFile", logoFile[0])
-    if (coverFile[0]) fd.set("coverFile", coverFile[0])
-    for (const f of galleryFiles) fd.append("galleryFiles", f)
+    if (logoUrl) fd.set("logoUrl", logoUrl)
+    if (coverUrl) fd.set("coverUrl", coverUrl)
+    if (galleryUrls.length) fd.set("galleryUrls", JSON.stringify(galleryUrls))
     return fd
-  }, [toolName, websiteUrl, shortDescription, fullDescription, pricing, categoryId, contactEmail, parseTags, features, pros, cons, faqs, logoFile, coverFile, galleryFiles])
+  }, [toolName, websiteUrl, shortDescription, fullDescription, pricing, categoryId, contactEmail, parseTags, features, pros, cons, faqs, logoUrl, coverUrl, galleryUrls])
 
   async function handleAutoFill() {
     if (!aiUrl.trim()) return
@@ -368,10 +368,10 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
       <section className="space-y-4">
         <h2 className="text-lg font-semibold text-foreground">Images</h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          <ImageUpload label="Logo" name="logoFile" onChange={(f) => setLogoFile(f)} />
-          <ImageUpload label="Cover Image" name="coverFile" onChange={(f) => setCoverFile(f)} />
+          <ImageUpload label="Logo" name="logoUrl" bucket="tool-logos" onChange={(u) => setLogoUrl(u[0] || "")} />
+          <ImageUpload label="Cover Image" name="coverUrl" bucket="tool-covers" onChange={(u) => setCoverUrl(u[0] || "")} />
         </div>
-        <ImageUpload label="Gallery Images" name="galleryFiles" maxFiles={10} onChange={(f) => setGalleryFiles(f)} />
+        <ImageUpload label="Gallery Images" name="galleryUrls" bucket="tool-galleries" maxFiles={10} onChange={setGalleryUrls} />
       </section>
 
       {/* Features, Pros, Cons */}

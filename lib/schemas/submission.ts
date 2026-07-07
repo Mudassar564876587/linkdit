@@ -21,9 +21,9 @@ export const SubmissionSchema = z.object({
   cons: z.array(z.string().min(1)).max(20, "Maximum 20 cons").default([]),
   faqs: z.array(FaqSchema).max(20, "Maximum 20 FAQs").default([]),
   contactEmail: z.string().email("Invalid email"),
-  logoFile: z.instanceof(File).optional(),
-  coverFile: z.instanceof(File).optional(),
-  galleryFiles: z.array(z.instanceof(File)).max(10, "Maximum 10 images").default([]),
+  logoUrl: z.string().url("Invalid logo URL").optional().or(z.literal("")),
+  coverUrl: z.string().url("Invalid cover URL").optional().or(z.literal("")),
+  galleryUrls: z.array(z.string().url("Invalid gallery URL")).max(10, "Maximum 10 images").default([]),
 })
 
 export type SubmissionFormData = z.infer<typeof SubmissionSchema>
