@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useCallback, useMemo } from "react"
+import { useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import {
   Send, Save, Loader2, Sparkles,
   Info, ImageIcon, ListChecks, ThumbsUp, ThumbsDown,
-  HelpCircle, Search, Eye, CheckCircle2,
+  HelpCircle, Search, Eye, CheckCircle2, Check,
   Globe, DollarSign, Tag, Mail, ChevronLeft, ChevronRight,
   AlertCircle, X, GripVertical, Plus
 } from "lucide-react"
@@ -15,8 +15,6 @@ import { createSubmission, saveDraft } from "@/actions/submissions"
 import AiAutofillPanel from "./ai-autofill-panel"
 import type { AiResult } from "./ai-autofill-panel"
 import ImageUpload from "./image-upload"
-import CompletionChecklist from "./completion-checklist"
-import type { ChecklistItem } from "./completion-checklist"
 
 type SubmissionFormProps = {
   categories: { id: string; name: string }[]
@@ -120,7 +118,7 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
   const [coverUrl, setCoverUrl] = useState("")
   const [galleryUrls, setGalleryUrls] = useState<string[]>([])
 
-  const [aiFilledData, setAiFilledData] = useState<AiResult | null>(null)
+  
 
   const parseTags = useCallback(() => {
     return tags.split(",").map((t) => t.trim()).filter(Boolean)
@@ -147,7 +145,6 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
   }, [toolName, websiteUrl, shortDescription, fullDescription, pricing, categoryId, contactEmail, parseTags, features, pros, cons, faqs, logoUrl, coverUrl, galleryUrls])
 
   function handleAiFill(data: AiResult) {
-    setAiFilledData(data)
     if (data.toolName) setToolName(data.toolName)
     setWebsiteUrl(data.toolName ? websiteUrl || "" : websiteUrl)
     if (data.shortDescription) setShortDescription(data.shortDescription)
@@ -220,18 +217,6 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
     const result = await saveDraft(fd)
     if (result.error) setError(result.error)
   }
-
-  const checklistItems: ChecklistItem[] = useMemo(() => [
-    { key: "name", label: "Tool name entered", done: toolName.length >= 2 },
-    { key: "url", label: "Website URL added", done: websiteUrl.startsWith("http") },
-    { key: "desc", label: "Short description complete", done: shortDescription.length >= 10 },
-    { key: "category", label: "Category selected", done: !!categoryId },
-    { key: "logo", label: "Logo uploaded", done: !!logoUrl, optional: true },
-    { key: "cover", label: "Cover uploaded", done: !!coverUrl, optional: true },
-    { key: "features", label: "Features added", done: features.length > 0, optional: true },
-    { key: "faq", label: "FAQ added", done: faqs.length > 0, optional: true },
-    { key: "email", label: "Contact email provided", done: !!contactEmail, optional: true },
-  ], [toolName, websiteUrl, shortDescription, categoryId, logoUrl, coverUrl, features.length, faqs.length, contactEmail])
 
   if (success) {
     return (
@@ -325,19 +310,17 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
         />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
-        {/* Main content */}
-        <div>
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={step}
-              custom={direction}
-              variants={stepVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.25, ease: "easeInOut" }}
-            >
+      <div>
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={step}
+            custom={direction}
+            variants={stepVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+          >
               {/* Step 1: Basic Information */}
               {step === 1 && (
                 <div className="space-y-5">
@@ -610,100 +593,323 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
 
               {/* Step 7: Review & Submit */}
               {step === 7 && (
-                <div className="space-y-5">
-                  <div>
-                    <h2 className="text-lg font-semibold text-foreground">Review & Submit</h2>
-                    <p className="text-xs text-muted-foreground mt-0.5">Double-check everything before submitting</p>
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35 }}
+                  className="space-y-6"
+                >
+                  {/* Header */}
+                  <div className="text-center sm:text-left">
+                    <h2 className="text-2xl font-bold text-foreground">
+                      <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                        Review &amp; Submit
+                      </span>
+                    </h2>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Here&apos;s how your tool will appear on LinkDit. Make sure everything looks perfect.
+                    </p>
                   </div>
 
-                  <div className="rounded-2xl border border-border bg-white p-5 shadow-premium">
-                    <h3 className="text-sm font-semibold text-foreground mb-3">Summary</h3>
-                    <dl className="space-y-2 text-sm">
-                      <ReviewRow label="Tool Name" value={toolName} />
-                      <ReviewRow label="Website" value={websiteUrl} />
-                      <ReviewRow label="Category" value={categories.find((c) => c.id === categoryId)?.name || "Not set"} />
-                      <ReviewRow label="Pricing" value={pricing} />
-                      <ReviewRow label="Tags" value={parseTags().length > 0 ? parseTags().join(", ") : "None"} />
-                      <ReviewRow label="Description" value={shortDescription} />
-                      <ReviewRow label="Full Description" value={fullDescription ? "Provided" : "Not provided"} highlight={!fullDescription} />
-                      <ReviewRow label="Contact Email" value={contactEmail || "Not provided"} highlight={!contactEmail} />
-                      <ReviewRow label="Logo" value={logoUrl ? "Uploaded" : "Not uploaded"} highlight={!logoUrl} />
-                      <ReviewRow label="Cover Image" value={coverUrl ? "Uploaded" : "Not uploaded"} highlight={!coverUrl} />
-                      <ReviewRow label="Gallery Images" value={galleryUrls.length > 0 ? `${galleryUrls.length} uploaded` : "None"} highlight={galleryUrls.length === 0} />
-                      <ReviewRow label="Features" value={features.length > 0 ? `${features.length} added` : "None"} highlight={features.length === 0} />
-                      <ReviewRow label="Pros" value={pros.length > 0 ? `${pros.length} added` : "None"} highlight={pros.length === 0} />
-                      <ReviewRow label="Cons" value={cons.length > 0 ? `${cons.length} added` : "None"} highlight={cons.length === 0} />
-                      <ReviewRow label="FAQs" value={faqs.length > 0 ? `${faqs.length} added` : "None"} highlight={faqs.length === 0} />
-                    </dl>
-                  </div>
-
-                  <CompletionChecklist items={checklistItems} />
-
-                  {aiFilledData && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50/50 to-white p-5"
-                    >
-                      <div className="flex items-center gap-2 mb-3">
-                        <Sparkles className="h-4 w-4 text-blue-600" />
-                        <h3 className="text-sm font-semibold text-foreground">AI Generated Content</h3>
+                  {/* Tool Preview Card */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="rounded-2xl border border-border bg-white shadow-premium-lg overflow-hidden"
+                  >
+                    {/* Preview pill */}
+                    <div className="flex items-center gap-2 px-6 pt-5 pb-0">
+                      <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1">
+                        <Eye className="h-3 w-3 text-blue-600" />
+                        <span className="text-[11px] font-semibold uppercase tracking-wider text-blue-700">Preview</span>
                       </div>
-                      <div className="space-y-3 text-sm">
-                        {aiFilledData.shortDescription && (
+                    </div>
+
+                    {/* ─── Hero Section ─── */}
+                    <div className="px-6 pt-5 pb-6">
+                      <motion.div
+                        initial={{ opacity: 0, x: -12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: 0.2 }}
+                        className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between"
+                      >
+                        <div className="flex items-start gap-4">
+                          <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.25 }}
+                            className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/10 to-indigo-500/10 text-2xl font-bold text-primary border border-blue-100"
+                          >
+                            {logoUrl ? (
+                              <img src={logoUrl} alt="" className="h-full w-full rounded-2xl object-cover" />
+                            ) : (
+                              toolName.charAt(0).toUpperCase() || <Sparkles className="h-6 w-6 text-blue-400" />
+                            )}
+                          </motion.div>
+                          <div className="space-y-2">
+                            <motion.h3
+                              initial={{ opacity: 0, y: -4 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.3, delay: 0.3 }}
+                              className="text-xl sm:text-2xl font-bold text-foreground"
+                            >
+                              {toolName || <span className="italic text-muted-foreground/50">Tool Name</span>}
+                            </motion.h3>
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.3, delay: 0.35 }}
+                              className="flex flex-wrap items-center gap-2"
+                            >
+                              {categoryId && (
+                                <span className="rounded-md bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                                  {categories.find((c) => c.id === categoryId)?.name}
+                                </span>
+                              )}
+                              {pricing && (
+                                <span className={cn(
+                                  "rounded-md px-2.5 py-1 text-xs font-medium",
+                                  pricing === "Free" && "bg-emerald-50 text-emerald-700",
+                                  pricing === "Freemium" && "bg-amber-50 text-amber-700",
+                                  pricing === "Paid" && "bg-violet-50 text-violet-700"
+                                )}>
+                                  {pricing}
+                                </span>
+                              )}
+                            </motion.div>
+                            {parseTags().length > 0 && (
+                              <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.3, delay: 0.4 }}
+                                className="flex flex-wrap gap-1.5 pt-1"
+                              >
+                                {parseTags().map((tag, i) => (
+                                  <span key={i} className="rounded-lg bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                                    {tag}
+                                  </span>
+                                ))}
+                              </motion.div>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    </div>
+
+                    {/* ─── Cover Image ─── */}
+                    {coverUrl && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.98 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, delay: 0.25 }}
+                        className="px-6 pb-6"
+                      >
+                        <div className="overflow-hidden rounded-xl border border-border">
+                          <img
+                            src={coverUrl}
+                            alt="Cover preview"
+                            className="w-full object-cover"
+                            style={{ maxHeight: 320 }}
+                          />
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* ─── Gallery Images ─── */}
+                    {galleryUrls.length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                        className="px-6 pb-6"
+                      >
+                        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+                          Gallery ({galleryUrls.length})
+                        </h4>
+                        <div className="flex gap-3 overflow-x-auto pb-2 snap-x">
+                          {galleryUrls.map((url, i) => (
+                            <img
+                              key={i}
+                              src={url}
+                              alt={`Gallery ${i + 1}`}
+                              className="h-32 w-auto rounded-xl border border-border object-cover snap-start shrink-0"
+                            />
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* ─── About / Description ─── */}
+                    {shortDescription && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.35, delay: 0.35 }}
+                        className="px-6 pb-6"
+                      >
+                        <h4 className="text-sm font-semibold text-foreground mb-2">About</h4>
+                        <p className="text-sm leading-relaxed text-muted-foreground">{shortDescription}</p>
+                        {fullDescription && (
+                          <details className="group mt-2">
+                            <summary className="cursor-pointer text-xs font-medium text-blue-600 hover:text-blue-700 list-none">
+                              <span className="group-open:hidden">Read full description</span>
+                              <span className="hidden group-open:inline">Show less</span>
+                            </summary>
+                            <p className="mt-2 text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
+                              {fullDescription}
+                            </p>
+                          </details>
+                        )}
+                      </motion.div>
+                    )}
+
+                    {/* ─── Features ─── */}
+                    {features.length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.35, delay: 0.4 }}
+                        className="px-6 pb-6"
+                      >
+                        <h4 className="text-sm font-semibold text-foreground mb-3">Features</h4>
+                        <ul className="space-y-2.5">
+                          {features.map((f, i) => (
+                            <motion.li
+                              key={i}
+                              initial={{ opacity: 0, x: -8 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.3, delay: 0.45 + i * 0.05 }}
+                              className="flex items-start gap-3"
+                            >
+                              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+                                <Check className="h-3 w-3" />
+                              </span>
+                              <span className="text-sm text-muted-foreground">{f}</span>
+                            </motion.li>
+                          ))}
+                        </ul>
+                      </motion.div>
+                    )}
+
+                    {/* ─── Pros & Cons ─── */}
+                    {(pros.length > 0 || cons.length > 0) && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.35, delay: 0.5 }}
+                        className="grid gap-6 sm:grid-cols-2 px-6 pb-6"
+                      >
+                        {pros.length > 0 && (
                           <div>
-                            <span className="font-medium text-foreground">Overview: </span>
-                            <span className="text-muted-foreground">{aiFilledData.shortDescription}</span>
+                            <h4 className="text-sm font-semibold text-foreground mb-3">Pros</h4>
+                            <ul className="space-y-2.5">
+                              {pros.map((p, i) => (
+                                <li key={i} className="flex items-start gap-3">
+                                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+                                    <Check className="h-3 w-3" />
+                                  </span>
+                                  <span className="text-sm text-muted-foreground">{p}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                         )}
-                        {aiFilledData.features && aiFilledData.features.length > 0 && (
+                        {cons.length > 0 && (
                           <div>
-                            <span className="font-medium text-foreground">Key Features: </span>
-                            <span className="text-muted-foreground">{aiFilledData.features.join(", ")}</span>
+                            <h4 className="text-sm font-semibold text-foreground mb-3">Cons</h4>
+                            <ul className="space-y-2.5">
+                              {cons.map((c, i) => (
+                                <li key={i} className="flex items-start gap-3">
+                                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700">
+                                    <X className="h-3 w-3" />
+                                  </span>
+                                  <span className="text-sm text-muted-foreground">{c}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                         )}
-                        {aiFilledData.tags && aiFilledData.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5">
-                            {aiFilledData.tags.map((tag, i) => (
-                              <span key={i} className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">{tag}</span>
-                            ))}
-                          </div>
-                        )}
+                      </motion.div>
+                    )}
+
+                    {/* ─── FAQ ─── */}
+                    {faqs.length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.35, delay: 0.55 }}
+                        className="px-6 pb-6"
+                      >
+                        <h4 className="text-sm font-semibold text-foreground mb-3">FAQ</h4>
+                        <div className="space-y-3">
+                          {faqs.map((faq, i) => (
+                            <details
+                              key={i}
+                              className="group rounded-xl border border-border overflow-hidden"
+                            >
+                              <summary className="flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/30 transition-colors list-none">
+                                <span className="flex-1">{faq.question}</span>
+                                <motion.span
+                                  animate={{ rotate: 0 }}
+                                  className="text-muted-foreground shrink-0 transition-transform group-open:rotate-180"
+                                >
+                                  <ChevronDown className="h-4 w-4" />
+                                </motion.span>
+                              </summary>
+                              <div className="border-t border-border px-4 py-3 text-sm text-muted-foreground">
+                                {faq.answer}
+                              </div>
+                            </details>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* ─── Contact Email ─── */}
+                    {contactEmail && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3, delay: 0.6 }}
+                        className="border-t border-border px-6 py-4"
+                      >
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Mail className="h-3.5 w-3.5" />
+                          <span>Contact: <span className="font-medium text-foreground">{contactEmail}</span></span>
+                          <span className="ml-auto text-[11px] text-muted-foreground/60">This will be shown on your tool page.</span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </motion.div>
+
+                  {/* Validation Summary */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: 0.5 }}
+                    className="rounded-xl border border-blue-100 bg-blue-50/50 p-4"
+                  >
+                    <div className="flex items-start gap-3">
+                      <Info className="h-5 w-5 text-blue-600 mt-0.5 shrink-0" />
+                      <div className="space-y-1 text-sm">
+                        <p className="font-medium text-blue-900">Almost there!</p>
+                        <p className="text-blue-700">
+                          Required fields: {!toolName && <span className="font-semibold text-red-600">Tool Name missing, </span>}
+                          {!websiteUrl && <span className="font-semibold text-red-600">Website URL missing, </span>}
+                          {shortDescription.length < 10 && <span className="font-semibold text-red-600">Description too short, </span>}
+                          {!categoryId && <span className="font-semibold text-red-600">Category not selected, </span>}
+                          {toolName && websiteUrl && shortDescription.length >= 10 && categoryId && (
+                            <span className="text-emerald-700 font-medium">All required fields are complete!</span>
+                          )}
+                        </p>
                       </div>
-                    </motion.div>
-                  )}
-                </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
               )}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Sidebar */}
-        <div className="hidden lg:block space-y-4">
-          <CompletionChecklist items={checklistItems} />
-
-          <div className="rounded-2xl border border-border bg-gradient-to-br from-background to-muted/50 p-5 shadow-premium">
-            <h3 className="text-sm font-semibold text-foreground mb-3">Quick Tips</h3>
-            <ul className="space-y-2 text-xs text-muted-foreground">
-              <li className="flex items-start gap-2">
-                <div className="h-1.5 w-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
-                Use the AI Auto Fill to save time on data entry
-              </li>
-              <li className="flex items-start gap-2">
-                <div className="h-1.5 w-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
-                Upload a high-quality logo and cover image for better visibility
-              </li>
-              <li className="flex items-start gap-2">
-                <div className="h-1.5 w-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
-                Add at least 3 features to make your listing comprehensive
-              </li>
-              <li className="flex items-start gap-2">
-                <div className="h-1.5 w-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
-                You can save a draft and return later
-              </li>
-            </ul>
-          </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Navigation */}
@@ -762,17 +968,6 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
         </div>
       </div>
     </form>
-  )
-}
-
-function ReviewRow({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
-  return (
-    <div className="flex items-center justify-between py-1">
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd className={cn("font-medium text-right max-w-[60%] truncate", highlight ? "text-amber-600" : "text-foreground")}>
-        {value}
-      </dd>
-    </div>
   )
 }
 
