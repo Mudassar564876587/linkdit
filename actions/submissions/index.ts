@@ -202,23 +202,39 @@ export async function adminApproveSubmission(id: string) {
   const { data: sub } = await supabase.from("tool_submissions").select("*").eq("id", id).single()
   if (!sub) return { error: "Submission not found." }
 
-  const { error: toolErr } = await supabase.from("tools").insert({
-    name: sub.tool_name,
-    slug: sub.slug || slugify(sub.tool_name),
-    description: sub.description,
-    category_id: sub.category_id!,
-    logo_url: sub.logo_url,
-    website_url: sub.tool_url,
-    pricing: (sub.pricing as "Free" | "Freemium" | "Paid") || "Free",
-    features: Array.isArray(sub.features) ? sub.features : [],
-    pros: Array.isArray(sub.pros) ? sub.pros : [],
-    cons: Array.isArray(sub.cons) ? sub.cons : [],
-    faqs: sub.faqs,
-    screenshots: sub.gallery_images,
-    is_published: true,
-  })
+  const { data: newTool, error: toolErr } = await supabase
+    .from("tools")
+    .insert({
+      name: sub.tool_name,
+      slug: sub.slug || slugify(sub.tool_name),
+      description: sub.description,
+      category_id: sub.category_id!,
+      logo_url: sub.logo_url,
+      cover_image_url: sub.cover_image_url,
+      website_url: sub.tool_url,
+      pricing: (sub.pricing as "Free" | "Freemium" | "Paid") || "Free",
+      features: Array.isArray(sub.features) ? sub.features : [],
+      pros: Array.isArray(sub.pros) ? sub.pros : [],
+      cons: Array.isArray(sub.cons) ? sub.cons : [],
+      faqs: sub.faqs,
+      screenshots: sub.gallery_images,
+      is_published: true,
+    })
+    .select("id")
+    .single()
 
   if (toolErr) return { error: toolErr.message }
+
+  if (Array.isArray(sub.gallery_images) && sub.gallery_images.length > 0) {
+    await supabase.from("tool_screenshots").insert(
+      sub.gallery_images.map((url: string, i: number) => ({
+        tool_id: newTool.id,
+        url,
+        alt: `${sub.tool_name} screenshot ${i + 1}`,
+        sort_order: i,
+      }))
+    )
+  }
 
   await supabase
     .from("tool_submissions")

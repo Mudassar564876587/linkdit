@@ -197,6 +197,18 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
             </div>
           </div>
 
+          {/* Cover Image */}
+          {tool.cover_image_url && (
+            <div className="mt-10">
+              <img
+                src={tool.cover_image_url}
+                alt={`${tool.name} cover`}
+                className="w-full rounded-xl border border-border object-cover shadow-sm"
+                loading="lazy"
+              />
+            </div>
+          )}
+
           {/* Screenshots Gallery */}
           {screenshots.length > 0 && (
             <div className="mt-10">

@@ -48,11 +48,15 @@ export default async function FeaturedTools() {
                 className="group rounded-2xl border border-border bg-background p-5 shadow-soft-sm transition-all duration-200 hover:border-primary/20 hover:shadow-premium sm:p-6"
               >
                 <div className="flex items-start justify-between">
-                  <div
-                    className={`flex h-11 w-11 items-center justify-center rounded-xl ${getAvatarColor(tool.name)} text-base font-bold text-white shadow-sm sm:h-12 sm:w-12 sm:text-lg`}
-                  >
-                    {tool.name[0]}
-                  </div>
+                  {tool.logoUrl ? (
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 shadow-sm sm:h-12 sm:w-12">
+                      <img src={tool.logoUrl} alt="" className="h-full w-full rounded-xl object-cover" loading="lazy" />
+                    </div>
+                  ) : (
+                    <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${getAvatarColor(tool.name)} text-base font-bold text-white shadow-sm sm:h-12 sm:w-12 sm:text-lg`}>
+                      {tool.name[0]}
+                    </div>
+                  )}
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       tool.pricing === "Free"

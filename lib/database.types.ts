@@ -42,6 +42,7 @@ export interface Database {
           description: string
           category_id: string
           logo_url: string | null
+          cover_image_url: string | null
           website_url: string
           pricing: "Free" | "Freemium" | "Paid"
           rating: number
@@ -68,6 +69,7 @@ export interface Database {
           description: string
           category_id: string
           logo_url?: string | null
+          cover_image_url?: string | null
           website_url: string
           pricing: "Free" | "Freemium" | "Paid"
           rating?: number
@@ -93,6 +95,7 @@ export interface Database {
           description?: string
           category_id?: string
           logo_url?: string | null
+          cover_image_url?: string | null
           website_url?: string
           pricing?: "Free" | "Freemium" | "Paid"
           rating?: number
