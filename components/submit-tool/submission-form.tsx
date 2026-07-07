@@ -206,6 +206,7 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
         router.push("/dashboard/my-submissions")
       }, 2000)
     } catch (err) {
+      console.error("handleSubmit: server action threw exception", err)
       setError(err instanceof Error ? err.message : "An unexpected error occurred.")
       setLoading(false)
     }
@@ -214,8 +215,13 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
   async function handleSaveDraft() {
     setError(null)
     const fd = buildFormData()
-    const result = await saveDraft(fd)
-    if (result.error) setError(result.error)
+    try {
+      const result = await saveDraft(fd)
+      if (result.error) setError(result.error)
+    } catch (err) {
+      console.error("handleSaveDraft: server action threw exception", err)
+      setError(err instanceof Error ? err.message : "An unexpected error occurred.")
+    }
   }
 
   if (success) {

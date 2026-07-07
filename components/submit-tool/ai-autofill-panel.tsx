@@ -57,18 +57,23 @@ export default function AiAutofillPanel({ categories, onFill }: AiAutofillPanelP
 
     animateSteps()
 
-    const result = await aiAutofill(url.trim())
+    try {
+      const result = await aiAutofill(url.trim())
+      setLoading(false)
 
-    setLoading(false)
+      if (result.error) {
+        setError(result.error)
+        setCurrentStep(-1)
+        return
+      }
 
-    if (result.error) {
-      setError(result.error)
-      setCurrentStep(-1)
-      return
+      setCurrentStep(ANIMATION_STEPS.length - 1)
+      onFill(result.data)
+    } catch (err) {
+      console.error("handleAutofill: server action threw exception", err)
+      setError(err instanceof Error ? err.message : "An unexpected error occurred.")
+      setLoading(false)
     }
-
-    setCurrentStep(ANIMATION_STEPS.length - 1)
-    onFill(result.data)
   }
 
   return (

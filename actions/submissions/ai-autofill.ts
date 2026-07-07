@@ -5,7 +5,8 @@ import { generateWithAI } from "@/lib/ai/provider"
 export async function aiAutofill(websiteUrl: string) {
   try {
     new URL(websiteUrl)
-  } catch {
+  } catch (e) {
+    console.error("aiAutofill: invalid URL", websiteUrl, e)
     return { error: "Please enter a valid URL." }
   }
 
@@ -182,8 +183,8 @@ async function extractEmail(html: string, baseUrl: string): Promise<string> {
           }
         }
       }
-    } catch {
-      // skip
+    } catch (e) {
+      if (e instanceof Error) console.error("extractEmail: fetch failed for", `${baseUrl}${page}`, e.message)
     }
   }
 

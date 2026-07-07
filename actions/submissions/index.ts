@@ -20,8 +20,9 @@ export async function createSubmission(formData: FormData) {
       supabase = await createServerSupabaseClient()
     } catch (err) {
       console.error("createSubmission: Step 1 (createServerSupabaseClient) error", err)
-      if (err instanceof Error) console.error(err.stack)
-      return { error: "Failed to create database client." }
+      if (err instanceof Error) console.error("Stack:", err.stack)
+      const msg = err instanceof Error ? err.message : String(err)
+      return { error: `createServerSupabaseClient error: ${msg}` }
     }
 
     // ── Step 2: get authenticated user ──
@@ -30,15 +31,16 @@ export async function createSubmission(formData: FormData) {
       const { data: uData, error: authErr } = await supabase.auth.getUser()
       if (authErr) {
         console.error("createSubmission: Step 2 (getUser) auth error", authErr)
-        if (authErr instanceof Error) console.error(authErr.stack)
+        if (authErr instanceof Error) console.error("Stack:", authErr.stack)
         return { error: `Authentication error: ${authErr.message}` }
       }
       if (!uData?.user) return { error: "Not authenticated." }
       user = uData.user
     } catch (err) {
       console.error("createSubmission: Step 2 (getUser) exception", err)
-      if (err instanceof Error) console.error(err.stack)
-      return { error: "Authentication failed unexpectedly." }
+      if (err instanceof Error) console.error("Stack:", err.stack)
+      const msg = err instanceof Error ? err.message : String(err)
+      return { error: `getUser threw: ${msg}` }
     }
 
     // ── Step 3: build raw form data ──
@@ -63,7 +65,7 @@ export async function createSubmission(formData: FormData) {
       }
     } catch (err) {
       console.error("createSubmission: Step 3 (build raw form data) exception", err)
-      if (err instanceof Error) console.error(err.stack)
+      if (err instanceof Error) console.error("Stack:", err.stack)
       return { error: "Failed to read form data." }
     }
 
@@ -78,7 +80,7 @@ export async function createSubmission(formData: FormData) {
       }
     } catch (err) {
       console.error("createSubmission: Step 4 (validation) exception", err)
-      if (err instanceof Error) console.error(err.stack)
+      if (err instanceof Error) console.error("Stack:", err.stack)
       return { error: "Validation failed unexpectedly." }
     }
 
@@ -97,21 +99,23 @@ export async function createSubmission(formData: FormData) {
             .maybeSingle()
           if (slugErr) {
             console.error("createSubmission: Step 5 (slug query) error", slugErr)
-            if (slugErr instanceof Error) console.error(slugErr.stack)
+            if (slugErr instanceof Error) console.error("Stack:", slugErr.stack)
             return { error: `Slug check error: ${slugErr.message}` }
           }
           if (!existing) break
         } catch (err) {
           console.error("createSubmission: Step 5 (slug query) exception", err)
-          if (err instanceof Error) console.error(err.stack)
-          return { error: "Slug check failed unexpectedly." }
+          if (err instanceof Error) console.error("Stack:", err.stack)
+          const msg = err instanceof Error ? err.message : String(err)
+          return { error: `Slug query threw: ${msg}` }
         }
         slug = `${baseSlug}-${counter++}`
       }
     } catch (err) {
       console.error("createSubmission: slug generation outer exception", err)
-      if (err instanceof Error) console.error(err.stack)
-      return { error: "Slug generation failed." }
+      if (err instanceof Error) console.error("Stack:", err.stack)
+      const msg = err instanceof Error ? err.message : String(err)
+      return { error: `Slug generation: ${msg}` }
     }
 
     // ── Step 6: insert into tool_submissions ──
@@ -139,30 +143,31 @@ export async function createSubmission(formData: FormData) {
         status: "pending",
       })
       if (insertErr) {
-        console.error("createSubmission: Step 7 (insert) error", insertErr)
-        if (insertErr instanceof Error) console.error(insertErr.stack)
+        console.error("createSubmission: Step 6 (insert) error", insertErr)
+        if (insertErr instanceof Error) console.error("Stack:", insertErr.stack)
         return { error: `Insert error: ${insertErr.message}` }
       }
     } catch (err) {
-      console.error("createSubmission: Step 7 (insert) exception", err)
-      if (err instanceof Error) console.error(err.stack)
-      return { error: "Database insert failed unexpectedly." }
+      console.error("createSubmission: Step 6 (insert) exception", err)
+      if (err instanceof Error) console.error("Stack:", err.stack)
+      const msg = err instanceof Error ? err.message : String(err)
+      return { error: `Insert threw: ${msg}` }
     }
 
-    // ── Step 8: revalidate ──
+    // ── Step 7: revalidate ──
     try {
       revalidatePath("/dashboard/my-submissions")
     } catch (err) {
-      console.error("createSubmission: Step 8 (revalidate) exception", err)
-      if (err instanceof Error) console.error(err.stack)
+      console.error("createSubmission: Step 7 (revalidate) exception", err)
+      if (err instanceof Error) console.error("Stack:", err.stack)
     }
 
     return { success: true, slug }
   } catch (err) {
     console.error("createSubmission: top-level catch", err)
-    if (err instanceof Error) console.error(err.stack)
+    if (err instanceof Error) console.error("Stack:", err.stack)
     const message = err instanceof Error ? err.message : "An unexpected error occurred while submitting your tool."
-    return { error: message }
+    return { error: `[createSubmission] ${message}` }
   }
 }
 
@@ -242,8 +247,9 @@ export async function saveDraft(formData: FormData) {
     return { success: true }
   } catch (err) {
     console.error("saveDraft: unexpected error", err)
+    if (err instanceof Error) console.error("Stack:", err.stack)
     const message = err instanceof Error ? err.message : "An unexpected error occurred while saving draft."
-    return { error: message }
+    return { error: `[saveDraft] ${message}` }
   }
 }
 
@@ -281,8 +287,9 @@ export async function submitForReview(id: string) {
     return { success: true }
   } catch (err) {
     console.error("submitForReview: unexpected error", err)
+    if (err instanceof Error) console.error("Stack:", err.stack)
     const message = err instanceof Error ? err.message : "An unexpected error occurred."
-    return { error: message }
+    return { error: `[submitForReview] ${message}` }
   }
 }
 
