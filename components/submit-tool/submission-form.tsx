@@ -179,15 +179,21 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
     setError(null)
     setLoading(true)
 
-    const fd = buildFormData()
-    const result = await createSubmission(fd)
+    try {
+      const fd = buildFormData()
+      const result = await createSubmission(fd)
+
+      if (result.error) {
+        setError(result.error)
+      } else {
+        router.push("/dashboard/my-submissions")
+        return
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An unexpected error occurred.")
+    }
 
     setLoading(false)
-    if (result.error) {
-      setError(result.error)
-    } else {
-      router.push("/dashboard/my-submissions")
-    }
   }
 
   async function handleSaveDraft() {

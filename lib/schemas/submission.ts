@@ -12,7 +12,7 @@ export const SubmissionSchema = z.object({
     "URL must start with http:// or https://"
   ),
   shortDescription: z.string().min(10, "Description must be at least 10 characters").max(1000),
-  fullDescription: z.string().min(10, "Full description must be at least 10 characters").optional().default(""),
+  fullDescription: z.string().min(10, "Full description must be at least 10 characters").or(z.literal("")).optional().default(""),
   pricing: z.enum(["Free", "Freemium", "Paid"]),
   categoryId: z.string().uuid("Select a category"),
   tags: z.array(z.string()).max(20, "Maximum 20 tags").default([]),
