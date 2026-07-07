@@ -36,7 +36,7 @@ export async function createSubmission(formData: FormData) {
       contactEmail: formData.get("contactEmail") || user.email,
       logoFile: formData.get("logoFile"),
       coverFile: formData.get("coverFile"),
-      galleryFiles: safeJsonParse(formData.get("galleryFiles"), []),
+      galleryFiles: formData.getAll("galleryFiles"),
     }
 
     const parsed = SubmissionSchema.safeParse(raw)
@@ -48,14 +48,10 @@ export async function createSubmission(formData: FormData) {
 
     const logoUrl = raw.logoFile instanceof File ? await uploadStorage("tool-logos", raw.logoFile, user.id) : null
     const coverUrl = raw.coverFile instanceof File ? await uploadStorage("tool-covers", raw.coverFile, user.id) : null
-    let galleryUrls: string[] = []
-    if (Array.isArray(raw.galleryFiles)) {
-      for (const f of raw.galleryFiles) {
-        if (f instanceof File) {
-          const url = await uploadStorage("tool-galleries", f, user.id)
-          if (url) galleryUrls.push(url)
-        }
-      }
+    const galleryUrls: string[] = []
+    for (const f of parsed.data.galleryFiles) {
+      const url = await uploadStorage("tool-galleries", f, user.id)
+      if (url) galleryUrls.push(url)
     }
 
     const baseSlug = slugify(parsed.data.toolName)

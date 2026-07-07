@@ -112,7 +112,7 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
     fd.set("faqs", JSON.stringify(faqs))
     if (logoFile[0]) fd.set("logoFile", logoFile[0])
     if (coverFile[0]) fd.set("coverFile", coverFile[0])
-    if (galleryFiles.length) fd.set("galleryFiles", JSON.stringify(galleryFiles))
+    for (const f of galleryFiles) fd.append("galleryFiles", f)
     return fd
   }, [toolName, websiteUrl, shortDescription, fullDescription, pricing, categoryId, contactEmail, parseTags, features, pros, cons, faqs, logoFile, coverFile, galleryFiles])
 
