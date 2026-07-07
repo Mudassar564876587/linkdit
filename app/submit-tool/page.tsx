@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import Image from "next/image"
 import { redirect } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import SubmissionForm from "@/components/submit-tool/submission-form"
@@ -32,21 +31,18 @@ export default async function SubmitToolPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Banner */}
-      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 pt-8">
-        <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[650px] xl:h-[700px] overflow-hidden rounded-[24px] shadow-lg">
-          <Image
+      {/* Premium Hero Card */}
+      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
+        <div className="w-full rounded-[24px] shadow-xl bg-gradient-to-br from-primary/5 via-background to-primary/5 ring-1 ring-black/5 overflow-hidden">
+          <img
             src="/images/submit-tool-hero.png"
             alt="Submit your AI tool"
-            fill
-            priority
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1440px"
-            className="object-cover"
+            className="w-full h-auto sm:h-[300px] lg:h-[400px] object-cover sm:object-scale-down"
           />
         </div>
       </div>
 
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-3xl px-4 pt-10 pb-8 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground">Submit an AI Tool</h1>
           <p className="mt-1 text-sm text-muted-foreground">
