@@ -33,7 +33,7 @@ export async function adminDeleteCategory(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("tools").update({ category_id: null as any }).eq("category_id", id)
+  await supabase.from("tools").update({ category_id: null as unknown as undefined }).eq("category_id", id)
   await supabase.from("categories").delete().eq("id", id)
   revalidatePath("/linkdit-studio-8k92/categories")
   return { success: true }

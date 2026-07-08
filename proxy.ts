@@ -17,7 +17,7 @@ function serve404() {
   })
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { user, supabaseResponse } = await updateSession(request)
   const { pathname } = request.nextUrl
 

@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { CheckCircle2, Circle, AlertCircle, Loader2 } from "lucide-react"
+import { CheckCircle2, Circle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export type ChecklistItem = {

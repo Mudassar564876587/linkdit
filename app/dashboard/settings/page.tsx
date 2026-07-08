@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Loader2, AlertTriangle } from "lucide-react"
 import { updatePassword, deleteAccount } from "@/actions/dashboard/settings"
@@ -47,7 +46,6 @@ function PasswordForm() {
 }
 
 function DeleteAccountSection() {
-  const router = useRouter()
   const [confirm, setConfirm] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)

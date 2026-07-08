@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { Clock, ArrowRightLeft } from "lucide-react"
 
@@ -12,16 +12,15 @@ type RecentComparison = {
 }
 
 export default function RecentlyCompared() {
-  const [recent, setRecent] = useState<RecentComparison[]>([])
-
-  useEffect(() => {
+  const [recent] = useState<RecentComparison[]>(() => {
+    if (typeof window === "undefined") return []
     try {
       const stored = localStorage.getItem("recentlyCompared")
-      if (stored) {
-        setRecent(JSON.parse(stored))
-      }
-    } catch {}
-  }, [])
+      return stored ? JSON.parse(stored) : []
+    } catch {
+      return []
+    }
+  })
 
   if (recent.length === 0) return null
 

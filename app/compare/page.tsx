@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Suspense } from "react"
 import Navbar from "@/components/layout/navbar"
 import Footer from "@/components/layout/footer"
+import { SITE } from "@/constants/site"
 import { SectionHeader } from "@/components/ui/section-header"
 import { getFeaturedComparisons, getPopularComparisons } from "@/services/comparisons.service"
 import ComparisonCard from "@/components/comparisons/comparison-card"
@@ -11,12 +12,12 @@ import RecentlyCompared from "./recently-compared"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export const metadata: Metadata = {
-  title: "Compare AI Tools – Side-by-Side Comparison | LinkDit",
+  title: "Compare AI Tools – Side-by-Side Comparison",
   description: "Compare the best AI tools side-by-side. See pricing, features, ratings, and more to make informed decisions.",
-  metadataBase: new URL("https://linkdit.vercel.app"),
+  metadataBase: new URL(SITE.url),
   alternates: { canonical: "/compare" },
   openGraph: {
-    title: "Compare AI Tools – Side-by-Side Comparison | LinkDit",
+    title: "Compare AI Tools – Side-by-Side Comparison",
     description: "Compare the best AI tools side-by-side. See pricing, features, ratings, and more to make informed decisions.",
     url: "/compare",
     siteName: "LinkDit",

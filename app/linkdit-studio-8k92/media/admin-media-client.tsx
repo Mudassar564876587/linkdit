@@ -12,22 +12,20 @@ export default function AdminMediaClient() {
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState("")
   const [images, setImages] = useState<string[]>([])
-  const [loaded, setLoaded] = useState(false)
 
-  async function loadImages() {
+  function loadImages() {
     const supabase = getBrowserClient()
-    const { data } = await supabase.storage.from("media").list("admin")
-    if (data) {
-      const urls = data.map((f) => {
-        const { data: urlData } = supabase.storage.from("media").getPublicUrl(`admin/${f.name}`)
-        return urlData.publicUrl
-      })
-      setImages(urls)
-    }
-    setLoaded(true)
+    supabase.storage.from("media").list("admin").then(({ data }) => {
+      if (data) {
+        setImages(data.map((f) => {
+          const { data: urlData } = supabase.storage.from("media").getPublicUrl(`admin/${f.name}`)
+          return urlData.publicUrl
+        }))
+      }
+    })
   }
 
-  useEffect(() => { if (!loaded) loadImages() }, [])
+  useEffect(() => { loadImages() }, [])
 
   const filtered = images.filter((url) => !search || url.toLowerCase().includes(search.toLowerCase()))
 

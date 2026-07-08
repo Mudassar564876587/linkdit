@@ -4,7 +4,9 @@ import { useRouter } from "next/navigation"
 import { Trash2, Download } from "lucide-react"
 import { adminDeleteSubscriber, adminExportSubscribersCSV } from "@/actions/admin/newsletter"
 
-export default function AdminNewsletterClient({ subscribers }: { subscribers: any[] }) {
+type Subscriber = { id: string; email: string; subscribed: boolean; subscribed_at: string | null }
+
+export default function AdminNewsletterClient({ subscribers }: { subscribers: Subscriber[] }) {
   const router = useRouter()
   const active = subscribers.filter((s) => s.subscribed)
 

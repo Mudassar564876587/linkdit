@@ -545,7 +545,7 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
                       <span className="text-xs font-medium text-muted-foreground">Google Search Preview</span>
                     </div>
                     <div className="space-y-1.5">
-                      <p className="text-xs text-green-700 truncate">{websiteUrl || "https://linkdit.vercel.app/tools/your-tool-slug"}</p>
+                      <p className="text-xs text-green-700 truncate">{websiteUrl || "your-tool-slug"}</p>
                       <p className="text-lg text-blue-700 font-medium leading-tight cursor-pointer hover:underline">
                         {toolName || "Your Tool Name"} – AI Tool Review &amp; Alternatives
                       </p>

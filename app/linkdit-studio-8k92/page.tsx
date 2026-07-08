@@ -8,7 +8,6 @@ export default async function AdminDashboard() {
   const [
     { count: totalUsers },
     { count: totalTools },
-    { count: publishedTools },
     { count: pendingSubmissions },
     { count: totalCategories },
     { count: totalReviews },
@@ -18,7 +17,6 @@ export default async function AdminDashboard() {
   ] = await Promise.all([
     supabase.from("users").select("*", { count: "exact", head: true }),
     supabase.from("tools").select("*", { count: "exact", head: true }),
-    supabase.from("tools").select("*", { count: "exact", head: true }).eq("is_published", true),
     supabase.from("tool_submissions").select("*", { count: "exact", head: true }).eq("submission_status", "submitted"),
     supabase.from("categories").select("*", { count: "exact", head: true }),
     supabase.from("reviews").select("*", { count: "exact", head: true }),

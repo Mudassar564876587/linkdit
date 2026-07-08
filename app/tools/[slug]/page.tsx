@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { SITE } from "@/constants/site"
 import RatingStars from "@/components/tools/rating-stars"
 import BookmarkButton from "@/components/tools/bookmark-button"
 import ReviewsList from "./reviews-list"
@@ -20,13 +21,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!tool) return { title: "Tool not found" }
 
-  const title = tool.seo_title || `${tool.name} – Review, Pricing & Features | LinkDit`
+  const title = tool.seo_title || `${tool.name} – Review, Pricing & Features`
   const description = tool.seo_description || tool.description
 
   return {
     title,
     description,
-    metadataBase: new URL("https://linkdit.vercel.app"),
+    metadataBase: new URL(SITE.url),
     alternates: { canonical: `/tools/${slug}` },
     openGraph: {
       title,
@@ -64,7 +65,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
     .select("tags(name, slug)")
     .eq("tool_id", tool.id)
 
-  const tags = (tagsData ?? []).map((tt: any) => tt.tags).filter(Boolean)
+  const tags = (tagsData ?? []).map((tt) => tt.tags).filter(Boolean)
 
   const { data: reviews } = await supabase
     .from("reviews")
@@ -112,7 +113,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
     "@type": "SoftwareApplication",
     name: tool.name,
     description: tool.description,
-    url: `https://linkdit.vercel.app/tools/${tool.slug}`,
+    url: `${SITE.url}/tools/${tool.slug}`,
     applicationCategory: tool.categories?.name || "AI Tool",
     operatingSystem: "Web",
     offers: {
@@ -214,8 +215,8 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
             <div className="mt-10">
               <h2 className="text-xl font-semibold text-foreground">Screenshots</h2>
               <div className="mt-4 flex gap-4 overflow-x-auto pb-4 snap-x" role="region" aria-label="Tool screenshots">
-                {screenshots.map((s: any, i: number) => (
-                  <figure key={s.id || i} className="snap-start shrink-0">
+                {screenshots.map((s, i: number) => (
+                  <figure key={i} className="snap-start shrink-0">
                     <img
                       src={s.url}
                       alt={s.alt || `${tool.name} screenshot ${i + 1}`}
@@ -300,7 +301,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
             <div className="mt-10">
               <h2 className="text-xl font-semibold text-foreground">Tags</h2>
               <div className="mt-3 flex flex-wrap gap-2" role="list" aria-label="Tool tags">
-                {tags.map((t: any) => (
+                {tags.map((t) => (
                   <span
                     key={t.slug}
                     className="rounded-lg bg-muted px-3 py-1 text-xs font-medium text-muted-foreground"
@@ -317,7 +318,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
             <div className="mt-10">
               <h2 className="text-xl font-semibold text-foreground">FAQ</h2>
               <div className="mt-4 space-y-4">
-                {faqs.map((faq: any, i: number) => (
+                {faqs.map((faq: { question: string; answer: string }, i: number) => (
                   <details key={i} className="group rounded-xl border border-border">
                     <summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-medium text-foreground">
                       {faq.question}
@@ -341,7 +342,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
               <ReviewSection
                 toolId={tool.id}
                 isAuthenticated={!!user}
-                existingReview={userReview as any}
+                existingReview={userReview}
               />
             </div>
           </div>

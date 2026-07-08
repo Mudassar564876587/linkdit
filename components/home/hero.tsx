@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Search, Sparkles, ArrowUpRight, LayoutGrid, BookOpen, Mail, RefreshCw } from "lucide-react"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 
@@ -117,20 +118,20 @@ export default async function Hero() {
             </p>
 
             <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row lg:justify-start">
-              <a
+              <Link
                 href="/tools"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg shadow-blue-500/20 transition-all duration-200 hover:bg-primary/90 hover:shadow-blue-500/25 active:scale-[0.98] sm:px-8 sm:text-base"
               >
                 <Sparkles className="h-4 w-4" />
                 Explore AI Tools
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/articles"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-input bg-background px-6 text-sm font-medium text-foreground shadow-soft-sm transition-all duration-200 hover:bg-accent hover:text-accent-foreground active:scale-[0.98] sm:px-8 sm:text-base"
               >
                 <BookOpen className="h-4 w-4" />
                 Read Articles
-              </a>
+              </Link>
             </div>
 
             <div className="mx-auto mt-8 max-w-xl lg:mx-0">
@@ -164,28 +165,6 @@ export default async function Hero() {
 
             <div className="mt-8 sm:mt-10 lg:hidden">
               {heroCardContent}
-            </div>
-
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:grid-cols-4 sm:gap-4 lg:mt-12">
-              {stats.map((stat) => {
-                const Icon = stat.icon
-                return (
-                  <div
-                    key={stat.label}
-                    className="rounded-xl bg-white/70 border border-border/60 p-3.5 text-center shadow-soft-sm backdrop-blur-sm sm:p-4 lg:text-left"
-                  >
-                    <div className="mx-auto mb-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-primary/5 sm:h-9 sm:w-9 lg:mx-0">
-                      <Icon className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
-                    </div>
-                    <div className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-                      {stat.value}
-                    </div>
-                    <div className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
-                      {stat.label}
-                    </div>
-                  </div>
-                )
-              })}
             </div>
           </div>
 

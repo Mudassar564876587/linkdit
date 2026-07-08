@@ -9,7 +9,7 @@ async function isAdmin(userId: string): Promise<boolean> {
   return data?.role === "admin"
 }
 
-export async function adminUpdateSetting(key: string, value: any) {
+export async function adminUpdateSetting(key: string, value: unknown) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }

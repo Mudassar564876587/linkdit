@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import type { Resource } from "@/types/resource"
 

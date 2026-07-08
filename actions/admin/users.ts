@@ -33,7 +33,7 @@ export async function adminBanUser(id: string, banned: boolean) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   // Soft ban: set role to "banned" if banning, "user" if unbanning
-  await supabase.from("users").update({ role: banned ? "banned" as any : "user" as const }).eq("id", id)
+  await supabase.from("users").update({ role: banned ? "banned" : "user" } as any).eq("id", id)
   revalidatePath("/linkdit-studio-8k92/users")
   return { success: true }
 }

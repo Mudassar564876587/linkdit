@@ -4,6 +4,7 @@ import Link from "next/link"
 import Navbar from "@/components/layout/navbar"
 import Footer from "@/components/layout/footer"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { SITE } from "@/constants/site"
 import { Eye, ExternalLink, Check, X, ArrowRightLeft, Star, Clock } from "lucide-react"
 import ComparisonTable from "@/components/comparisons/comparison-table"
 import SimilarComparisons from "./similar-comparisons"
@@ -30,7 +31,7 @@ export async function generateMetadata({
   const toolBName = comparison.tool_b?.name || "Tool B"
   const title =
     comparison.seo_title ||
-    `${toolAName} vs ${toolBName} – Side-by-Side Comparison | LinkDit`
+    `${toolAName} vs ${toolBName} – Side-by-Side Comparison`
   const description =
     comparison.seo_description ||
     comparison.description ||
@@ -43,7 +44,7 @@ export async function generateMetadata({
   return {
     title,
     description,
-    metadataBase: new URL("https://linkdit.vercel.app"),
+    metadataBase: new URL(SITE.url),
     alternates: { canonical: `/compare/${slug}` },
     openGraph: {
       title,
@@ -80,7 +81,7 @@ export default async function ComparisonDetailPage({
 
   if (error || !comparison) notFound()
 
-  const mapTool = (t: any) => ({
+  const mapTool = (t: NonNullable<typeof comparison>["tool_a"]) => ({
     id: t.id,
     name: t.name,
     slug: t.slug,
@@ -112,7 +113,7 @@ export default async function ComparisonDetailPage({
     "@type": "Article",
     headline: comparison.title || `${toolA.name} vs ${toolB.name}`,
     description: comparison.description || `Compare ${toolA.name} vs ${toolB.name}: pricing, features, ratings, and more.`,
-    url: `https://linkdit.vercel.app/compare/${comparison.slug}`,
+    url: `${SITE.url}/compare/${comparison.slug}`,
     datePublished: comparison.created_at,
     dateModified: comparison.updated_at,
     author: { "@type": "Organization", name: "LinkDit" },
@@ -122,7 +123,7 @@ export default async function ComparisonDetailPage({
     ],
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://linkdit.vercel.app/compare/${comparison.slug}`,
+      "@id": `${SITE.url}/compare/${comparison.slug}`,
     },
   }
 

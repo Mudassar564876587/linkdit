@@ -5,10 +5,10 @@ import { createServerSupabaseClient } from "@/lib/supabase/server"
 import SubmissionForm from "@/components/submit-tool/submission-form"
 
 export const metadata: Metadata = {
-  title: "Submit an AI Tool | LinkDit",
+  title: "Submit an AI Tool",
   description: "Submit your AI tool to be listed on LinkDit's curated directory of AI tools.",
   openGraph: {
-    title: "Submit an AI Tool | LinkDit",
+    title: "Submit an AI Tool",
     description: "Get your AI tool featured on LinkDit's growing directory. Reach thousands of users looking for the best AI solutions.",
     type: "website",
     siteName: "LinkDit",

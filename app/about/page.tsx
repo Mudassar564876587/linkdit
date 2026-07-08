@@ -1,11 +1,25 @@
 import type { Metadata } from "next"
 import Navbar from "@/components/layout/navbar"
 import Footer from "@/components/layout/footer"
+import { SITE } from "@/constants/site"
 import { SectionHeader } from "@/components/ui/section-header"
 
 export const metadata: Metadata = {
-  title: "About | LinkDit",
+  title: "About",
   description: "Learn about LinkDit — your destination for discovering, comparing and mastering AI tools.",
+  openGraph: {
+    title: "About | LinkDit",
+    description: "Learn about LinkDit — your destination for discovering, comparing and mastering AI tools.",
+    url: "/about",
+    siteName: SITE.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About | LinkDit",
+    description: "Learn about LinkDit — your destination for discovering, comparing and mastering AI tools.",
+  },
+  alternates: { canonical: "/about" },
 }
 
 export default function AboutPage() {

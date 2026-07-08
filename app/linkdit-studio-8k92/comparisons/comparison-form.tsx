@@ -16,7 +16,27 @@ type Tool = {
 
 type Props = {
   categories: { id: string; name: string }[]
-  initial?: any
+  initial?: {
+    id: string
+    title?: string | null
+    description?: string | null
+    tool_a?: Tool | null
+    tool_b?: Tool | null
+    pros_a?: string[] | null
+    pros_b?: string[] | null
+    cons_a?: string[] | null
+    cons_b?: string[] | null
+    features_comparison?: Record<string, unknown>[] | null
+    pricing_comparison?: Record<string, unknown>[] | null
+    ratings_comparison?: Record<string, unknown>[] | null
+    tool_a_notes?: string | null
+    tool_b_notes?: string | null
+    category_id?: string | null
+    seo_title?: string | null
+    seo_description?: string | null
+    is_published?: boolean | null
+    is_featured?: boolean | null
+  }
 }
 
 export default function ComparisonForm({ categories, initial }: Props) {
@@ -39,9 +59,9 @@ export default function ComparisonForm({ categories, initial }: Props) {
   const [consA, setConsA] = useState<string[]>(initial?.cons_a ?? [])
   const [consB, setConsB] = useState<string[]>(initial?.cons_b ?? [])
 
-  const [features, setFeatures] = useState<any[]>(initial?.features_comparison ?? [])
-  const [pricing, setPricing] = useState<any[]>(initial?.pricing_comparison ?? [])
-  const [ratings, setRatings] = useState<any[]>(initial?.ratings_comparison ?? [])
+  const [features, setFeatures] = useState<Record<string, unknown>[]>(initial?.features_comparison ?? [])
+  const [pricing, setPricing] = useState<Record<string, unknown>[]>(initial?.pricing_comparison ?? [])
+  const [ratings, setRatings] = useState<Record<string, unknown>[]>(initial?.ratings_comparison ?? [])
 
   const searchTool = useCallback(async (query: string, setResults: (r: Tool[]) => void, setSearching: (s: boolean) => void) => {
     if (!query || query.length < 2) {
@@ -101,16 +121,16 @@ export default function ComparisonForm({ categories, initial }: Props) {
     setList(list.filter((_, i) => i !== index))
   }
 
-  function addJsonItem(list: any[], setList: (v: any[]) => void, template: Record<string, any>) {
+  function addJsonItem(list: Record<string, unknown>[], setList: (v: Record<string, unknown>[]) => void, template: Record<string, unknown>) {
     setList([...list, { ...template }])
   }
 
-  function updateJsonItem(list: any[], setList: (v: any[]) => void, index: number, key: string, value: any) {
+  function updateJsonItem(list: Record<string, unknown>[], setList: (v: Record<string, unknown>[]) => void, index: number, key: string, value: unknown) {
     const updated = list.map((item, i) => (i === index ? { ...item, [key]: value } : item))
     setList(updated)
   }
 
-  function removeJsonItem(list: any[], setList: (v: any[]) => void, index: number) {
+  function removeJsonItem(list: Record<string, unknown>[], setList: (v: Record<string, unknown>[]) => void, index: number) {
     setList(list.filter((_, i) => i !== index))
   }
 
@@ -127,7 +147,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
         <input
           id="title"
           name="title"
-          defaultValue={initial?.title}
+          defaultValue={initial?.title ?? ""}
           required
           className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           placeholder="e.g. ChatGPT vs Claude"
@@ -141,7 +161,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
         <textarea
           id="description"
           name="description"
-          defaultValue={initial?.description}
+          defaultValue={initial?.description ?? ""}
           rows={3}
           className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
           placeholder="Brief description of this comparison"
@@ -209,7 +229,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
             <label className="text-xs text-muted-foreground">Notes about Tool A</label>
             <textarea
               name="toolANotes"
-              defaultValue={initial?.tool_a_notes}
+              defaultValue={initial?.tool_a_notes ?? ""}
               rows={2}
               className="w-full rounded-lg border border-input bg-background px-3 py-2 text-xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
             />
@@ -276,7 +296,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
             <label className="text-xs text-muted-foreground">Notes about Tool B</label>
             <textarea
               name="toolBNotes"
-              defaultValue={initial?.tool_b_notes}
+              defaultValue={initial?.tool_b_notes ?? ""}
               rows={2}
               className="w-full rounded-lg border border-input bg-background px-3 py-2 text-xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
             />
@@ -292,7 +312,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
           <select
             id="categoryId"
             name="categoryId"
-            defaultValue={initial?.category_id}
+            defaultValue={initial?.category_id ?? ""}
             className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           >
             <option value="">None</option>
@@ -441,14 +461,14 @@ export default function ComparisonForm({ categories, initial }: Props) {
                   <tr key={i} className="border-b border-border">
                     <td className="px-2 py-1">
                       <input
-                        value={f.name}
+                        value={f.name as string}
                         onChange={(e) => updateJsonItem(features, setFeatures, i, "name", e.target.value)}
                         className="h-8 w-full rounded border border-input bg-background px-2 text-xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       />
                     </td>
                     <td className="px-2 py-1">
                       <input
-                        value={f.toolAValue}
+                        value={f.toolAValue as string}
                         onChange={(e) => updateJsonItem(features, setFeatures, i, "toolAValue", e.target.value)}
                         className="h-8 w-full rounded border border-input bg-background px-2 text-xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                         placeholder="Value for Tool A"
@@ -456,7 +476,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
                     </td>
                     <td className="px-2 py-1">
                       <input
-                        value={f.toolBValue}
+                        value={f.toolBValue as string}
                         onChange={(e) => updateJsonItem(features, setFeatures, i, "toolBValue", e.target.value)}
                         className="h-8 w-full rounded border border-input bg-background px-2 text-xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                         placeholder="Value for Tool B"
@@ -503,7 +523,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
                   <tr key={i} className="border-b border-border">
                     <td className="px-2 py-1">
                       <input
-                        value={p.aspect}
+                        value={p.aspect as string}
                         onChange={(e) => updateJsonItem(pricing, setPricing, i, "aspect", e.target.value)}
                         className="h-8 w-full rounded border border-input bg-background px-2 text-xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                         placeholder="e.g. Monthly"
@@ -511,14 +531,14 @@ export default function ComparisonForm({ categories, initial }: Props) {
                     </td>
                     <td className="px-2 py-1">
                       <input
-                        value={p.toolAValue}
+                        value={p.toolAValue as string}
                         onChange={(e) => updateJsonItem(pricing, setPricing, i, "toolAValue", e.target.value)}
                         className="h-8 w-full rounded border border-input bg-background px-2 text-xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       />
                     </td>
                     <td className="px-2 py-1">
                       <input
-                        value={p.toolBValue}
+                        value={p.toolBValue as string}
                         onChange={(e) => updateJsonItem(pricing, setPricing, i, "toolBValue", e.target.value)}
                         className="h-8 w-full rounded border border-input bg-background px-2 text-xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       />
@@ -564,7 +584,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
                   <tr key={i} className="border-b border-border">
                     <td className="px-2 py-1">
                       <input
-                        value={r.aspect}
+                        value={r.aspect as string}
                         onChange={(e) => updateJsonItem(ratings, setRatings, i, "aspect", e.target.value)}
                         className="h-8 w-full rounded border border-input bg-background px-2 text-xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                         placeholder="e.g. Ease of Use"
@@ -576,7 +596,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
                         step="0.1"
                         min="0"
                         max="5"
-                        value={r.toolARating}
+                        value={r.toolARating as string}
                         onChange={(e) => updateJsonItem(ratings, setRatings, i, "toolARating", parseFloat(e.target.value) || 0)}
                         className="h-8 w-20 rounded border border-input bg-background px-2 text-xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       />
@@ -587,7 +607,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
                         step="0.1"
                         min="0"
                         max="5"
-                        value={r.toolBRating}
+                        value={r.toolBRating as string}
                         onChange={(e) => updateJsonItem(ratings, setRatings, i, "toolBRating", parseFloat(e.target.value) || 0)}
                         className="h-8 w-20 rounded border border-input bg-background px-2 text-xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       />
@@ -613,7 +633,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
           <input
             id="seoTitle"
             name="seoTitle"
-            defaultValue={initial?.seo_title}
+            defaultValue={initial?.seo_title ?? ""}
             className="h-9 w-full rounded-lg border border-input bg-background px-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
@@ -622,7 +642,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
           <textarea
             id="seoDescription"
             name="seoDescription"
-            defaultValue={initial?.seo_description}
+            defaultValue={initial?.seo_description ?? ""}
             rows={2}
             className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
           />
@@ -636,7 +656,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
             type="checkbox"
             name="published"
             value="true"
-            defaultChecked={initial?.is_published}
+            defaultChecked={initial?.is_published ?? undefined}
             className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
           />
           Publish
@@ -646,7 +666,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
             type="checkbox"
             name="featured"
             value="true"
-            defaultChecked={initial?.is_featured}
+            defaultChecked={initial?.is_featured ?? undefined}
             className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
           />
           Featured

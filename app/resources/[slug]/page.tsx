@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { SITE } from "@/constants/site"
 import { ExternalLink, Download, ChevronLeft, Check, Star } from "lucide-react"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -16,13 +17,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!resource) return { title: "Resource not found" }
 
-  const title = resource.seo_title || `${resource.name} | LinkDit Resources`
+  const title = resource.seo_title || `${resource.name} Resources`
   const description = resource.seo_description || resource.description || ""
 
   return {
     title,
     description,
-    metadataBase: new URL("https://linkdit.vercel.app"),
+    metadataBase: new URL(SITE.url),
     alternates: { canonical: `/resources/${slug}` },
     openGraph: {
       title,
@@ -55,12 +56,12 @@ export default async function ResourceDetailPage({ params }: { params: Promise<{
 
   if (error || !resource) notFound()
 
-  const res = resource as any
+  const res = resource
   const { data: related } = await supabase
     .from("resources")
     .select("id, name, slug, description, cover_image_url, pricing, featured, categories(name)")
     .eq("is_published", true)
-    .eq("category_id", res.category_id)
+    .eq("category_id", res.category_id ?? "")
     .neq("id", res.id)
     .order("created_at", { ascending: false })
     .limit(3)
@@ -73,7 +74,7 @@ export default async function ResourceDetailPage({ params }: { params: Promise<{
     "@type": "CreativeWork",
     name: res.name,
     description: res.description,
-    url: `https://linkdit.vercel.app/resources/${slug}`,
+    url: `${SITE.url}/resources/${slug}`,
     image: res.cover_image_url,
     offers: res.pricing === "Free" ? {
       "@type": "Offer",
@@ -187,7 +188,7 @@ export default async function ResourceDetailPage({ params }: { params: Promise<{
             <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-foreground">Related Resources</h2>
               <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {related.map((r: any) => (
+                {related.map((r) => (
                   <Link key={r.id} href={`/resources/${r.slug}`}
                     className="group flex flex-col overflow-hidden rounded-xl border border-border bg-background shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
                     {r.cover_image_url ? (

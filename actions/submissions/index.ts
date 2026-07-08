@@ -46,9 +46,10 @@ export async function createSubmission(formData: FormData) {
     // ── Step 3: build raw form data ──
     let raw: Record<string, unknown>
     try {
+      const rawWebsiteUrl = formData.get("websiteUrl") as string | null
       raw = {
         toolName: formData.get("toolName"),
-        websiteUrl: formData.get("websiteUrl"),
+        websiteUrl: rawWebsiteUrl && !rawWebsiteUrl.startsWith("http://") && !rawWebsiteUrl.startsWith("https://") ? `https://${rawWebsiteUrl}` : rawWebsiteUrl,
         shortDescription: formData.get("shortDescription"),
         fullDescription: formData.get("fullDescription") || "",
         pricing: formData.get("pricing"),
@@ -185,61 +186,61 @@ export async function saveDraft(formData: FormData) {
       submission_status: "draft" as const,
     }
 
-    const toolName = formData.get("toolName")
-    const websiteUrl = formData.get("websiteUrl")
-    const desc = formData.get("shortDescription")
-    const fullDesc = formData.get("fullDescription")
-    const pricing = formData.get("pricing")
-    const categoryId = formData.get("categoryId")
-    const tags = formData.get("tags")
-    const features = formData.get("features")
-    const pros = formData.get("pros")
-    const cons = formData.get("cons")
-    const faqs = formData.get("faqs")
-    const contactEmail = formData.get("contactEmail")
-    const logoUrl = formData.get("logoUrl")
-    const coverUrl = formData.get("coverUrl")
-    const galleryUrls = formData.get("galleryUrls")
+    const toolName = formData.get("toolName") as string | null
+    const websiteUrl = formData.get("websiteUrl") as string | null
+    const desc = formData.get("shortDescription") as string | null
+    const fullDesc = formData.get("fullDescription") as string | null
+    const pricing = formData.get("pricing") as string | null
+    const categoryId = formData.get("categoryId") as string | null
+    const tags = formData.get("tags") as string | null
+    const features = formData.get("features") as string | null
+    const pros = formData.get("pros") as string | null
+    const cons = formData.get("cons") as string | null
+    const faqs = formData.get("faqs") as string | null
+    const contactEmail = formData.get("contactEmail") as string | null
+    const logoUrl = formData.get("logoUrl") as string | null
+    const coverUrl = formData.get("coverUrl") as string | null
+    const galleryUrls = formData.get("galleryUrls") as string | null
 
     if (submissionId) {
-      const updates: any = { ...base }
-      if (toolName) updates.tool_name = toolName
-      if (websiteUrl) updates.tool_url = websiteUrl
-      if (desc) updates.description = desc
-      if (fullDesc) updates.full_description = fullDesc
-      if (pricing) updates.pricing = pricing
-      if (categoryId) updates.category_id = categoryId
-      if (tags) updates.tags = safeJsonParse(tags, [])
-      if (features) updates.features = safeJsonParse(features, [])
-      if (pros) updates.pros = safeJsonParse(pros, [])
-      if (cons) updates.cons = safeJsonParse(cons, [])
-      if (faqs) updates.faqs = safeJsonParse(faqs, [])
-      if (contactEmail) updates.contact_email = contactEmail
-      if (logoUrl) updates.logo_url = logoUrl
-      if (coverUrl) updates.cover_image_url = coverUrl
-      if (galleryUrls) updates.gallery_images = safeJsonParse(galleryUrls, [])
-
-      const { error } = await supabase.from("tool_submissions").update(updates).eq("id", submissionId).eq("user_id", user.id)
+      const { error } = await supabase.from("tool_submissions").update({
+        ...base,
+        ...(toolName ? { tool_name: toolName } : {}),
+        ...(websiteUrl ? { tool_url: websiteUrl } : {}),
+        ...(desc ? { description: desc } : {}),
+        ...(fullDesc ? { full_description: fullDesc } : {}),
+        ...(pricing ? { pricing } : {}),
+        ...(categoryId ? { category_id: categoryId } : {}),
+        ...(tags ? { tags: safeJsonParse(tags, []) } : {}),
+        ...(features ? { features: safeJsonParse(features, []) } : {}),
+        ...(pros ? { pros: safeJsonParse(pros, []) } : {}),
+        ...(cons ? { cons: safeJsonParse(cons, []) } : {}),
+        ...(faqs ? { faqs: safeJsonParse(faqs, []) } : {}),
+        ...(contactEmail ? { contact_email: contactEmail } : {}),
+        ...(logoUrl ? { logo_url: logoUrl } : {}),
+        ...(coverUrl ? { cover_image_url: coverUrl } : {}),
+        ...(galleryUrls ? { gallery_images: safeJsonParse(galleryUrls, []) } : {}),
+      }).eq("id", submissionId).eq("user_id", user.id)
       if (error) return { error: error.message }
     } else {
-      const insert: any = { ...base }
-      if (toolName) insert.tool_name = toolName
-      if (websiteUrl) insert.tool_url = websiteUrl
-      if (desc) insert.description = desc
-      if (fullDesc) insert.full_description = fullDesc
-      if (pricing) insert.pricing = pricing
-      if (categoryId) insert.category_id = categoryId
-      if (tags) insert.tags = safeJsonParse(tags, [])
-      if (features) insert.features = safeJsonParse(features, [])
-      if (pros) insert.pros = safeJsonParse(pros, [])
-      if (cons) insert.cons = safeJsonParse(cons, [])
-      if (faqs) insert.faqs = safeJsonParse(faqs, [])
-      if (contactEmail) insert.contact_email = contactEmail
-      if (logoUrl) insert.logo_url = logoUrl
-      if (coverUrl) insert.cover_image_url = coverUrl
-      if (galleryUrls) insert.gallery_images = safeJsonParse(galleryUrls, [])
-
-      const { error } = await supabase.from("tool_submissions").insert(insert)
+      const { error } = await supabase.from("tool_submissions").insert({
+        ...base,
+        tool_name: toolName || "",
+        tool_url: websiteUrl || "",
+        description: desc || "",
+        ...(fullDesc ? { full_description: fullDesc } : {}),
+        ...(pricing ? { pricing } : {}),
+        ...(categoryId ? { category_id: categoryId } : {}),
+        ...(tags ? { tags: safeJsonParse(tags, []) } : {}),
+        ...(features ? { features: safeJsonParse(features, []) } : {}),
+        ...(pros ? { pros: safeJsonParse(pros, []) } : {}),
+        ...(cons ? { cons: safeJsonParse(cons, []) } : {}),
+        ...(faqs ? { faqs: safeJsonParse(faqs, []) } : {}),
+        ...(contactEmail ? { contact_email: contactEmail } : {}),
+        ...(logoUrl ? { logo_url: logoUrl } : {}),
+        ...(coverUrl ? { cover_image_url: coverUrl } : {}),
+        ...(galleryUrls ? { gallery_images: safeJsonParse(galleryUrls, []) } : {}),
+      })
       if (error) return { error: error.message }
     }
 
@@ -345,7 +346,7 @@ export async function adminApproveSubmission(id: string) {
   for (const raw of subTags) {
     const name = (typeof raw === "string" ? raw : "").trim()
     if (!name) continue
-    let { data: existing } = await supabase.from("tags").select("id").eq("name", name).maybeSingle()
+    const { data: existing } = await supabase.from("tags").select("id").eq("name", name).maybeSingle()
     let tagId = existing?.id
     if (!tagId) {
       const { data: inserted } = await supabase.from("tags").insert({ name, slug: slugify(name) }).select("id").single()
@@ -474,7 +475,7 @@ export async function adminUnpublishTool(toolId: string) {
 
 // ─── Helpers ───
 
-function safeJsonParse(val: any, fallback: any) {
+function safeJsonParse(val: unknown, fallback: unknown) {
   if (!val) return fallback
   if (typeof val === "string") {
     try { return JSON.parse(val) } catch { return fallback }

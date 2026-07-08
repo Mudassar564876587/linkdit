@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const redirectTo = searchParams.get("redirectTo") ?? "/"
 
   if (code) {
-    let supabaseResponse = NextResponse.redirect(`${origin}${redirectTo}`)
+    const supabaseResponse = NextResponse.redirect(`${origin}${redirectTo}`)
 
     const supabase = createServerClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,

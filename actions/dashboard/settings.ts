@@ -2,7 +2,6 @@
 
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
-import { z } from "zod"
 
 export async function updatePassword(formData: FormData) {
   const currentPassword = formData.get("currentPassword") as string
@@ -46,10 +45,10 @@ export async function unlinkProvider(provider: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: "Not authenticated." }
 
-  const { error } = await supabase.auth.unlinkIdentity({
-    provider,
-    userId: user.id,
-  } as any)
+  const identity = user.identities?.find((i) => i.provider === provider)
+  if (!identity) return { error: "Provider not linked." }
+
+  const { error } = await supabase.auth.unlinkIdentity(identity)
 
   if (error) return { error: error.message }
 

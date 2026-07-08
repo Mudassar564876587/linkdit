@@ -14,10 +14,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!category) return { title: "Category not found" }
 
   return {
-    title: `${category.name} Resources | LinkDit`,
+    title: `${category.name} Resources`,
     description: category.description || `Browse resources in the ${category.name} category.`,
     openGraph: {
-      title: `${category.name} Resources | LinkDit`,
+      title: `${category.name} Resources`,
       description: category.description || `Browse resources in the ${category.name} category.`,
     },
   }

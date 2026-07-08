@@ -1,14 +1,15 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
-import { FileText, Send, CheckCircle, XCircle, Clock } from "lucide-react"
+import { FileText, Send, CheckCircle, XCircle, Clock, type LucideProps } from "lucide-react"
 import Link from "next/link"
+import type React from "react"
 
 export const metadata: Metadata = {
   title: "My Submissions | LinkDit",
 }
 
-const statusConfig: Record<string, { label: string; color: string; icon: any }> = {
+const statusConfig: Record<string, { label: string; color: string; icon: React.ComponentType<LucideProps> }> = {
   draft: { label: "Draft", color: "bg-gray-100 text-gray-700", icon: FileText },
   submitted: { label: "Submitted", color: "bg-blue-100 text-blue-700", icon: Send },
   pending_review: { label: "Pending Review", color: "bg-amber-100 text-amber-700", icon: Clock },

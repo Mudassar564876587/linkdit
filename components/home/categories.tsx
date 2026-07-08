@@ -2,7 +2,7 @@ import Link from "next/link"
 import { SectionHeader } from "@/components/ui/section-header"
 import { CategoryCardSkeleton } from "@/components/ui/skeleton"
 import { getCategories } from "@/services/categories.service"
-import { getCategoryIcon } from "@/lib/utils"
+
 import {
   PenLine,
   Image,

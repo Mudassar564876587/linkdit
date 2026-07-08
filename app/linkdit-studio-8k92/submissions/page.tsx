@@ -2,13 +2,14 @@ import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import Link from "next/link"
-import { Clock, CheckCircle, XCircle, FileText } from "lucide-react"
+import { Clock, CheckCircle, XCircle, FileText, type LucideProps } from "lucide-react"
+import type React from "react"
 
 export const metadata: Metadata = {
   title: "Moderate Submissions | Admin | LinkDit",
 }
 
-const statusConfig: Record<string, { label: string; color: string; icon: any }> = {
+const statusConfig: Record<string, { label: string; color: string; icon: React.ComponentType<LucideProps> }> = {
   draft: { label: "Draft", color: "bg-gray-100 text-gray-700", icon: FileText },
   submitted: { label: "Submitted", color: "bg-blue-100 text-blue-700", icon: Clock },
   pending_review: { label: "Pending Review", color: "bg-amber-100 text-amber-700", icon: Clock },
@@ -27,9 +28,9 @@ export default async function AdminSubmissionsPage() {
   const { data: raw } = await supabase
     .from("tool_submissions")
     .select("*, users(full_name, email)")
-    .order("created_at", { ascending: false })
+    .order("created_at", { ascending: false }) as unknown as { data: any; error: any }
 
-  const submissions: any[] = raw ?? []
+  const submissions = raw ?? []
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -57,7 +58,7 @@ export default async function AdminSubmissionsPage() {
               </tr>
             </thead>
             <tbody>
-              {submissions.map((s) => {
+              {submissions.map((s: any) => {
                 const cfg = statusConfig[s.submission_status] || statusConfig.submitted
                 const Icon = cfg.icon
                 return (

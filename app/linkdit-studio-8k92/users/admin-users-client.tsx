@@ -2,10 +2,12 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Search, Shield, User, Trash2, ExternalLink } from "lucide-react"
+import { Search, Shield, User, Trash2 } from "lucide-react"
 import { adminUpdateUserRole, adminDeleteUser } from "@/actions/admin/users"
 
-export default function AdminUsersClient({ users }: { users: any[] }) {
+type UserItem = { id: string; full_name: string | null; email: string | null; role: string }
+
+export default function AdminUsersClient({ users }: { users: UserItem[] }) {
   const router = useRouter()
   const [search, setSearch] = useState("")
 

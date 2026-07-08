@@ -2,6 +2,13 @@
 
 import { useEffect } from "react"
 
+type RecentComparison = {
+  slug: string
+  title?: string
+  toolAName: string
+  toolBName: string
+}
+
 export default function IncrementViews({
   comparisonId,
   slug,
@@ -24,7 +31,7 @@ export default function IncrementViews({
       const stored = localStorage.getItem("recentlyCompared")
       const recent = stored ? JSON.parse(stored) : []
       const entry = { slug, title, toolAName, toolBName }
-      const filtered = recent.filter((r: any) => r.slug !== slug)
+      const filtered = recent.filter((r: RecentComparison) => r.slug !== slug)
       filtered.unshift(entry)
       localStorage.setItem("recentlyCompared", JSON.stringify(filtered.slice(0, 10)))
     } catch {}

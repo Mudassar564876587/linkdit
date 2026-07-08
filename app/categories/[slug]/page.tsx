@@ -18,11 +18,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!cat) return { title: "Category not found" }
 
   return {
-    title: `${cat.name} AI Tools | LinkDit`,
+    title: `${cat.name} AI Tools`,
     description: cat.description,
     alternates: { canonical: `/categories/${slug}` },
     openGraph: {
-      title: `${cat.name} AI Tools | LinkDit`,
+      title: `${cat.name} AI Tools`,
       description: cat.description,
       type: "website",
       siteName: "LinkDit",

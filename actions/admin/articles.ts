@@ -60,34 +60,30 @@ export async function adminUpdateArticle(id: string, formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
-  const updates: any = {}
-  const title = formData.get("title")
-  if (title) updates.title = title
-  const content = formData.get("content")
-  if (content) updates.content = content
-  const description = formData.get("description")
-  if (description) updates.description = description
-  const categoryId = formData.get("categoryId")
-  if (categoryId) updates.category_id = categoryId
-  const coverUrl = formData.get("coverUrl")
-  if (coverUrl !== null) updates.cover_image_url = coverUrl || null
-  const readTime = formData.get("readTime")
-  if (readTime) updates.read_time = readTime
-  const seoTitle = formData.get("seoTitle")
-  if (seoTitle) updates.seo_title = seoTitle
-  const seoDescription = formData.get("seoDescription")
-  if (seoDescription) updates.seo_description = seoDescription
+  const title = formData.get("title") as string | null
+  const content = formData.get("content") as string | null
+  const description = formData.get("description") as string | null
+  const categoryId = formData.get("categoryId") as string | null
+  const coverUrl = formData.get("coverUrl") as string | null
+  const readTime = formData.get("readTime") as string | null
+  const seoTitle = formData.get("seoTitle") as string | null
+  const seoDescription = formData.get("seoDescription") as string | null
   const tags = formData.get("tags") as string | null
-  if (tags !== null) {
-    updates.tags = tags ? tags.split(",").map((t: string) => t.trim()).filter(Boolean) : []
-  }
-  const published = formData.get("published")
-  if (published !== null) {
-    updates.is_published = published === "true"
-    if (published === "true") updates.published_at = new Date().toISOString()
-  }
+  const published = formData.get("published") as string | null
 
-  const { error } = await supabase.from("articles").update(updates).eq("id", id)
+  const { error } = await supabase.from("articles").update({
+    ...(title ? { title } : {}),
+    ...(content ? { content } : {}),
+    ...(description ? { description } : {}),
+    ...(categoryId ? { category_id: categoryId } : {}),
+    ...(coverUrl !== null ? { cover_image_url: coverUrl || null } : {}),
+    ...(readTime ? { read_time: readTime } : {}),
+    ...(seoTitle ? { seo_title: seoTitle } : {}),
+    ...(seoDescription ? { seo_description: seoDescription } : {}),
+    ...(tags !== null ? { tags: tags ? tags.split(",").map((t) => t.trim()).filter(Boolean) : [] } : {}),
+    ...(published !== null ? { is_published: published === "true", ...(published === "true" ? { published_at: new Date().toISOString() } : {}) } : {}),
+  }).eq("id", id)
+
   if (error) return { error: error.message }
   revalidatePath("/linkdit-studio-8k92/articles")
   return { success: true }
@@ -106,8 +102,7 @@ export async function adminToggleArticlePublish(id: string, isPublished: boolean
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  const payload: any = { is_published: isPublished }
-  if (isPublished) payload.published_at = new Date().toISOString()
+  const payload = { is_published: isPublished, ...(isPublished ? { published_at: new Date().toISOString() } : {}) }
   await supabase.from("articles").update(payload).eq("id", id)
   revalidatePath("/linkdit-studio-8k92/articles")
   return { success: true }

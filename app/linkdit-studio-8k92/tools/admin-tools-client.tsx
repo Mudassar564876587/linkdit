@@ -2,10 +2,13 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { Plus, Search, CheckCircle, XCircle, Star, ShieldCheck, Trash2, ExternalLink, Pencil } from "lucide-react"
 import { adminDeleteTool, adminTogglePublish, adminToggleFeatured, adminToggleVerified } from "@/actions/admin/tools"
 
-export default function AdminToolsClient({ tools }: { tools: any[] }) {
+type ToolItem = { id: string; name: string; slug: string; is_published: boolean; featured: boolean; is_verified: boolean; categories: { name: string } | null }
+
+export default function AdminToolsClient({ tools }: { tools: ToolItem[] }) {
   const router = useRouter()
   const [search, setSearch] = useState("")
   const [selected, setSelected] = useState<Set<string>>(new Set())
@@ -38,12 +41,12 @@ export default function AdminToolsClient({ tools }: { tools: any[] }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Tools ({filtered.length})</h1>
-        <a
+        <Link
           href="/linkdit-studio-8k92/tools/new"
           className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
         >
           <Plus className="h-4 w-4" /> New Tool
-        </a>
+        </Link>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">

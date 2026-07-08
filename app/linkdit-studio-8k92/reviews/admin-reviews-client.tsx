@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation"
 import { Search, CheckCircle, XCircle } from "lucide-react"
 import { adminApproveReview, adminDeleteReview } from "@/actions/admin/reviews"
 
-export default function AdminReviewsClient({ reviews }: { reviews: any[] }) {
+type Review = { id: string; is_approved: boolean; rating: number; content: string | null; users: { full_name: string | null } | null; tools: { name: string | null } | null }
+
+export default function AdminReviewsClient({ reviews }: { reviews: Review[] }) {
   const router = useRouter()
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
@@ -35,7 +37,7 @@ export default function AdminReviewsClient({ reviews }: { reviews: any[] }) {
       </div>
 
       <div className="space-y-2">
-        {filtered.map((r: any) => (
+        {filtered.map((r) => (
           <div key={r.id} className="flex items-start justify-between rounded-xl border border-border p-4">
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">

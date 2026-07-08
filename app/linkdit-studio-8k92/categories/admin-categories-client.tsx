@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation"
 import { Plus, Pencil, Trash2 } from "lucide-react"
 import { adminCreateCategory, adminUpdateCategory, adminDeleteCategory } from "@/actions/admin/categories"
 
-export default function AdminCategoriesClient({ categories }: { categories: any[] }) {
+type Category = { id: string; name: string; slug: string; description: string; icon_name: string; tool_count: number }
+
+export default function AdminCategoriesClient({ categories }: { categories: Category[] }) {
   const router = useRouter()
   const [editing, setEditing] = useState<string | null>(null)
   const [name, setName] = useState("")
@@ -16,7 +18,7 @@ export default function AdminCategoriesClient({ categories }: { categories: any[
 
   function reset() { setName(""); setSlug(""); setDescription(""); setIcon("PenLine"); setEditing(null); setShowNew(false) }
 
-  function edit(cat: any) {
+  function edit(cat: Category) {
     setEditing(cat.id); setName(cat.name); setSlug(cat.slug); setDescription(cat.description); setIcon(cat.icon_name); setShowNew(true)
   }
 

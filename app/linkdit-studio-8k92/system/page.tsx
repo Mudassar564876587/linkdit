@@ -35,7 +35,7 @@ export default async function AdminSystemPage() {
                   {log.entity_type}{log.entity_id ? ` / ${log.entity_id.slice(0, 8)}` : ""}
                 </td>
                 <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">
-                  {(log as any).users?.full_name || (log as any).users?.email || "—"}
+                  {log.users?.full_name || log.users?.email || "—"}
                 </td>
                 <td className="px-4 py-3 text-muted-foreground">
                   {new Date(log.created_at).toLocaleString()}

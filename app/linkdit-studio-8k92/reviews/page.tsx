@@ -11,5 +11,5 @@ export default async function AdminReviewsPage() {
     .select("*, users(full_name, email), tools(name, slug)")
     .order("created_at", { ascending: false })
 
-  return <AdminReviewsClient reviews={(reviews ?? []) as any[]} />
+  return <AdminReviewsClient reviews={(reviews ?? [])} />
 }

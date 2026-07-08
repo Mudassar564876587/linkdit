@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
-import { CheckCircle, XCircle, Send, ExternalLink } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import ReviewActions from "./review-actions"
 
 export const metadata: Metadata = {
@@ -26,11 +26,11 @@ export default async function ReviewSubmissionPage({
     .from("tool_submissions")
     .select("*, users(full_name, email)")
     .eq("id", id)
-    .single()
+    .single() as unknown as { data: any; error: any }
 
   if (!raw) notFound()
 
-  const sub: any = raw
+  const sub = raw
 
   const features = Array.isArray(sub.features) ? sub.features : []
   const pros = Array.isArray(sub.pros) ? sub.pros : []
@@ -149,7 +149,7 @@ export default async function ReviewSubmissionPage({
         <section>
           <h2 className="text-lg font-semibold text-foreground">FAQ</h2>
           <div className="mt-2 space-y-3">
-            {faqs.map((faq: any, i: number) => (
+            {faqs.map((faq: { question: string; answer: string }, i: number) => (
               <details key={i} className="rounded-lg border border-border">
                 <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground">{faq.question}</summary>
                 <div className="border-t border-border px-4 py-3 text-sm text-muted-foreground">{faq.answer}</div>

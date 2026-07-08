@@ -1,8 +1,7 @@
 import { redirect, notFound } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import Link from "next/link"
-import { LayoutDashboard, Grid3X3, Users, Star, FileText, Image, Settings, Mail, Activity, Send, ChevronDown } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { LayoutDashboard, Grid3X3, Users, Star, FileText, Image, Settings, Mail, Activity, Send } from "lucide-react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {

@@ -2,14 +2,14 @@ import type { Metadata } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import ResourceCard from "@/components/resources/resource-card"
 import Pagination from "@/components/tools/pagination"
-import { Search, Star } from "lucide-react"
+import { Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Resources | LinkDit",
+  title: "Resources",
   description: "Curated resources, templates, guides and tools to help you work smarter with AI.",
   openGraph: {
-    title: "Resources | LinkDit",
+    title: "Resources",
     description: "Curated resources, templates, guides and tools to help you work smarter with AI.",
     type: "website",
     siteName: "LinkDit",

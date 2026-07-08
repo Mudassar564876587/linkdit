@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next"
+import { SITE } from "@/constants/site"
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/dashboard/", "/linkdit-studio-8k92/", "/auth/", "/api/"],
     },
-    sitemap: "https://linkdit.vercel.app/sitemap.xml",
+    sitemap: `${SITE.url}/sitemap.xml`,
   }
 }

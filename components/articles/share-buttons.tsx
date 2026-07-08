@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback } from "react"
-import { Link2, Globe, Mail, Share2 } from "lucide-react"
+import { Link2, Globe, Mail } from "lucide-react"
 
 export default function ShareButtons({ url, title }: { url: string; title: string }) {
   const encoded = encodeURIComponent(url)

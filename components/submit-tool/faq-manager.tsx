@@ -71,7 +71,7 @@ export default function FaqManager({ items, onChange }: FaqManagerProps) {
       ))}
 
       {items.length === 0 && (
-        <p className="text-sm text-muted-foreground">No FAQs added yet. Click "Add FAQ" to add one.</p>
+        <p className="text-sm text-muted-foreground">No FAQs added yet. Click &ldquo;Add FAQ&rdquo; to add one.</p>
       )}
     </div>
   )

@@ -5,9 +5,24 @@ import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
 import { adminCreateArticle, adminUpdateArticle } from "@/actions/admin/articles"
 
+type InitialData = {
+  id: string
+  title?: string
+  content?: string
+  description?: string
+  category_id?: string
+  cover_image_url?: string | null
+  read_time?: string
+  seo_title?: string | null
+  seo_description?: string | null
+  tags?: string[]
+  is_published?: boolean
+  featured?: boolean
+}
+
 type Props = {
   categories: { id: string; name: string }[]
-  initial?: any
+  initial?: InitialData
 }
 
 export default function ArticleForm({ categories, initial }: Props) {
@@ -29,7 +44,7 @@ export default function ArticleForm({ categories, initial }: Props) {
     else router.push("/linkdit-studio-8k92/articles")
   }
 
-  const initialTags = initial?.tags ? (Array.isArray(initial.tags) ? initial.tags.join(", ") : "") : ""
+  const initialTags = initial?.tags ? initial.tags.join(", ") : ""
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -85,12 +100,12 @@ export default function ArticleForm({ categories, initial }: Props) {
         <legend className="text-sm font-medium text-foreground px-1">SEO</legend>
         <div className="space-y-1">
           <label htmlFor="seoTitle" className="text-xs text-muted-foreground">SEO Title</label>
-          <input id="seoTitle" name="seoTitle" defaultValue={initial?.seo_title}
+          <input id="seoTitle" name="seoTitle" defaultValue={initial?.seo_title ?? ""}
             className="h-9 w-full rounded-lg border border-input bg-background px-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
         </div>
         <div className="space-y-1">
           <label htmlFor="seoDescription" className="text-xs text-muted-foreground">SEO Description</label>
-          <textarea id="seoDescription" name="seoDescription" defaultValue={initial?.seo_description} rows={2}
+          <textarea id="seoDescription" name="seoDescription" defaultValue={initial?.seo_description ?? ""} rows={2}
             className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none" />
         </div>
       </fieldset>

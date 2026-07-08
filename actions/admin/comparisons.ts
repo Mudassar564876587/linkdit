@@ -103,7 +103,7 @@ export async function adminUpdateComparison(id: string, formData: FormData) {
     seo_description: seoDescription || null,
     is_published: published,
     is_featured: featured,
-  } as any).eq("id", id)
+  }).eq("id", id)
   if (error) return { error: error.message }
   revalidatePath("/linkdit-studio-8k92/comparisons")
   return { success: true }
@@ -141,7 +141,7 @@ function parseArray(value: string): string[] {
   return value.split("\n").map((s) => s.trim()).filter(Boolean)
 }
 
-function parseJson(value: string): any[] {
+function parseJson(value: string): Record<string, unknown>[] {
   if (!value) return []
   try {
     return JSON.parse(value)

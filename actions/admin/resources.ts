@@ -67,41 +67,34 @@ export async function adminUpdateResource(id: string, formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
-  const updates: any = {}
-  const name = formData.get("name")
-  if (name) updates.name = name
+  const name = formData.get("name") as string | null
   const description = formData.get("description") as string | null
-  if (description !== null) updates.description = description
   const content = formData.get("content") as string | null
-  if (content !== null) updates.content = content
   const categoryId = formData.get("categoryId") as string | null
-  if (categoryId !== null) updates.category_id = categoryId || null
   const websiteUrl = formData.get("websiteUrl") as string | null
-  if (websiteUrl !== null) updates.website_url = websiteUrl || null
   const downloadUrl = formData.get("downloadUrl") as string | null
-  if (downloadUrl !== null) updates.download_url = downloadUrl || null
   const coverUrl = formData.get("coverUrl") as string | null
-  if (coverUrl !== null) updates.cover_image_url = coverUrl || null
   const pricing = formData.get("pricing") as string | null
-  if (pricing) updates.pricing = pricing
   const features = formData.get("features") as string | null
-  if (features !== null) {
-    updates.features = features ? features.split("\n").map((f: string) => f.trim()).filter(Boolean) : []
-  }
   const tags = formData.get("tags") as string | null
-  if (tags !== null) {
-    updates.tags = tags ? tags.split(",").map((t: string) => t.trim()).filter(Boolean) : []
-  }
   const published = formData.get("published") as string | null
-  if (published !== null) {
-    updates.is_published = published === "true"
-  }
   const featured = formData.get("featured") as string | null
-  if (featured !== null) {
-    updates.featured = featured === "true"
-  }
 
-  const { error } = await supabase.from("resources").update(updates).eq("id", id)
+  const { error } = await supabase.from("resources").update({
+    ...(name ? { name } : {}),
+    ...(description !== null ? { description } : {}),
+    ...(content !== null ? { content } : {}),
+    ...(categoryId !== null ? { category_id: categoryId || null } : {}),
+    ...(websiteUrl !== null ? { website_url: websiteUrl || null } : {}),
+    ...(downloadUrl !== null ? { download_url: downloadUrl || null } : {}),
+    ...(coverUrl !== null ? { cover_image_url: coverUrl || null } : {}),
+    ...(pricing ? { pricing } : {}),
+    ...(features !== null ? { features: features ? features.split("\n").map((f) => f.trim()).filter(Boolean) : [] } : {}),
+    ...(tags !== null ? { tags: tags ? tags.split(",").map((t) => t.trim()).filter(Boolean) : [] } : {}),
+    ...(published !== null ? { is_published: published === "true" } : {}),
+    ...(featured !== null ? { featured: featured === "true" } : {}),
+  }).eq("id", id)
+
   if (error) return { error: error.message }
   revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true }
@@ -120,7 +113,7 @@ export async function adminToggleResourcePublish(id: string, isPublished: boolea
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("resources").update({ is_published: isPublished } as any).eq("id", id)
+  await supabase.from("resources").update({ is_published: isPublished }).eq("id", id)
   revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true }
 }
@@ -129,7 +122,7 @@ export async function adminToggleResourceFeatured(id: string, featured: boolean)
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("resources").update({ featured } as any).eq("id", id)
+  await supabase.from("resources").update({ featured }).eq("id", id)
   revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true }
 }

@@ -3,13 +3,12 @@ import Link from "next/link"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { getCategoryIcon } from "@/lib/utils"
 import { PenLine } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "AI Tool Categories | LinkDit",
+  title: "AI Tool Categories",
   description: "Browse AI tools by category. Find the perfect AI tool for your needs.",
   openGraph: {
-    title: "AI Tool Categories | LinkDit",
+    title: "AI Tool Categories",
     description: "Browse AI tools by category. Find the perfect AI tool for your needs.",
     type: "website",
     siteName: "LinkDit",

@@ -1,5 +1,5 @@
 import type { ComparisonFeature, ComparisonPricing, ComparisonRating } from "@/types/comparison"
-import { Check, X, Minus } from "lucide-react"
+import { Check, X } from "lucide-react"
 
 type ComparisonTableProps = {
   features: ComparisonFeature[]
@@ -25,18 +25,6 @@ export default function ComparisonTable({
 }: ComparisonTableProps) {
   const overallWinner =
     toolA.rating > toolB.rating ? "A" : toolB.rating > toolA.rating ? "B" : "tie"
-
-  function winnerClass(w: string) {
-    if (w === "A") return "bg-emerald-50 text-emerald-700"
-    if (w === "B") return "bg-blue-50 text-blue-700"
-    return "text-muted-foreground"
-  }
-
-  function winnerIcon(w: string) {
-    if (w === "A") return "← Winner"
-    if (w === "B") return "Winner →"
-    return ""
-  }
 
   return (
     <div className="space-y-10">

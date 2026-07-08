@@ -20,7 +20,6 @@ type ToolCardProps = {
 }
 
 export default function ToolCard({
-  id,
   name,
   slug,
   description,

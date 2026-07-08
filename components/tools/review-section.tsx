@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { submitReview, updateReview, deleteToolReview } from "@/actions/reviews"
-import { Star, Loader2, Pencil, Trash2, X, Check, LogIn } from "lucide-react"
+import { Star, Loader2, Pencil, Trash2, X, LogIn } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 type UserReview = {

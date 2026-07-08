@@ -40,7 +40,7 @@ async function upsertTags(tagNames: string[], toolId: string) {
     const name = raw.trim()
     if (!name) continue
 
-    let { data: existing } = await supabase
+    const { data: existing } = await supabase
       .from("tags")
       .select("id")
       .eq("name", name)
@@ -97,7 +97,7 @@ export async function adminCreateTool(formData: FormData): Promise<AdminToolResu
   if (!isValidUrl(websiteUrl)) return { error: "Website URL is not valid." }
 
   const validPricings = ["Free", "Freemium", "Paid"] as const
-  if (!validPricings.includes(pricing as any)) return { error: "Invalid pricing value." }
+  if (!validPricings.includes(pricing as "Free" | "Freemium" | "Paid")) return { error: "Invalid pricing value." }
 
   const featuresArr = featuresRaw.split("\n").map((f) => f.trim()).filter(Boolean)
   const prosArr = prosRaw.split("\n").map((p) => p.trim()).filter(Boolean)
@@ -243,42 +243,43 @@ export async function adminUpdateTool(id: string, formData: FormData): Promise<A
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
-  const updates: any = {}
   const name = formData.get("name") as string | null
-  if (name) updates.name = name
   const description = formData.get("description") as string | null
-  if (description !== null) updates.description = description
   const categoryId = formData.get("categoryId") as string | null
-  if (categoryId !== null) updates.category_id = categoryId || null
   const websiteUrl = formData.get("websiteUrl") as string | null
-  if (websiteUrl !== null) updates.website_url = websiteUrl || null
   const logoUrl = formData.get("logoUrl") as string | null
-  if (logoUrl !== null) updates.logo_url = logoUrl || null
   const pricing = formData.get("pricing") as string | null
-  if (pricing) updates.pricing = pricing
   const features = formData.get("features") as string | null
-  if (features !== null) {
-    updates.features = features ? features.split("\n").map((f: string) => f.trim()).filter(Boolean) : []
-  }
   const pros = formData.get("pros") as string | null
-  if (pros !== null) {
-    updates.pros = pros ? pros.split("\n").map((p: string) => p.trim()).filter(Boolean) : []
-  }
   const cons = formData.get("cons") as string | null
-  if (cons !== null) {
-    updates.cons = cons ? cons.split("\n").map((c: string) => c.trim()).filter(Boolean) : []
-  }
   const published = formData.get("published") as string | null
-  if (published !== null) updates.is_published = published === "true"
   const featured = formData.get("featured") as string | null
-  if (featured !== null) updates.featured = featured === "true"
   const sponsored = formData.get("sponsored") as string | null
-  if (sponsored !== null) updates.sponsored = sponsored === "true"
   const isVerified = formData.get("isVerified") as string | null
-  if (isVerified !== null) updates.is_verified = isVerified === "true"
   const seoTitle = formData.get("seoTitle") as string | null
-  if (seoTitle !== null) updates.seo_title = seoTitle || null
   const seoDescription = formData.get("seoDescription") as string | null
+
+  const updates: Record<string, unknown> = {}
+  if (name) updates.name = name
+  if (description !== null) updates.description = description
+  if (categoryId !== null) updates.category_id = categoryId || null
+  if (websiteUrl !== null) updates.website_url = websiteUrl || null
+  if (logoUrl !== null) updates.logo_url = logoUrl || null
+  if (pricing) updates.pricing = pricing
+  if (features !== null) {
+    updates.features = features ? features.split("\n").map((f) => f.trim()).filter(Boolean) : []
+  }
+  if (pros !== null) {
+    updates.pros = pros ? pros.split("\n").map((p) => p.trim()).filter(Boolean) : []
+  }
+  if (cons !== null) {
+    updates.cons = cons ? cons.split("\n").map((c) => c.trim()).filter(Boolean) : []
+  }
+  if (published !== null) updates.is_published = published === "true"
+  if (featured !== null) updates.featured = featured === "true"
+  if (sponsored !== null) updates.sponsored = sponsored === "true"
+  if (isVerified !== null) updates.is_verified = isVerified === "true"
+  if (seoTitle !== null) updates.seo_title = seoTitle || null
   if (seoDescription !== null) updates.seo_description = seoDescription || null
 
   const logoFile = formData.get("logoFile")
@@ -299,7 +300,7 @@ export async function adminUpdateTool(id: string, formData: FormData): Promise<A
     }
   }
 
-  const { error } = await supabase.from("tools").update(updates).eq("id", id)
+  const { error } = await supabase.from("tools").update(updates as any).eq("id", id)
   if (error) return { error: error.message }
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }

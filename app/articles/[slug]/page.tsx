@@ -1,12 +1,14 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import { marked } from "marked"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { SITE } from "@/constants/site"
 import ArticleMeta from "@/components/articles/article-meta"
 import ShareButtons from "@/components/articles/share-buttons"
 import TableOfContents from "@/components/articles/table-of-contents"
 import ArticleBookmarkButton from "@/components/articles/article-bookmark-button"
-import { Calendar, Clock, ArrowLeft, ArrowRight, ChevronLeft, ExternalLink } from "lucide-react"
+import { Calendar, Clock, ArrowLeft, ArrowRight, ChevronLeft } from "lucide-react"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const slug = (await params).slug.toLowerCase()
@@ -20,13 +22,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!article) return { title: "Article not found" }
 
-  const title = article.seo_title || `${article.title} | LinkDit`
+  const title = article.seo_title || article.title
   const description = article.seo_description || article.description
 
   return {
     title,
     description,
-    metadataBase: new URL("https://linkdit.vercel.app"),
+    metadataBase: new URL(SITE.url),
     alternates: { canonical: `/articles/${slug}` },
     openGraph: {
       title,
@@ -52,25 +54,25 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
   const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
 
-  const { data: article, error } = await supabase
+  const { data: rawArticle, error } = await supabase
     .from("articles")
     .select("*, categories(name, slug), users(avatar_url, full_name)")
     .eq("slug", slug)
     .eq("is_published", true)
     .single()
 
-  if (error || !article) notFound()
+  if (error || !rawArticle) notFound()
 
-  const a = article as any
+  const article: any = rawArticle
   const { data: allPublished } = await supabase
     .from("articles")
     .select("id, title, slug, published_at")
     .eq("is_published", true)
-    .eq("category_id", a.category_id)
+    .eq("category_id", article.category_id)
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false })
 
-  const currentIndex = allPublished?.findIndex((x: any) => x.id === a.id) ?? -1
+  const currentIndex = allPublished?.findIndex((x) => x.id === article.id) ?? -1
   const prevArticle = currentIndex > 0 ? allPublished?.[currentIndex - 1] : null
   const nextArticle = currentIndex >= 0 && currentIndex < (allPublished?.length ?? 0) - 1 ? allPublished?.[currentIndex + 1] : null
 
@@ -78,12 +80,12 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
     .from("articles")
     .select("id, title, slug, description, cover_image_url, read_time, published_at, author_name, categories(name)")
     .eq("is_published", true)
-    .eq("category_id", a.category_id)
-    .neq("id", a.id)
+    .eq("category_id", article.category_id)
+    .neq("id", article.id)
     .order("published_at", { ascending: false, nullsFirst: false })
     .limit(3)
 
-  const tags = Array.isArray(a.tags) ? a.tags : []
+  const tags = Array.isArray(article.tags) ? article.tags : []
 
   const { data: { user: currentUser } } = await supabase.auth.getUser()
   let isArticleBookmarked = false
@@ -92,22 +94,22 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
       .from("bookmarks")
       .select("id")
       .eq("user_id", currentUser.id)
-      .eq("article_id", a.id)
+      .eq("article_id", article.id)
       .maybeSingle()
     isArticleBookmarked = !!abm
   }
 
   const jsonLd = {
-    "@context": "https://schema.org",
+    "@context": "https://schemarticle.org",
     "@type": "Article",
-    headline: a.title,
-    description: a.description,
-    image: a.cover_image_url,
-    datePublished: a.published_at,
-    dateModified: a.updated_at,
+    headline: article.title,
+    description: article.description,
+    image: article.cover_image_url,
+    datePublished: article.published_at,
+    dateModified: article.updated_at,
     author: {
       "@type": "Person",
-      name: a.author_name,
+      name: article.author_name,
     },
     publisher: {
       "@type": "Organization",
@@ -115,7 +117,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://linkdit.vercel.app/articles/${slug}`,
+      "@id": `${SITE.url}/articles/${slug}`,
     },
   }
 
@@ -130,37 +132,37 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
           <header className="space-y-4">
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              {a.categories && (
-                <Link href={`/articles?category=${a.categories.slug}`}
+              {article.categories && (
+                <Link href={`/articles?category=${article.categories.slug}`}
                   className="rounded-lg bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
-                  {a.categories.name}
+                  {article.categories.name}
                 </Link>
               )}
             </div>
 
             <h1 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl leading-tight">
-              {a.title}
+              {article.title}
             </h1>
 
             <ArticleMeta
-              authorName={a.author_name}
-              publishedAt={a.published_at}
-              readTime={a.read_time}
+              authorName={article.author_name}
+              publishedAt={article.published_at}
+              readTime={article.read_time}
             />
             <div className="mt-4">
               <ArticleBookmarkButton
-                articleId={a.id}
+                articleId={article.id}
                 isBookmarked={isArticleBookmarked}
                 isAuthenticated={!!currentUser}
               />
             </div>
           </header>
 
-          {a.cover_image_url && (
+          {article.cover_image_url && (
             <div className="mt-8 overflow-hidden rounded-2xl border border-border">
               <img
-                src={a.cover_image_url}
-                alt={a.title}
+                src={article.cover_image_url}
+                alt={article.title}
                 className="w-full object-cover"
                 style={{ maxHeight: "500px" }}
               />
@@ -170,11 +172,11 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
           <div className="mt-10 grid gap-10 lg:grid-cols-[200px_1fr]">
             <aside className="hidden lg:block">
               <div className="sticky top-8 space-y-6">
-                <TableOfContents content={a.content} />
+                <TableOfContents content={article.content} />
 
                 <ShareButtons
-                  url={`https://linkdit.vercel.app/articles/${slug}`}
-                  title={a.title}
+                  url={`${SITE.url}/articles/${slug}`}
+                  title={article.title}
                 />
               </div>
             </aside>
@@ -182,7 +184,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
             <div className="min-w-0">
               <div
                 className="prose prose-gray max-w-none prose-headings:scroll-mt-20 prose-img:rounded-xl prose-a:text-primary"
-                dangerouslySetInnerHTML={{ __html: a.content }}
+                dangerouslySetInnerHTML={{ __html: article.content ? marked.parse(article.content) : "" }}
               />
 
               {tags.length > 0 && (
@@ -200,22 +202,22 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
               <div className="mt-8 lg:hidden">
                 <ShareButtons
-                  url={`https://linkdit.vercel.app/articles/${slug}`}
-                  title={a.title}
+                  url={`${SITE.url}/articles/${slug}`}
+                  title={article.title}
                 />
               </div>
 
               <div className="mt-10 rounded-xl border border-border bg-background p-6">
                 <div className="flex items-center gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-lg font-bold text-primary shrink-0">
-                    {a.users?.avatar_url ? (
-                      <img src={a.users.avatar_url} alt="" className="h-full w-full rounded-full object-cover" />
+                    {article.users?.avatar_url ? (
+                      <img src={article.users.avatar_url} alt="" className="h-full w-full rounded-full object-cover" />
                     ) : (
-                      a.author_name.charAt(0).toUpperCase()
+                      article.author_name.charAt(0).toUpperCase()
                     )}
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground">{a.users?.full_name || a.author_name}</p>
+                    <p className="font-semibold text-foreground">{article.users?.full_name || article.author_name}</p>
                     <p className="text-sm text-muted-foreground">Author</p>
                   </div>
                 </div>
@@ -256,7 +258,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
             <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-foreground">Related Articles</h2>
               <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {related.map((r: any) => (
+                {related.map((r) => (
                   <Link key={r.id} href={`/articles/${r.slug}`}
                     className="group flex flex-col overflow-hidden rounded-xl border border-border bg-background shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
                     {r.cover_image_url && (

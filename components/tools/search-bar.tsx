@@ -26,12 +26,7 @@ export default function SearchBar() {
   )
 
   useEffect(() => {
-    if (!query.trim()) {
-      setSuggestions([])
-      setOpen(false)
-      setActiveIndex(-1)
-      return
-    }
+    if (!query.trim()) return
 
     clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(async () => {
@@ -101,7 +96,15 @@ export default function SearchBar() {
           type="text"
           placeholder="Search AI tools..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value
+            if (!val.trim()) {
+              setSuggestions([])
+              setOpen(false)
+              setActiveIndex(-1)
+            }
+            setQuery(val)
+          }}
           onKeyDown={handleKeyDown}
           onFocus={() => { if (suggestions.length) setOpen(true) }}
           className="h-11 w-full rounded-xl border border-input bg-background pl-10 pr-4 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"

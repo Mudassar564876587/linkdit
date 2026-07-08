@@ -33,7 +33,7 @@ const ANIMATION_STEPS = [
   { key: "done", label: "Done", icon: CheckCircle2 },
 ]
 
-export default function AiAutofillPanel({ categories, onFill }: AiAutofillPanelProps) {
+export default function AiAutofillPanel({ onFill }: AiAutofillPanelProps) {
   const [url, setUrl] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)

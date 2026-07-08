@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import type { Article } from "@/types/article"
 
@@ -66,7 +68,6 @@ export async function getLatestArticles(limit: number = 3): Promise<Article[]> {
   const { data, error } = await supabase
     .from("articles")
     .select("*, categories(name), users(avatar_url)")
-    .eq("featured", true)
     .eq("is_published", true)
     .order("published_at", { ascending: false, nullsFirst: false })
     .limit(limit)

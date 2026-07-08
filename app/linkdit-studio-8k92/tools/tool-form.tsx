@@ -7,9 +7,29 @@ import { adminUpdateTool, adminCreateTool } from "@/actions/admin/tools"
 import { validateImage, compressImage } from "@/lib/upload"
 import { Toast } from "@/components/ui/toast"
 
+type InitialData = {
+  id: string
+  name?: string
+  description?: string
+  category_id?: string
+  website_url?: string
+  logo_url?: string | null
+  pricing?: string
+  features?: string[]
+  pros?: string[]
+  cons?: string[]
+  tags?: string[]
+  seo_title?: string | null
+  seo_description?: string | null
+  is_published?: boolean
+  featured?: boolean
+  sponsored?: boolean
+  is_verified?: boolean
+}
+
 type Props = {
   categories: { id: string; name: string }[]
-  initial?: any
+  initial?: InitialData
   isNew?: boolean
 }
 
@@ -26,9 +46,9 @@ export default function ToolForm({ categories, initial, isNew }: Props) {
   const logoInputRef = useRef<HTMLInputElement>(null)
   const screenshotInputRef = useRef<HTMLInputElement>(null)
 
-  const initialFeatures = initial?.features ? (Array.isArray(initial.features) ? initial.features.join("\n") : "") : ""
-  const initialPros = initial?.pros ? (Array.isArray(initial.pros) ? initial.pros.join("\n") : "") : ""
-  const initialCons = initial?.cons ? (Array.isArray(initial.cons) ? initial.cons.join("\n") : "") : ""
+  const initialFeatures = initial?.features?.join("\n") ?? ""
+  const initialPros = initial?.pros?.join("\n") ?? ""
+  const initialCons = initial?.cons?.join("\n") ?? ""
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()

@@ -5,9 +5,25 @@ import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
 import { adminCreateResource, adminUpdateResource } from "@/actions/admin/resources"
 
+type InitialData = {
+  id: string
+  name?: string
+  description?: string | null
+  content?: string | null
+  category_id?: string | null
+  website_url?: string | null
+  download_url?: string | null
+  cover_image_url?: string | null
+  pricing?: string
+  features?: string[]
+  tags?: string[]
+  is_published?: boolean
+  featured?: boolean
+}
+
 type Props = {
   categories: { id: string; name: string }[]
-  initial?: any
+  initial?: InitialData
 }
 
 export default function ResourceForm({ categories, initial }: Props) {
@@ -29,8 +45,8 @@ export default function ResourceForm({ categories, initial }: Props) {
     else router.push("/linkdit-studio-8k92/resources")
   }
 
-  const initialFeatures = initial?.features ? (Array.isArray(initial.features) ? initial.features.join("\n") : "") : ""
-  const initialTags = initial?.tags ? (Array.isArray(initial.tags) ? initial.tags.join(", ") : "") : ""
+  const initialFeatures = initial?.features?.join("\n") ?? ""
+  const initialTags = initial?.tags?.join(", ") ?? ""
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
