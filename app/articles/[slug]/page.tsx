@@ -56,7 +56,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
   const { data: rawArticle, error } = await supabase
     .from("articles")
-    .select("*, categories(name, slug), users(avatar_url, full_name)")
+    .select("*, categories(name, slug)")
     .eq("slug", slug)
     .eq("is_published", true)
     .single()
