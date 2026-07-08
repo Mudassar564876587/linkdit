@@ -10,7 +10,7 @@ export default function ArticleError({ reset }: { error: Error; reset: () => voi
         </p>
         <button
           onClick={reset}
-          className="mt-6 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          className="btn-primary"
         >
           Try again
         </button>

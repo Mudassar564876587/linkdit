@@ -56,13 +56,13 @@ export default async function MySubmissionsPage() {
           <div className="flex gap-2">
             <Link
               href="/submit-tool"
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+              className="btn-primary"
             >
               Submit Tool
             </Link>
             <Link
               href="/submit-article"
-              className="inline-flex h-10 items-center gap-2 rounded-xl border border-border bg-background px-5 text-sm font-medium text-foreground hover:bg-accent transition-colors"
+              className="btn-secondary"
             >
               Submit Article
             </Link>

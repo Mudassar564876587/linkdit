@@ -96,6 +96,16 @@ export async function adminApproveArticleSubmission(id: string) {
 
   const articleSlug = sub.slug || slugify(sub.title)
 
+  let authorName = sub.submitter_email || "Guest"
+  if (sub.user_id) {
+    const { data: profile } = await supabase
+      .from("users")
+      .select("full_name")
+      .eq("id", sub.user_id)
+      .single()
+    if (profile?.full_name) authorName = profile.full_name
+  }
+
   const { error: articleErr } = await supabase.from("articles").insert({
     title: sub.title,
     slug: articleSlug,
@@ -105,7 +115,7 @@ export async function adminApproveArticleSubmission(id: string) {
     cover_image_url: sub.cover_image_url,
     read_time: "5 min",
     author_id: sub.user_id,
-    author_name: sub.submitter_email || "Guest",
+    author_name: authorName,
     tags: sub.tags,
     is_published: true,
     published_at: new Date().toISOString(),

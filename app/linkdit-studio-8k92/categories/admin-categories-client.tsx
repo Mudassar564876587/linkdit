@@ -41,7 +41,7 @@ export default function AdminCategoriesClient({ categories }: { categories: Cate
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Categories</h1>
         <button onClick={() => { reset(); setShowNew(true) }}
-          className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+          className="btn-primary">
           <Plus className="h-4 w-4" /> Add Category
         </button>
       </div>
@@ -66,10 +66,10 @@ export default function AdminCategoriesClient({ categories }: { categories: Cate
             </div>
           </div>
           <div className="flex gap-2">
-            <button onClick={handleSave} className="h-9 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+            <button onClick={handleSave} className="btn-primary">
               {editing ? "Update" : "Create"}
             </button>
-            <button onClick={reset} className="h-9 rounded-lg border border-border px-4 text-sm font-medium text-muted-foreground hover:bg-accent">Cancel</button>
+            <button onClick={reset} className="btn-secondary">Cancel</button>
           </div>
         </div>
       )}

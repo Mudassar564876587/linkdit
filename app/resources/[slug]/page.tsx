@@ -121,13 +121,13 @@ export default async function ResourceDetailPage({ params }: { params: Promise<{
               <div className="flex items-center gap-2 shrink-0">
                 {res.download_url && (
                   <a href={res.download_url} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex h-10 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
+                    className="btn-primary">
                     <Download className="h-4 w-4" /> Download
                   </a>
                 )}
                 {res.website_url && (
                   <a href={res.website_url} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex h-10 items-center gap-2 rounded-xl border border-border px-5 text-sm font-medium text-foreground hover:bg-accent transition-colors">
+                    className="btn-secondary">
                     <ExternalLink className="h-4 w-4" /> Visit
                   </a>
                 )}

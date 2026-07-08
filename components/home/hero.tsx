@@ -40,7 +40,7 @@ export default async function Hero() {
   ]
 
   const heroCardContent = (
-    <div className="rounded-2xl border border-border/50 bg-white p-5 shadow-premium sm:p-6 lg:shadow-xl lg:shadow-blue-500/5">
+    <div className="card-depth p-5 sm:p-6">
       <div className="mb-4 flex items-center gap-1.5">
         <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
         <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
@@ -120,14 +120,14 @@ export default async function Hero() {
             <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row lg:justify-start">
               <Link
                 href="/tools"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg shadow-blue-500/20 transition-all duration-200 hover:bg-primary/90 hover:shadow-blue-500/25 active:scale-[0.98] sm:px-8 sm:text-base"
+                className="btn-primary"
               >
                 <Sparkles className="h-4 w-4" />
                 Explore AI Tools
               </Link>
               <Link
                 href="/articles"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-input bg-background px-6 text-sm font-medium text-foreground shadow-soft-sm transition-all duration-200 hover:bg-accent hover:text-accent-foreground active:scale-[0.98] sm:px-8 sm:text-base"
+                className="btn-secondary"
               >
                 <BookOpen className="h-4 w-4" />
                 Read Articles
@@ -143,7 +143,7 @@ export default async function Hero() {
                   className="h-12 w-full rounded-xl border border-input bg-background pl-11 pr-[9.5rem] text-sm shadow-soft-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:h-14 sm:pl-12 sm:text-base"
                 />
                 <div className="absolute right-1.5 top-1/2 -translate-y-1/2">
-                  <button className="inline-flex h-[2.625rem] items-center gap-1.5 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 active:scale-[0.98] sm:h-11 sm:px-5">
+                  <button className="btn-primary">
                     <ArrowUpRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     <span className="hidden sm:inline">Search</span>
                   </button>

@@ -35,7 +35,7 @@ export default async function FeaturedTools() {
               </p>
               <Link
                 href="/tools"
-                className="mt-5 inline-flex h-10 items-center gap-1.5 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 active:scale-[0.98]"
+                className="btn-primary"
               >
                 Browse all tools
                 <ArrowUpRight className="h-3.5 w-3.5" />

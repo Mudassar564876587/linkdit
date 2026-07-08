@@ -248,7 +248,7 @@ export default async function ComparisonDetailPage({
                 href={toolA.websiteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="btn-primary"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
                 {toolA.websiteLabel}
@@ -280,7 +280,7 @@ export default async function ComparisonDetailPage({
                 href={toolB.websiteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="btn-primary"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
                 {toolB.websiteLabel}

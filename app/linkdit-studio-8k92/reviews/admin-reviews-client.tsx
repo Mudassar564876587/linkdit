@@ -50,13 +50,13 @@ export default function AdminReviewsClient({ reviews }: { reviews: Review[] }) {
             <div className="flex items-center gap-2 shrink-0 ml-4">
               {!r.is_approved && (
                 <button onClick={async () => { await adminApproveReview(r.id); router.refresh() }}
-                  className="flex h-8 items-center gap-1 rounded-lg bg-emerald-600 px-3 text-xs font-medium text-white hover:bg-emerald-700">
+                  className="btn-success">
                   <CheckCircle className="h-3 w-3" /> Approve
                 </button>
               )}
               {r.is_approved && <span className="text-xs text-emerald-600 font-medium">Approved</span>}
               <button onClick={async () => { if (confirm("Delete review?")) { await adminDeleteReview(r.id); router.refresh() }}}
-                className="flex h-8 items-center gap-1 rounded-lg bg-red-600 px-3 text-xs font-medium text-white hover:bg-red-700">
+                className="btn-danger">
                 <XCircle className="h-3 w-3" /> Delete
               </button>
             </div>

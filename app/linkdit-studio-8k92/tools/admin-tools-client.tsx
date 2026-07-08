@@ -43,7 +43,7 @@ export default function AdminToolsClient({ tools }: { tools: ToolItem[] }) {
         <h1 className="text-2xl font-bold text-foreground">Tools ({filtered.length})</h1>
         <Link
           href="/linkdit-studio-8k92/tools/new"
-          className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          className="btn-primary"
         >
           <Plus className="h-4 w-4" /> New Tool
         </Link>
@@ -70,7 +70,7 @@ export default function AdminToolsClient({ tools }: { tools: ToolItem[] }) {
         </select>
         {selected.size > 0 && (
           <button onClick={handleBulkDelete}
-            className="inline-flex h-9 items-center gap-2 rounded-lg bg-red-600 px-4 text-sm font-medium text-white hover:bg-red-700">
+            className="btn-danger">
             <Trash2 className="h-4 w-4" /> Delete ({selected.size})
           </button>
         )}

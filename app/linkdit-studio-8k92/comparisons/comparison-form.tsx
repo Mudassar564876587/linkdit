@@ -677,7 +677,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="btn-primary"
         >
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           {initial ? "Update Comparison" : "Create Comparison"}
@@ -685,7 +685,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
         <button
           type="button"
           onClick={() => router.back()}
-          className="h-10 rounded-lg border border-border px-5 text-sm font-medium text-muted-foreground hover:bg-accent"
+          className="btn-secondary"
         >
           Cancel
         </button>

@@ -190,7 +190,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
                 href={tool.website_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-10 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="btn-primary"
               >
                 <ExternalLink className="h-4 w-4" />
                 {"Visit Website"}

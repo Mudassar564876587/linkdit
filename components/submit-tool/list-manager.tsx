@@ -48,7 +48,7 @@ export default function ListManager({ label, items, onChange, placeholder = "Add
           type="button"
           onClick={add}
           disabled={!input.trim() || items.length >= maxItems}
-          className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="btn-primary"
           aria-label="Add"
         >
           <Plus className="h-4 w-4" />

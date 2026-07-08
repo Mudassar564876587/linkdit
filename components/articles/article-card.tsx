@@ -22,7 +22,7 @@ export default function ArticleCard({
     <Link
       href={`/articles/${slug}`}
       className={cn(
-        "group flex flex-col overflow-hidden rounded-xl border border-border bg-background shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+        "group card-depth overflow-hidden",
         featured && "ring-1 ring-primary/20"
       )}
       aria-label={`Read ${title}`}

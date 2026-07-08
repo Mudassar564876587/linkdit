@@ -123,7 +123,7 @@ export default function AiAutofillPanel({ onFill }: AiAutofillPanelProps) {
                 type="button"
                 onClick={handleAutofill}
                 disabled={loading || !url.trim()}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 text-sm font-medium text-white shadow-sm hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shrink-0"
+                className="btn-primary"
                 whileHover={{ scale: loading ? 1 : 1.02 }}
                 whileTap={{ scale: loading ? 1 : 0.98 }}
               >

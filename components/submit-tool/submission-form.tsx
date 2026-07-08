@@ -927,7 +927,7 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
               onClick={prevStep}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-border bg-background px-4 text-sm font-medium text-foreground hover:bg-accent transition-colors"
+              className="btn-secondary"
             >
               <ChevronLeft className="h-4 w-4" />
               Back
@@ -937,7 +937,7 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
             type="button"
             onClick={handleSaveDraft}
             disabled={loading}
-            className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-border bg-background px-4 text-sm font-medium text-foreground hover:bg-accent disabled:opacity-50 transition-colors"
+            className="btn-secondary"
           >
             <Save className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Save Draft</span>
@@ -954,7 +954,7 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
               onClick={nextStep}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm"
+              className="btn-primary"
             >
               Continue
               <ChevronRight className="h-4 w-4" />
@@ -965,7 +965,7 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
               disabled={loading}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 text-sm font-medium text-white shadow-sm hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="btn-primary"
             >
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               Submit for Review
@@ -1161,7 +1161,7 @@ function FaqManager({ items, onChange }: { items: { question: string; answer: st
           onClick={add}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="flex items-center gap-1 rounded-xl bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+          className="btn-primary"
         >
           <Plus className="h-3.5 w-3.5" />
           Add FAQ
@@ -1244,7 +1244,7 @@ function FaqManager({ items, onChange }: { items: { question: string; answer: st
             onClick={add}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="mt-2 inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+            className="btn-primary"
           >
             <Plus className="h-3.5 w-3.5" />
             Add Your First FAQ

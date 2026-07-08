@@ -62,7 +62,7 @@ export default function Newsletter() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg shadow-blue-500/15 transition-all duration-200 hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50"
+                className="btn-primary"
               >
                 {status === "loading" ? "Subscribing..." : "Subscribe"}
               </button>

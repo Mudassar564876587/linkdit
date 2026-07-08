@@ -124,7 +124,7 @@ export default async function Categories() {
                 <Link
                   key={category.id}
                   href={`/categories/${category.slug}`}
-                  className={`group block rounded-2xl border border-border bg-gradient-to-br ${styles.gradient} p-5 shadow-soft-sm transition-all duration-200 ${styles.border} hover:shadow-premium active:scale-[0.98] sm:p-6`}
+                  className={`group card-depth rounded-xl p-5 transition-all duration-200 hover:shadow-card-hover active:scale-[0.98] sm:p-6`}
                 >
                   <div
                     className={`flex h-11 w-11 items-center justify-center rounded-xl ${styles.iconBg} sm:h-12 sm:w-12`}

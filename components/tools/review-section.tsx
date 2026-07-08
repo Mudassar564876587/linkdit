@@ -43,7 +43,7 @@ export default function ReviewSection({
         </p>
         <Link
           href={loginHref}
-          className="mt-3 inline-flex h-9 items-center gap-2 rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+          className="btn-primary"
         >
           <LogIn className="h-4 w-4" />
           Sign In
@@ -330,7 +330,7 @@ function ReviewForm({
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex h-10 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors"
+          className="btn-primary"
         >
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           {existingReview ? "Update review" : "Submit review"}
@@ -339,7 +339,7 @@ function ReviewForm({
           <button
             type="button"
             onClick={onSuccess}
-            className="inline-flex h-10 items-center gap-2 rounded-xl border border-input px-5 text-sm font-medium text-muted-foreground hover:bg-accent transition-colors"
+            className="btn-secondary"
           >
             <X className="h-4 w-4" />
             Cancel

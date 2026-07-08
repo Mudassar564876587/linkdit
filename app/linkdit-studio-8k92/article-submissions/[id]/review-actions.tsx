@@ -69,7 +69,7 @@ export default function ArticleReviewActions({ submission }: { submission: Submi
         <button
           onClick={() => handle("approve")}
           disabled={loading !== null}
-          className="inline-flex h-9 items-center gap-2 rounded-lg bg-emerald-600 px-4 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50 transition-colors"
+          className="btn-success"
         >
           {loading === "approve" ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
           Approve & Publish
@@ -78,7 +78,7 @@ export default function ArticleReviewActions({ submission }: { submission: Submi
         <button
           onClick={() => setShowReject(true)}
           disabled={loading !== null}
-          className="inline-flex h-9 items-center gap-2 rounded-lg bg-red-600 px-4 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50 transition-colors"
+          className="btn-danger"
         >
           <XCircle className="h-4 w-4" />
           Reject
@@ -87,7 +87,7 @@ export default function ArticleReviewActions({ submission }: { submission: Submi
         <button
           onClick={() => handle("delete")}
           disabled={loading !== null}
-          className="inline-flex h-9 items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 text-sm font-medium text-red-700 hover:bg-red-100 disabled:opacity-50 transition-colors"
+          className="btn-danger"
         >
           {loading === "delete" ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
           Delete
@@ -109,7 +109,7 @@ export default function ArticleReviewActions({ submission }: { submission: Submi
             <button
               onClick={() => handle("reject")}
               disabled={!reason.trim() || loading !== null}
-              className="inline-flex h-8 items-center rounded-lg bg-red-600 px-3 text-xs font-medium text-white hover:bg-red-700 disabled:opacity-50"
+              className="btn-danger"
             >
               Confirm Reject
             </button>

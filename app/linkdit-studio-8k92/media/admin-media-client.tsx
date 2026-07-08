@@ -58,7 +58,7 @@ export default function AdminMediaClient() {
         <div>
           <input ref={fileRef} type="file" accept="image/*" onChange={handleUpload} className="hidden" />
           <button onClick={() => fileRef.current?.click()} disabled={loading}
-            className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
+            className="btn-primary">
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
             Upload
           </button>

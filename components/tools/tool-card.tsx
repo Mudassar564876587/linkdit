@@ -35,7 +35,7 @@ export default function ToolCard({
   return (
     <Link
       href={`/tools/${slug}`}
-      className="group relative flex flex-col rounded-xl border border-border bg-background p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      className="group card-depth p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       aria-label={`View details for ${name}`}
     >
       {/* Badges */}

@@ -226,7 +226,7 @@ export default function ToolForm({ categories, initial, isNew }: Props) {
               <button
                 type="button"
                 onClick={() => logoInputRef.current?.click()}
-                className="inline-flex h-10 items-center gap-2 rounded-xl border border-input bg-background px-4 text-sm text-muted-foreground transition-colors hover:bg-accent"
+                className="btn-secondary"
               >
                 <Upload className="h-4 w-4" />
                 Choose file
@@ -259,7 +259,7 @@ export default function ToolForm({ categories, initial, isNew }: Props) {
               <button
                 type="button"
                 onClick={() => screenshotInputRef.current?.click()}
-                className="inline-flex h-10 items-center gap-2 rounded-xl border border-input bg-background px-4 text-sm text-muted-foreground transition-colors hover:bg-accent"
+                className="btn-secondary"
               >
                 <Upload className="h-4 w-4" />
                 Choose files
@@ -365,7 +365,7 @@ export default function ToolForm({ categories, initial, isNew }: Props) {
           <button
             type="submit"
             disabled={loading}
-            className="inline-flex h-10 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground shadow-lg shadow-blue-500/15 transition-all duration-200 hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50"
+            className="btn-primary"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
             {loading ? "Saving..." : isNew ? "Create Tool" : "Update Tool"}
@@ -373,7 +373,7 @@ export default function ToolForm({ categories, initial, isNew }: Props) {
           <button
             type="button"
             onClick={() => router.back()}
-            className="h-10 rounded-xl border border-input bg-background px-5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent"
+            className="btn-secondary"
           >
             Cancel
           </button>

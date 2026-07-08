@@ -18,7 +18,7 @@ export default async function AdminResourcesPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Resources ({resources?.length ?? 0})</h1>
         <Link href="/linkdit-studio-8k92/resources/new"
-          className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+          className="btn-primary">
           <Plus className="h-4 w-4" /> New Resource
         </Link>
       </div>

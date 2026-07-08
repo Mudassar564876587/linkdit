@@ -10,6 +10,9 @@ const quickLinks = [
   { href: "/about", label: "About" },
   { href: "/submit-tool", label: "Submit Tool" },
   { href: "/submit-article", label: "Write Article" },
+  { href: "/contact", label: "Contact" },
+  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/terms", label: "Terms of Service" },
 ]
 
 const resources = [

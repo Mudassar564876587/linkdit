@@ -74,7 +74,7 @@ export default async function CategoriesPage() {
             <Link
               key={cat.id}
               href={`/categories/${cat.slug}`}
-              className="group relative overflow-hidden rounded-xl border border-border bg-background p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+              className="group card-depth p-6"
             >
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
