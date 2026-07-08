@@ -64,7 +64,7 @@ export default async function AdminDashboard() {
           <h2 className="text-lg font-semibold text-foreground">Recent Submissions</h2>
           <div className="space-y-2">
             {recentSubmissions?.length ? recentSubmissions.map((s) => (
-              <Link key={s.id} href={`/admin/submissions/${s.id}`}
+              <Link key={s.id} href={`/linkdit-studio-8k92/submissions/${s.id}`}
                 className="flex items-center justify-between rounded-lg border border-border p-3 text-sm hover:bg-accent transition-colors">
                 <span className="font-medium text-foreground">{s.tool_name}</span>
                 <span className="text-xs text-muted-foreground capitalize">{s.submission_status}</span>

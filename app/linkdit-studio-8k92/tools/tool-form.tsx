@@ -56,7 +56,7 @@ export default function ToolForm({ categories, initial, isNew }: Props) {
         setScreenshotFiles([])
         setScreenshotPreviews([])
         setTagInput("")
-        setTimeout(() => router.push("/admin/tools"), 1000)
+        setTimeout(() => router.push("/linkdit-studio-8k92/tools"), 1000)
       }
     } else if (initial) {
       fd.set("tags", tagInput)
@@ -67,7 +67,7 @@ export default function ToolForm({ categories, initial, isNew }: Props) {
         setToast({ message: result.error, type: "error" })
       } else {
         setToast({ message: "Tool updated successfully!", type: "success" })
-        setTimeout(() => router.push("/admin/tools"), 1000)
+        setTimeout(() => router.push("/linkdit-studio-8k92/tools"), 1000)
       }
     }
   }

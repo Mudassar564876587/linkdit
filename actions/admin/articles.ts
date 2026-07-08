@@ -16,7 +16,7 @@ function slugify(text: string): string {
 export async function adminCreateArticle(formData: FormData) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
   const title = formData.get("title") as string
   const content = formData.get("content") as string
@@ -51,14 +51,14 @@ export async function adminCreateArticle(formData: FormData) {
   })
 
   if (error) return { error: error.message }
-  revalidatePath("/admin/articles")
+  revalidatePath("/linkdit-studio-8k92/articles")
   return { success: true, slug }
 }
 
 export async function adminUpdateArticle(id: string, formData: FormData) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
   const updates: any = {}
   const title = formData.get("title")
@@ -89,35 +89,35 @@ export async function adminUpdateArticle(id: string, formData: FormData) {
 
   const { error } = await supabase.from("articles").update(updates).eq("id", id)
   if (error) return { error: error.message }
-  revalidatePath("/admin/articles")
+  revalidatePath("/linkdit-studio-8k92/articles")
   return { success: true }
 }
 
 export async function adminDeleteArticle(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("articles").delete().eq("id", id)
-  revalidatePath("/admin/articles")
+  revalidatePath("/linkdit-studio-8k92/articles")
   return { success: true }
 }
 
 export async function adminToggleArticlePublish(id: string, isPublished: boolean) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   const payload: any = { is_published: isPublished }
   if (isPublished) payload.published_at = new Date().toISOString()
   await supabase.from("articles").update(payload).eq("id", id)
-  revalidatePath("/admin/articles")
+  revalidatePath("/linkdit-studio-8k92/articles")
   return { success: true }
 }
 
 export async function adminToggleArticleFeatured(id: string, featured: boolean) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("articles").update({ featured }).eq("id", id)
-  revalidatePath("/admin/articles")
+  revalidatePath("/linkdit-studio-8k92/articles")
   return { success: true }
 }

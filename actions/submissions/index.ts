@@ -301,7 +301,7 @@ export async function adminApproveSubmission(id: string) {
   if (!user) return { error: "Not authenticated." }
 
   const { data: adminUser } = await supabase.from("users").select("role").eq("id", user.id).single()
-  if (adminUser?.role !== "admin") return { error: "Not authorized." }
+  if (adminUser?.role !== "admin") return { error: "Permission denied." }
 
   const { data: sub } = await supabase.from("tool_submissions").select("*").eq("id", id).single()
   if (!sub) return { error: "Submission not found." }
@@ -376,7 +376,7 @@ export async function adminApproveSubmission(id: string) {
     link: `/tools/${sub.slug}`,
   })
 
-  revalidatePath("/admin/submissions")
+  revalidatePath("/linkdit-studio-8k92/submissions")
   revalidatePath("/tools")
   return { success: true }
 }
@@ -387,7 +387,7 @@ export async function adminRejectSubmission(id: string, reason: string) {
   if (!user) return { error: "Not authenticated." }
 
   const { data: adminUser } = await supabase.from("users").select("role").eq("id", user.id).single()
-  if (adminUser?.role !== "admin") return { error: "Not authorized." }
+  if (adminUser?.role !== "admin") return { error: "Permission denied." }
 
   const sub = await supabase.from("tool_submissions").select("user_id, tool_name, slug").eq("id", id).single()
   if (!sub.data) return { error: "Submission not found." }
@@ -410,7 +410,7 @@ export async function adminRejectSubmission(id: string, reason: string) {
     body: reason || "Your tool submission did not meet our guidelines.",
   })
 
-  revalidatePath("/admin/submissions")
+  revalidatePath("/linkdit-studio-8k92/submissions")
   return { success: true }
 }
 
@@ -420,14 +420,14 @@ export async function adminRequestChanges(id: string, notes: string) {
   if (!user) return { error: "Not authenticated." }
 
   const { data: adminUser } = await supabase.from("users").select("role").eq("id", user.id).single()
-  if (adminUser?.role !== "admin") return { error: "Not authorized." }
+  if (adminUser?.role !== "admin") return { error: "Permission denied." }
 
   await supabase
     .from("tool_submissions")
     .update({ admin_notes: notes, submission_status: "submitted" })
     .eq("id", id)
 
-  revalidatePath("/admin/submissions")
+  revalidatePath("/linkdit-studio-8k92/submissions")
   return { success: true }
 }
 
@@ -437,10 +437,10 @@ export async function adminDeleteSubmission(id: string) {
   if (!user) return { error: "Not authenticated." }
 
   const { data: adminUser } = await supabase.from("users").select("role").eq("id", user.id).single()
-  if (adminUser?.role !== "admin") return { error: "Not authorized." }
+  if (adminUser?.role !== "admin") return { error: "Permission denied." }
 
   await supabase.from("tool_submissions").delete().eq("id", id)
-  revalidatePath("/admin/submissions")
+  revalidatePath("/linkdit-studio-8k92/submissions")
   return { success: true }
 }
 
@@ -450,11 +450,11 @@ export async function adminPublishTool(toolId: string) {
   if (!user) return { error: "Not authenticated." }
 
   const { data: adminUser } = await supabase.from("users").select("role").eq("id", user.id).single()
-  if (adminUser?.role !== "admin") return { error: "Not authorized." }
+  if (adminUser?.role !== "admin") return { error: "Permission denied." }
 
   await supabase.from("tools").update({ is_published: true }).eq("id", toolId)
 
-  revalidatePath("/admin/submissions")
+  revalidatePath("/linkdit-studio-8k92/submissions")
   return { success: true }
 }
 
@@ -464,11 +464,11 @@ export async function adminUnpublishTool(toolId: string) {
   if (!user) return { error: "Not authenticated." }
 
   const { data: adminUser } = await supabase.from("users").select("role").eq("id", user.id).single()
-  if (adminUser?.role !== "admin") return { error: "Not authorized." }
+  if (adminUser?.role !== "admin") return { error: "Permission denied." }
 
   await supabase.from("tools").update({ is_published: false }).eq("id", toolId)
 
-  revalidatePath("/admin/submissions")
+  revalidatePath("/linkdit-studio-8k92/submissions")
   return { success: true }
 }
 

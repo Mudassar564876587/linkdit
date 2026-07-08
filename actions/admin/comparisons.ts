@@ -16,7 +16,7 @@ function slugify(text: string): string {
 export async function adminCreateComparison(formData: FormData) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
   const title = formData.get("title") as string
   const description = formData.get("description") as string
@@ -54,14 +54,14 @@ export async function adminCreateComparison(formData: FormData) {
   })
 
   if (error) return { error: error.message }
-  revalidatePath("/admin/comparisons")
+  revalidatePath("/linkdit-studio-8k92/comparisons")
   return { success: true, slug }
 }
 
 export async function adminUpdateComparison(id: string, formData: FormData) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
   const title = formData.get("title") as string
   const description = formData.get("description") as string
@@ -105,34 +105,34 @@ export async function adminUpdateComparison(id: string, formData: FormData) {
     is_featured: featured,
   } as any).eq("id", id)
   if (error) return { error: error.message }
-  revalidatePath("/admin/comparisons")
+  revalidatePath("/linkdit-studio-8k92/comparisons")
   return { success: true }
 }
 
 export async function adminDeleteComparison(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("comparisons").delete().eq("id", id)
-  revalidatePath("/admin/comparisons")
+  revalidatePath("/linkdit-studio-8k92/comparisons")
   return { success: true }
 }
 
 export async function adminToggleComparisonPublish(id: string, isPublished: boolean) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("comparisons").update({ is_published: isPublished }).eq("id", id)
-  revalidatePath("/admin/comparisons")
+  revalidatePath("/linkdit-studio-8k92/comparisons")
   return { success: true }
 }
 
 export async function adminToggleComparisonFeatured(id: string, featured: boolean) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("comparisons").update({ is_featured: featured }).eq("id", id)
-  revalidatePath("/admin/comparisons")
+  revalidatePath("/linkdit-studio-8k92/comparisons")
   return { success: true }
 }
 

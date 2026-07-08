@@ -1,23 +1,28 @@
-import { redirect } from "next/navigation"
+import { redirect, notFound } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { LayoutDashboard, Grid3X3, Users, Star, FileText, Image, Settings, Mail, Activity, Send, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 const navLinks = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/submissions", label: "Submissions", icon: Send },
-  { href: "/admin/tools", label: "Tools", icon: Grid3X3 },
-  { href: "/admin/categories", label: "Categories", icon: Grid3X3 },
-  { href: "/admin/users", label: "Users", icon: Users },
-  { href: "/admin/reviews", label: "Reviews", icon: Star },
-  { href: "/admin/articles", label: "Blog", icon: FileText },
-  { href: "/admin/resources", label: "Resources", icon: FileText },
-  { href: "/admin/comparisons", label: "Comparisons", icon: Star },
-  { href: "/admin/media", label: "Media", icon: Image },
-  { href: "/admin/settings", label: "Settings", icon: Settings },
-  { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
-  { href: "/admin/system", label: "System", icon: Activity },
+  { href: "/linkdit-studio-8k92", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/linkdit-studio-8k92/submissions", label: "Submissions", icon: Send },
+  { href: "/linkdit-studio-8k92/tools", label: "Tools", icon: Grid3X3 },
+  { href: "/linkdit-studio-8k92/categories", label: "Categories", icon: Grid3X3 },
+  { href: "/linkdit-studio-8k92/users", label: "Users", icon: Users },
+  { href: "/linkdit-studio-8k92/reviews", label: "Reviews", icon: Star },
+  { href: "/linkdit-studio-8k92/articles", label: "Blog", icon: FileText },
+  { href: "/linkdit-studio-8k92/resources", label: "Resources", icon: FileText },
+  { href: "/linkdit-studio-8k92/comparisons", label: "Comparisons", icon: Star },
+  { href: "/linkdit-studio-8k92/media", label: "Media", icon: Image },
+  { href: "/linkdit-studio-8k92/settings", label: "Settings", icon: Settings },
+  { href: "/linkdit-studio-8k92/newsletter", label: "Newsletter", icon: Mail },
+  { href: "/linkdit-studio-8k92/system", label: "System", icon: Activity },
 ]
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -31,13 +36,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     .eq("id", user.id)
     .single()
 
-  if (adminUser?.role !== "admin") redirect("/dashboard")
+  if (adminUser?.role !== "admin") notFound()
 
   return (
     <div className="flex min-h-screen">
       <aside className="flex w-64 flex-col border-r border-border bg-background">
         <div className="flex h-16 items-center border-b border-border px-6">
-          <Link href="/admin" className="text-lg font-bold text-foreground">
+          <Link href="/linkdit-studio-8k92" className="text-lg font-bold text-foreground">
             Admin
           </Link>
         </div>

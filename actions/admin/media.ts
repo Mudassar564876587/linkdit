@@ -12,7 +12,7 @@ async function isAdmin(userId: string): Promise<boolean> {
 export async function adminUploadMedia(formData: FormData) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
   const file = formData.get("file") as File
   if (!file) return { error: "No file provided." }
@@ -23,16 +23,16 @@ export async function adminUploadMedia(formData: FormData) {
   if (error) return { error: error.message }
 
   const { data: urlData } = supabase.storage.from("media").getPublicUrl(path)
-  revalidatePath("/admin/media")
+  revalidatePath("/linkdit-studio-8k92/media")
   return { success: true, url: urlData.publicUrl }
 }
 
 export async function adminDeleteMedia(path: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   const { error } = await supabase.storage.from("media").remove([path])
   if (error) return { error: error.message }
-  revalidatePath("/admin/media")
+  revalidatePath("/linkdit-studio-8k92/media")
   return { success: true }
 }

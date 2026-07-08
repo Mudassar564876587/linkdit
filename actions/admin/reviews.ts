@@ -12,17 +12,17 @@ async function isAdmin(userId: string): Promise<boolean> {
 export async function adminApproveReview(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("reviews").update({ is_approved: true }).eq("id", id)
-  revalidatePath("/admin/reviews")
+  revalidatePath("/linkdit-studio-8k92/reviews")
   return { success: true }
 }
 
 export async function adminDeleteReview(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("reviews").delete().eq("id", id)
-  revalidatePath("/admin/reviews")
+  revalidatePath("/linkdit-studio-8k92/reviews")
   return { success: true }
 }

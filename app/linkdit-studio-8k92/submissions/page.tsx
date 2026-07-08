@@ -81,7 +81,7 @@ export default async function AdminSubmissionsPage() {
                     </td>
                     <td className="px-4 py-3 text-right">
                       <Link
-                        href={`/admin/submissions/${s.id}`}
+                        href={`/linkdit-studio-8k92/submissions/${s.id}`}
                         className="text-xs font-medium text-primary hover:underline"
                       >
                         Review

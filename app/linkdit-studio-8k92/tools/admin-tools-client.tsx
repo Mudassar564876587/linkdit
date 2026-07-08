@@ -39,7 +39,7 @@ export default function AdminToolsClient({ tools }: { tools: any[] }) {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Tools ({filtered.length})</h1>
         <a
-          href="/admin/tools/new"
+          href="/linkdit-studio-8k92/tools/new"
           className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
         >
           <Plus className="h-4 w-4" /> New Tool
@@ -127,7 +127,7 @@ export default function AdminToolsClient({ tools }: { tools: any[] }) {
                     <a href={`/tools/${t.slug}`} target="_blank" className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent" aria-label="View tool">
                       <ExternalLink className="h-4 w-4" />
                     </a>
-                    <a href={`/admin/tools/${t.id}`} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent" aria-label="Edit tool">
+                    <a href={`/linkdit-studio-8k92/tools/${t.id}`} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent" aria-label="Edit tool">
                       <Pencil className="h-4 w-4" />
                     </a>
                     <button onClick={async () => { await adminDeleteTool(t.id); router.refresh() }}

@@ -90,7 +90,7 @@ export default function ComparisonForm({ categories, initial }: Props) {
 
     setLoading(false)
     if (result.error) setError(result.error)
-    else router.push("/admin/comparisons")
+    else router.push("/linkdit-studio-8k92/comparisons")
   }
 
   function addListItem(list: string[], setList: (v: string[]) => void, value: string) {

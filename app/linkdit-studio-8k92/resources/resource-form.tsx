@@ -26,7 +26,7 @@ export default function ResourceForm({ categories, initial }: Props) {
 
     setLoading(false)
     if (result.error) setError(result.error)
-    else router.push("/admin/resources")
+    else router.push("/linkdit-studio-8k92/resources")
   }
 
   const initialFeatures = initial?.features ? (Array.isArray(initial.features) ? initial.features.join("\n") : "") : ""

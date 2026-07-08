@@ -16,7 +16,7 @@ function slugify(text: string): string {
 export async function adminCreateResource(formData: FormData) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
   const name = formData.get("name") as string
   const description = formData.get("description") as string
@@ -58,14 +58,14 @@ export async function adminCreateResource(formData: FormData) {
   })
 
   if (error) return { error: error.message }
-  revalidatePath("/admin/resources")
+  revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true, slug }
 }
 
 export async function adminUpdateResource(id: string, formData: FormData) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
   const updates: any = {}
   const name = formData.get("name")
@@ -103,33 +103,33 @@ export async function adminUpdateResource(id: string, formData: FormData) {
 
   const { error } = await supabase.from("resources").update(updates).eq("id", id)
   if (error) return { error: error.message }
-  revalidatePath("/admin/resources")
+  revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true }
 }
 
 export async function adminDeleteResource(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("resources").delete().eq("id", id)
-  revalidatePath("/admin/resources")
+  revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true }
 }
 
 export async function adminToggleResourcePublish(id: string, isPublished: boolean) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("resources").update({ is_published: isPublished } as any).eq("id", id)
-  revalidatePath("/admin/resources")
+  revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true }
 }
 
 export async function adminToggleResourceFeatured(id: string, featured: boolean) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("resources").update({ featured } as any).eq("id", id)
-  revalidatePath("/admin/resources")
+  revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true }
 }

@@ -12,28 +12,28 @@ async function isAdmin(userId: string): Promise<boolean> {
 export async function adminUpdateUserRole(id: string, role: "admin" | "user") {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("users").update({ role }).eq("id", id)
-  revalidatePath("/admin/users")
+  revalidatePath("/linkdit-studio-8k92/users")
   return { success: true }
 }
 
 export async function adminDeleteUser(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   if (id === user.id) return { error: "Cannot delete yourself." }
   await supabase.from("users").delete().eq("id", id)
-  revalidatePath("/admin/users")
+  revalidatePath("/linkdit-studio-8k92/users")
   return { success: true }
 }
 
 export async function adminBanUser(id: string, banned: boolean) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   // Soft ban: set role to "banned" if banning, "user" if unbanning
   await supabase.from("users").update({ role: banned ? "banned" as any : "user" as const }).eq("id", id)
-  revalidatePath("/admin/users")
+  revalidatePath("/linkdit-studio-8k92/users")
   return { success: true }
 }

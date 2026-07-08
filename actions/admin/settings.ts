@@ -12,16 +12,16 @@ async function isAdmin(userId: string): Promise<boolean> {
 export async function adminUpdateSetting(key: string, value: any) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("site_settings").upsert({ key, value, updated_at: new Date().toISOString() })
-  revalidatePath("/admin/settings")
+  revalidatePath("/linkdit-studio-8k92/settings")
   return { success: true }
 }
 
 export async function adminUpdateSettings(formData: FormData) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
   const keys = ["site_name", "site_description", "site_logo", "theme_color", "seo_title", "seo_description", "analytics_code", "social_twitter", "social_github", "social_linkedin"]
 
@@ -32,6 +32,6 @@ export async function adminUpdateSettings(formData: FormData) {
     }
   }
 
-  revalidatePath("/admin/settings")
+  revalidatePath("/linkdit-studio-8k92/settings")
   return { success: true }
 }

@@ -12,16 +12,16 @@ async function isAdmin(userId: string): Promise<boolean> {
 export async function adminDeleteSubscriber(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("newsletter_subscribers").delete().eq("id", id)
-  revalidatePath("/admin/newsletter")
+  revalidatePath("/linkdit-studio-8k92/newsletter")
   return { success: true }
 }
 
 export async function adminExportSubscribersCSV() {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || !(await isAdmin(user.id))) return { error: "Not authorized." }
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
 
   const { data: subscribers } = await supabase
     .from("newsletter_subscribers")

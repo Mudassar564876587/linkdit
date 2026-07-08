@@ -2,24 +2,25 @@ import type { Metadata } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { Plus, ExternalLink, Pencil } from "lucide-react"
-import ArticleActions from "./article-actions"
+import ComparisonActions from "./comparison-actions"
 
-export const metadata: Metadata = { title: "Blog | Admin | LinkDit" }
+export const metadata: Metadata = { title: "Comparisons | Admin | LinkDit" }
 
-export default async function AdminArticlesPage() {
+export default async function AdminComparisonsPage() {
   const supabase = await createServerSupabaseClient()
-  const { data: articles } = await supabase
-    .from("articles")
-    .select("id, title, slug, is_published, featured, created_at, category_id")
+
+  const { data: comparisons } = await supabase
+    .from("comparisons")
+    .select("*, tool_a:tools!tool_a_id(name, slug), tool_b:tools!tool_b_id(name, slug)")
     .order("created_at", { ascending: false })
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground">Blog Articles ({articles?.length ?? 0})</h1>
-        <Link href="/admin/articles/new"
+        <h1 className="text-2xl font-bold text-foreground">Comparisons ({comparisons?.length ?? 0})</h1>
+        <Link href="/linkdit-studio-8k92/comparisons/new"
           className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-          <Plus className="h-4 w-4" /> New Article
+          <Plus className="h-4 w-4" /> New Comparison
         </Link>
       </div>
 
@@ -28,24 +29,29 @@ export default async function AdminArticlesPage() {
           <thead>
             <tr className="border-b border-border bg-muted/50">
               <th className="px-4 py-3 text-left font-medium text-foreground">Title</th>
+              <th className="px-4 py-3 text-left font-medium text-foreground hidden md:table-cell">Tools</th>
               <th className="px-4 py-3 text-center font-medium text-foreground">Status</th>
               <th className="px-4 py-3 text-center font-medium text-foreground">Featured</th>
+              <th className="px-4 py-3 text-center font-medium text-foreground">Views</th>
               <th className="px-4 py-3 text-left font-medium text-foreground hidden md:table-cell">Date</th>
               <th className="px-4 py-3 text-right font-medium text-foreground">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {articles?.map((a) => (
-              <tr key={a.id} className="border-b border-border last:border-0 hover:bg-accent/50">
-                <td className="px-4 py-3 font-medium text-foreground">{a.title}</td>
+            {comparisons?.map((c) => (
+              <tr key={c.id} className="border-b border-border last:border-0 hover:bg-accent/50">
+                <td className="px-4 py-3 font-medium text-foreground">{c.title}</td>
+                <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">
+                  {c.tool_a?.name} vs {c.tool_b?.name}
+                </td>
                 <td className="px-4 py-3 text-center">
                   <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                    a.is_published ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-500"}`}>
-                    {a.is_published ? "Published" : "Draft"}
+                    c.is_published ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-500"}`}>
+                    {c.is_published ? "Published" : "Draft"}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-center">
-                  {a.featured ? (
+                  {c.is_featured ? (
                     <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700">
                       Featured
                     </span>
@@ -53,26 +59,31 @@ export default async function AdminArticlesPage() {
                     <span className="text-muted-foreground">—</span>
                   )}
                 </td>
+                <td className="px-4 py-3 text-center text-muted-foreground">{c.views}</td>
                 <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">
-                  {new Date(a.created_at).toLocaleDateString()}
+                  {new Date(c.created_at).toLocaleDateString()}
                 </td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-1">
-                    <a href={`/articles/${a.slug}`} target="_blank" className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent">
+                    <a href={`/compare/${c.slug}`} target="_blank" className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent">
                       <ExternalLink className="h-4 w-4" />
                     </a>
-                    <Link href={`/admin/articles/${a.id}`} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent">
+                    <Link href={`/linkdit-studio-8k92/comparisons/${c.id}`} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent">
                       <Pencil className="h-4 w-4" />
                     </Link>
-                    <ArticleActions id={a.id} isPublished={a.is_published} isFeatured={a.featured} />
+                    <ComparisonActions
+                      id={c.id}
+                      isPublished={c.is_published}
+                      isFeatured={c.is_featured}
+                    />
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        {(!articles || articles.length === 0) && (
-          <div className="p-8 text-center text-sm text-muted-foreground">No articles yet.</div>
+        {(!comparisons || comparisons.length === 0) && (
+          <div className="p-8 text-center text-sm text-muted-foreground">No comparisons yet.</div>
         )}
       </div>
     </div>

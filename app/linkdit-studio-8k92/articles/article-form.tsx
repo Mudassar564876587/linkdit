@@ -26,7 +26,7 @@ export default function ArticleForm({ categories, initial }: Props) {
 
     setLoading(false)
     if (result.error) setError(result.error)
-    else router.push("/admin/articles")
+    else router.push("/linkdit-studio-8k92/articles")
   }
 
   const initialTags = initial?.tags ? (Array.isArray(initial.tags) ? initial.tags.join(", ") : "") : ""
