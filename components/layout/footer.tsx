@@ -8,6 +8,7 @@ const quickLinks = [
   { href: "/categories", label: "Categories" },
   { href: "/compare", label: "Compare" },
   { href: "/about", label: "About" },
+  { href: "/submit-tool", label: "Submit Tool" },
 ]
 
 const resources = [
