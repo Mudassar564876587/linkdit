@@ -21,9 +21,13 @@ export async function proxy(request: NextRequest) {
   const { user, supabaseResponse } = await updateSession(request)
   const { pathname } = request.nextUrl
 
-  // Admin routes: 404 for all non-admin users, never redirect
+  // Admin routes: redirect to login for non-admin users
   if (pathname.startsWith(ADMIN_BASE)) {
-    if (!user) return serve404()
+    if (!user) {
+      const url = new URL("/login", request.url)
+      url.searchParams.set("redirectTo", pathname)
+      return Response.redirect(url)
+    }
     return supabaseResponse
   }
 
