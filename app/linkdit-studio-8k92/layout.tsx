@@ -1,7 +1,7 @@
 import { redirect, notFound } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import Link from "next/link"
-import { LayoutDashboard, Grid3X3, Users, Star, FileText, Image, Settings, Mail, Activity, Send } from "lucide-react"
+import { LayoutDashboard, Grid3X3, Users, Star, FileText, Image, Settings, Mail, Activity, Send, Newspaper } from "lucide-react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 
 const navLinks = [
   { href: "/linkdit-studio-8k92", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/linkdit-studio-8k92/submissions", label: "Submissions", icon: Send },
+  { href: "/linkdit-studio-8k92/submissions", label: "Tool Submissions", icon: Send },
+  { href: "/linkdit-studio-8k92/article-submissions", label: "Article Submissions", icon: Newspaper },
   { href: "/linkdit-studio-8k92/tools", label: "Tools", icon: Grid3X3 },
   { href: "/linkdit-studio-8k92/categories", label: "Categories", icon: Grid3X3 },
   { href: "/linkdit-studio-8k92/users", label: "Users", icon: Users },

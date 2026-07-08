@@ -867,6 +867,73 @@ export interface Database {
           }
         ]
       }
+      article_submissions: {
+        Row: {
+          id: string
+          title: string
+          slug: string
+          description: string
+          content: string
+          category_id: string | null
+          cover_image_url: string | null
+          read_time: string | null
+          tags: any
+          status: "pending" | "approved" | "rejected"
+          admin_notes: string | null
+          user_id: string | null
+          submitter_email: string
+          reviewed_by: string | null
+          reviewed_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          slug: string
+          description: string
+          content: string
+          category_id?: string | null
+          cover_image_url?: string | null
+          read_time?: string | null
+          tags?: any
+          status?: "pending" | "approved" | "rejected"
+          admin_notes?: string | null
+          user_id?: string | null
+          submitter_email: string
+          reviewed_by?: string | null
+          reviewed_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          slug?: string
+          description?: string
+          content?: string
+          category_id?: string | null
+          cover_image_url?: string | null
+          read_time?: string | null
+          tags?: any
+          status?: "pending" | "approved" | "rejected"
+          admin_notes?: string | null
+          user_id?: string | null
+          submitter_email?: string
+          reviewed_by?: string | null
+          reviewed_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_submissions_category_id_fkey"
+            columns: ["category_id"]
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       tool_screenshots: {
         Row: {
           id: string

@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react"
 import Link from "next/link"
-import { Search, Menu, X, Plus } from "lucide-react"
+import { Search, Menu, X, Plus, FileEdit } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Logo from "@/components/ui/logo"
 import UserMenu from "@/components/layout/user-menu"
@@ -44,6 +44,12 @@ export default function Navbar() {
           <Button variant="ghost" size="icon" aria-label="Search">
             <Search className="h-5 w-5" />
           </Button>
+          <Button variant="ghost" asChild className="hidden sm:inline-flex items-center gap-1.5">
+            <Link href="/submit-article">
+              <FileEdit className="h-4 w-4" />
+              Write Article
+            </Link>
+          </Button>
           <Button asChild className="hidden sm:inline-flex items-center gap-1.5">
             <Link href="/submit-tool">
               <Plus className="h-4 w-4" />
@@ -76,12 +82,20 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Button asChild className="mt-4 w-full items-center gap-1.5 sm:hidden">
-              <Link href="/submit-tool" onClick={closeMenu}>
-                <Plus className="h-4 w-4" />
-                Submit Tool
-              </Link>
-            </Button>
+            <div className="mt-4 flex flex-col gap-2 sm:hidden">
+              <Button asChild className="w-full items-center gap-1.5">
+                <Link href="/submit-article" onClick={closeMenu}>
+                  <FileEdit className="h-4 w-4" />
+                  Write Article
+                </Link>
+              </Button>
+              <Button asChild className="w-full items-center gap-1.5">
+                <Link href="/submit-tool" onClick={closeMenu}>
+                  <Plus className="h-4 w-4" />
+                  Submit Tool
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       )}
