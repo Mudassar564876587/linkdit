@@ -2,6 +2,7 @@
 
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
+import { logAuditEvent } from "@/lib/audit"
 
 function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
@@ -178,6 +179,7 @@ export async function adminCreateTool(formData: FormData): Promise<AdminToolResu
     }
   }
 
+  await logAuditEvent({ action: "create", entityType: "tool", entityId: toolId, metadata: { name, slug } })
   revalidatePath("/linkdit-studio-8k92/tools")
   revalidatePath("/tools")
   return { success: true, slug }
@@ -187,11 +189,13 @@ export async function adminDeleteTool(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  const { data: tool } = await supabase.from("tools").select("name").eq("id", id).single()
   await supabase.from("tool_screenshots").delete().eq("tool_id", id)
   await supabase.from("tool_tags").delete().eq("tool_id", id)
   await supabase.from("bookmarks").delete().eq("tool_id", id)
   await supabase.from("reviews").delete().eq("tool_id", id)
   await supabase.from("tools").delete().eq("id", id)
+  await logAuditEvent({ action: "delete", entityType: "tool", entityId: id, metadata: { name: tool?.name } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
 }
@@ -207,6 +211,7 @@ export async function adminBulkDeleteTools(ids: string[]) {
     await supabase.from("reviews").delete().eq("tool_id", id)
   }
   await supabase.from("tools").delete().in("id", ids)
+  await logAuditEvent({ action: "bulk_delete", entityType: "tool", metadata: { count: ids.length } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
 }
@@ -216,6 +221,7 @@ export async function adminTogglePublish(id: string, published: boolean) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("tools").update({ is_published: published }).eq("id", id)
+  await logAuditEvent({ action: "toggle_publish", entityType: "tool", entityId: id, metadata: { published } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
 }
@@ -225,6 +231,7 @@ export async function adminToggleFeatured(id: string, featured: boolean) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("tools").update({ featured }).eq("id", id)
+  await logAuditEvent({ action: "toggle_featured", entityType: "tool", entityId: id, metadata: { featured } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
 }
@@ -234,6 +241,7 @@ export async function adminToggleVerified(id: string, verified: boolean) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("tools").update({ is_verified: verified }).eq("id", id)
+  await logAuditEvent({ action: "toggle_verified", entityType: "tool", entityId: id, metadata: { verified } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
 }
@@ -302,6 +310,7 @@ export async function adminUpdateTool(id: string, formData: FormData): Promise<A
 
   const { error } = await supabase.from("tools").update(updates as any).eq("id", id)
   if (error) return { error: error.message }
+  await logAuditEvent({ action: "update", entityType: "tool", entityId: id })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
 }

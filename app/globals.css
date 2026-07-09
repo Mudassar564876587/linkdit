@@ -291,6 +291,50 @@ body {
 @utility shadow-card { box-shadow: var(--shadow-card); }
 @utility shadow-card-hover { box-shadow: var(--shadow-card-hover); }
 
+/* ─── 3D Icon Treatment ─── */
+.icon-3d {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 16px rgba(0,0,0,0.06);
+  transition: all 200ms ease;
+}
+.icon-3d:hover {
+  transform: scale(1.1) rotate(-3deg);
+}
+.icon-3d-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 16px rgba(0,0,0,0.06);
+  transition: all 200ms ease;
+}
+.icon-3d-inline:hover {
+  transform: scale(1.1) rotate(-3deg);
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .card-depth:hover {
+    transform: none;
+  }
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .btn-success:hover,
+  .btn-danger:hover {
+    transform: none;
+  }
+}
+
 /* ─── Skeleton shimmer ─── */
 @keyframes shimmer {
   0% { background-position: -200% 0; }

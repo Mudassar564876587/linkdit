@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import Link from "next/link"
 import { Search, Menu, X, Plus, FileEdit } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -18,11 +18,24 @@ const navLinks = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   const closeMenu = useCallback(() => setIsOpen(false), [])
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        scrolled
+          ? "border-b border-border/60 bg-white/80 shadow-[0_4px_20px_rgba(0,0,0,0.06)] backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent"
+      }`}
+    >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Logo />
 
@@ -34,7 +47,6 @@ export default function Navbar() {
               className="relative rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:text-foreground"
             >
               {link.label}
-              <span className="absolute inset-x-3 -bottom-px h-px scale-x-0 bg-primary transition-transform duration-200 group-hover:scale-x-0" />
               <span className="absolute inset-x-3 -bottom-px h-px origin-left scale-x-0 bg-primary transition-transform duration-200 hover:scale-x-100" />
             </Link>
           ))}
@@ -70,7 +82,7 @@ export default function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="border-t border-border md:hidden">
+        <div className="border-t border-border bg-white/95 backdrop-blur-xl md:hidden">
           <div className="space-y-1 px-4 pb-6 pt-2">
             {navLinks.map((link) => (
               <Link

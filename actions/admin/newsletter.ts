@@ -2,6 +2,7 @@
 
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
+import { logAuditEvent } from "@/lib/audit"
 
 async function isAdmin(userId: string): Promise<boolean> {
   const supabase = await createServerSupabaseClient()
@@ -13,7 +14,9 @@ export async function adminDeleteSubscriber(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  const { data: subscriber } = await supabase.from("newsletter_subscribers").select("email").eq("id", id).single()
   await supabase.from("newsletter_subscribers").delete().eq("id", id)
+  await logAuditEvent({ action: "delete", entityType: "newsletter_subscriber", entityId: id, metadata: { email: subscriber?.email } })
   revalidatePath("/linkdit-studio-8k92/newsletter")
   return { success: true }
 }

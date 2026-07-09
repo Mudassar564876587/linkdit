@@ -2,6 +2,7 @@
 
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
+import { logAuditEvent } from "@/lib/audit"
 
 async function isAdmin(userId: string): Promise<boolean> {
   const supabase = await createServerSupabaseClient()
@@ -40,7 +41,7 @@ export async function adminCreateComparison(formData: FormData) {
     slug = `${slugify(title)}-${counter++}`
   }
 
-  const { error } = await supabase.from("comparisons").insert({
+  const { data: comparison, error } = await supabase.from("comparisons").insert({
     title,
     slug,
     description,
@@ -51,9 +52,10 @@ export async function adminCreateComparison(formData: FormData) {
     seo_description: seoDescription || null,
     is_published: published,
     is_featured: featured,
-  })
+  }).select("id").single()
 
   if (error) return { error: error.message }
+  await logAuditEvent({ action: "create", entityType: "comparison", entityId: comparison?.id, metadata: { title, slug } })
   revalidatePath("/linkdit-studio-8k92/comparisons")
   return { success: true, slug }
 }
@@ -105,6 +107,7 @@ export async function adminUpdateComparison(id: string, formData: FormData) {
     is_featured: featured,
   }).eq("id", id)
   if (error) return { error: error.message }
+  await logAuditEvent({ action: "update", entityType: "comparison", entityId: id })
   revalidatePath("/linkdit-studio-8k92/comparisons")
   return { success: true }
 }
@@ -113,7 +116,9 @@ export async function adminDeleteComparison(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  const { data: comparison } = await supabase.from("comparisons").select("title").eq("id", id).single()
   await supabase.from("comparisons").delete().eq("id", id)
+  await logAuditEvent({ action: "delete", entityType: "comparison", entityId: id, metadata: { title: comparison?.title } })
   revalidatePath("/linkdit-studio-8k92/comparisons")
   return { success: true }
 }
@@ -123,6 +128,7 @@ export async function adminToggleComparisonPublish(id: string, isPublished: bool
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("comparisons").update({ is_published: isPublished }).eq("id", id)
+  await logAuditEvent({ action: "toggle_publish", entityType: "comparison", entityId: id, metadata: { isPublished } })
   revalidatePath("/linkdit-studio-8k92/comparisons")
   return { success: true }
 }
@@ -132,6 +138,7 @@ export async function adminToggleComparisonFeatured(id: string, featured: boolea
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("comparisons").update({ is_featured: featured }).eq("id", id)
+  await logAuditEvent({ action: "toggle_featured", entityType: "comparison", entityId: id, metadata: { featured } })
   revalidatePath("/linkdit-studio-8k92/comparisons")
   return { success: true }
 }

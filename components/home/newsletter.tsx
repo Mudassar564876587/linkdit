@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react"
 import { Mail, CheckCircle2 } from "lucide-react"
+import { motion } from "framer-motion"
 import { SectionHeader } from "@/components/ui/section-header"
 import { subscribeToNewsletter } from "@/services/newsletter.service"
 
@@ -37,7 +38,13 @@ export default function Newsletter() {
           description="Get the latest AI tools, tutorials and insights delivered to your inbox every week."
         />
 
-        <div className="mx-auto mt-10 max-w-lg">
+        <motion.div
+          className="mx-auto mt-10 max-w-lg"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-50px" }}
+        >
           {status === "success" ? (
             <div className="flex flex-col items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-8 text-center">
               <CheckCircle2 className="h-10 w-10 text-emerald-500" />
@@ -78,7 +85,7 @@ export default function Newsletter() {
           <p className="mt-4 text-center text-xs text-muted-foreground">
             No spam. Unsubscribe anytime.
           </p>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

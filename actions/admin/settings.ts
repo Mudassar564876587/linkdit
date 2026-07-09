@@ -2,6 +2,7 @@
 
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
+import { logAuditEvent } from "@/lib/audit"
 
 async function isAdmin(userId: string): Promise<boolean> {
   const supabase = await createServerSupabaseClient()
@@ -14,6 +15,7 @@ export async function adminUpdateSetting(key: string, value: unknown) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("site_settings").upsert({ key, value, updated_at: new Date().toISOString() })
+  await logAuditEvent({ action: "update", entityType: "site_setting", metadata: { key } })
   revalidatePath("/linkdit-studio-8k92/settings")
   return { success: true }
 }

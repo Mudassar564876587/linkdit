@@ -2,6 +2,7 @@
 
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
+import { logAuditEvent } from "@/lib/audit"
 
 async function isAdmin(userId: string): Promise<boolean> {
   const supabase = await createServerSupabaseClient()
@@ -44,7 +45,7 @@ export async function adminCreateResource(formData: FormData) {
   const featuresArr = features ? features.split("\n").map((f: string) => f.trim()).filter(Boolean) : []
   const tagsArr = tags ? tags.split(",").map((t: string) => t.trim()).filter(Boolean) : []
 
-  const { error } = await supabase.from("resources").insert({
+  const { data: resource, error } = await supabase.from("resources").insert({
     name, slug, description, content,
     category_id: categoryId || null,
     website_url: websiteUrl || null,
@@ -55,9 +56,10 @@ export async function adminCreateResource(formData: FormData) {
     tags: tagsArr,
     is_published: published,
     featured,
-  })
+  }).select("id").single()
 
   if (error) return { error: error.message }
+  await logAuditEvent({ action: "create", entityType: "resource", entityId: resource?.id, metadata: { name, slug } })
   revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true, slug }
 }
@@ -96,6 +98,7 @@ export async function adminUpdateResource(id: string, formData: FormData) {
   }).eq("id", id)
 
   if (error) return { error: error.message }
+  await logAuditEvent({ action: "update", entityType: "resource", entityId: id })
   revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true }
 }
@@ -104,7 +107,9 @@ export async function adminDeleteResource(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  const { data: resource } = await supabase.from("resources").select("name").eq("id", id).single()
   await supabase.from("resources").delete().eq("id", id)
+  await logAuditEvent({ action: "delete", entityType: "resource", entityId: id, metadata: { name: resource?.name } })
   revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true }
 }
@@ -114,6 +119,7 @@ export async function adminToggleResourcePublish(id: string, isPublished: boolea
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("resources").update({ is_published: isPublished }).eq("id", id)
+  await logAuditEvent({ action: "toggle_publish", entityType: "resource", entityId: id, metadata: { isPublished } })
   revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true }
 }
@@ -123,6 +129,7 @@ export async function adminToggleResourceFeatured(id: string, featured: boolean)
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   await supabase.from("resources").update({ featured }).eq("id", id)
+  await logAuditEvent({ action: "toggle_featured", entityType: "resource", entityId: id, metadata: { featured } })
   revalidatePath("/linkdit-studio-8k92/resources")
   return { success: true }
 }

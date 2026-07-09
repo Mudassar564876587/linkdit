@@ -2,6 +2,7 @@
 
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
+import { logAuditEvent } from "@/lib/audit"
 
 async function isAdmin(userId: string): Promise<boolean> {
   const supabase = await createServerSupabaseClient()
@@ -33,6 +34,7 @@ export async function adminDeleteMedia(path: string) {
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   const { error } = await supabase.storage.from("media").remove([path])
   if (error) return { error: error.message }
+  await logAuditEvent({ action: "delete", entityType: "media", metadata: { path } })
   revalidatePath("/linkdit-studio-8k92/media")
   return { success: true }
 }
