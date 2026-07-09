@@ -2,12 +2,13 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { SITE } from "@/constants/site"
+import BackNav from "@/components/ui/back-nav"
 import RatingStars from "@/components/tools/rating-stars"
 import BookmarkButton from "@/components/tools/bookmark-button"
 import ReviewsList from "./reviews-list"
 import SimilarTools from "./similar-tools"
 import ReviewSection from "@/components/tools/review-section"
-import { ExternalLink, Check, X, ShieldCheck, Sparkles } from "lucide-react"
+import { ExternalLink, Check, X, ShieldCheck, Sparkles, ArrowLeft } from "lucide-react"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const slug = (await params).slug.toLowerCase()
@@ -133,6 +134,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+          <BackNav />
           {/* Hero */}
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-5">

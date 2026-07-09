@@ -1,4 +1,6 @@
 import { Suspense } from "react"
+
+export const dynamic = 'force-dynamic'
 import Navbar from "@/components/layout/navbar"
 import Hero from "@/components/home/hero"
 import FeaturedTools, {

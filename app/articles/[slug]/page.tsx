@@ -9,6 +9,7 @@ import ShareButtons from "@/components/articles/share-buttons"
 import TableOfContents from "@/components/articles/table-of-contents"
 import ArticleBookmarkButton from "@/components/articles/article-bookmark-button"
 import { Calendar, Clock, ArrowLeft, ArrowRight, ChevronLeft } from "lucide-react"
+import BackNav from "@/components/ui/back-nav"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const slug = (await params).slug.toLowerCase()
@@ -126,6 +127,8 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <article className="min-h-screen bg-background">
         <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+          <BackNav />
+
           <Link href="/articles" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
             <ChevronLeft className="h-4 w-4" /> Back to Articles
           </Link>

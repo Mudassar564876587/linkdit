@@ -1,88 +1,99 @@
 import Link from "next/link"
-import { Search, Sparkles, ArrowUpRight, LayoutGrid, BookOpen, Mail, RefreshCw } from "lucide-react"
+import { Search, Sparkles, ArrowUpRight, LayoutGrid, BookOpen, Mail, RefreshCw, TrendingUp, BarChart3, Star, Users } from "lucide-react"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import HeroClient from "./hero-client"
 import HeroFloatingStack from "./hero-floating-stack"
 
 const popularSearches = ["ChatGPT", "Claude", "Gemini", "Midjourney", "Cursor"]
 
-const chartBars = [
-  { height: 32, color: "bg-blue-200" },
-  { height: 52, color: "bg-blue-300" },
-  { height: 42, color: "bg-blue-400" },
-  { height: 68, color: "bg-blue-500" },
-  { height: 60, color: "bg-blue-400" },
-  { height: 82, color: "bg-blue-500" },
-  { height: 90, color: "bg-blue-600" },
-  { height: 76, color: "bg-blue-500" },
-  { height: 88, color: "bg-blue-600" },
-  { height: 96, color: "bg-blue-600" },
-]
-
 export default async function Hero() {
   const supabase = await createServerSupabaseClient()
 
-  const [{ count: toolCount }, { count: categoryCount }, { count: articleCount }] = await Promise.all([
+  const [
+    { count: toolCount },
+    { count: categoryCount },
+    { count: articleCount },
+    { count: userCount },
+    { count: reviewCount },
+  ] = await Promise.all([
     supabase.from("tools").select("*", { count: "exact", head: true }).eq("is_published", true),
     supabase.from("categories").select("*", { count: "exact", head: true }),
     supabase.from("articles").select("*", { count: "exact", head: true }).eq("is_published", true),
+    supabase.from("users").select("*", { count: "exact", head: true }),
+    supabase.from("reviews").select("*", { count: "exact", head: true }).eq("is_approved", true),
   ])
 
-  const stats = [
-    { value: `${toolCount ?? 0}+`, label: "AI Tools", icon: LayoutGrid },
-    { value: `${categoryCount ?? 0}`, label: "Categories", icon: BookOpen },
-    { value: "Free", label: "Tool Submission", icon: Mail },
-    { value: "Updated", label: "Weekly", icon: RefreshCw },
-  ]
-
   const heroCardContent = (
-    <div className="card-depth p-5 sm:p-6">
-      <div className="mb-4 flex items-center gap-1.5">
-        <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
-        <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-        <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
-      </div>
+    <div className="card-depth overflow-hidden">
+      <div className="p-5 sm:p-6">
+        <div className="mb-4 flex items-center gap-1.5">
+          <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
+          <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+          <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
+        </div>
 
-      <div className="mb-5">
-        <div className="mb-3 flex items-center justify-between">
-          <span className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-            AI Tool Directory
-          </span>
-        </div>
-        <div className="flex items-end gap-1.5">
-          {chartBars.map((bar, index) => (
-            <div
-              key={index}
-              className={`${bar.color} w-full rounded-t-sm transition-all duration-500`}
-              style={{ height: `${bar.height}%` }}
-            />
-          ))}
-        </div>
-      </div>
+        <div className="mb-5">
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+              Platform Overview
+            </span>
+            <span className="text-[10px] text-muted-foreground/60">Live</span>
+          </div>
 
-      <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
-        <div className="rounded-xl bg-secondary p-3.5 sm:p-4 icon-3d">
-          <div className="text-xs text-muted-foreground">AI Tools</div>
-          <div className="mt-0.5 text-lg font-semibold text-foreground sm:text-xl">
-            {toolCount ?? 0}+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/50 p-4">
+              <div className="flex items-center gap-2 text-blue-600">
+                <LayoutGrid className="h-4 w-4" />
+                <span className="text-xs font-medium uppercase tracking-wide">Tools</span>
+              </div>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="text-3xl font-bold text-foreground">{toolCount ?? 0}</span>
+                <span className="text-xs text-muted-foreground">curated</span>
+              </div>
+            </div>
+            <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100/50 p-4">
+              <div className="flex items-center gap-2 text-emerald-600">
+                <BookOpen className="h-4 w-4" />
+                <span className="text-xs font-medium uppercase tracking-wide">Articles</span>
+              </div>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="text-3xl font-bold text-foreground">{articleCount ?? 0}</span>
+                <span className="text-xs text-muted-foreground">guides</span>
+              </div>
+            </div>
+            <div className="rounded-xl bg-gradient-to-br from-amber-50 to-amber-100/50 p-4">
+              <div className="flex items-center gap-2 text-amber-600">
+                <Star className="h-4 w-4" />
+                <span className="text-xs font-medium uppercase tracking-wide">Reviews</span>
+              </div>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="text-3xl font-bold text-foreground">{reviewCount ?? 0}</span>
+                <span className="text-xs text-muted-foreground">approved</span>
+              </div>
+            </div>
+            <div className="rounded-xl bg-gradient-to-br from-violet-50 to-violet-100/50 p-4">
+              <div className="flex items-center gap-2 text-violet-600">
+                <Users className="h-4 w-4" />
+                <span className="text-xs font-medium uppercase tracking-wide">Users</span>
+              </div>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="text-3xl font-bold text-foreground">{userCount ?? 0}</span>
+                <span className="text-xs text-muted-foreground">active</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="rounded-xl bg-secondary p-3.5 sm:p-4 icon-3d">
-          <div className="text-xs text-muted-foreground">Categories</div>
-          <div className="mt-0.5 text-lg font-semibold text-foreground sm:text-xl">
-            {categoryCount ?? 0}
-          </div>
-        </div>
-        <div className="rounded-xl bg-secondary p-3.5 sm:p-4 icon-3d">
-          <div className="text-xs text-muted-foreground">Articles</div>
-          <div className="mt-0.5 text-lg font-semibold text-foreground sm:text-xl">
-            {articleCount ?? 0}
-          </div>
-        </div>
-        <div className="rounded-xl bg-secondary p-3.5 sm:p-4 icon-3d">
-          <div className="text-xs text-muted-foreground">Updated</div>
-          <div className="mt-0.5 text-lg font-semibold text-foreground sm:text-xl">
-            Weekly
+
+        <div className="border-t border-border pt-4">
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <div className="flex items-center gap-1.5">
+              <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />
+              <span>Growing weekly</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <BarChart3 className="h-3.5 w-3.5" />
+              <span>{categoryCount ?? 0} categories</span>
+            </div>
           </div>
         </div>
       </div>
@@ -92,7 +103,6 @@ export default async function Hero() {
   return (
     <HeroClient>
       <section className="relative overflow-hidden">
-        {/* Floating background orbs */}
         <div
           className="absolute left-[10%] top-[15%] h-72 w-72 rounded-full bg-blue-400/20 blur-[60px] animate-float"
           aria-hidden="true"
@@ -187,7 +197,6 @@ export default async function Hero() {
               <div className="relative mx-auto w-full max-w-lg">
                 {heroCardContent}
 
-                {/* Floating tool badges */}
                 <div className="absolute -right-8 top-12 animate-[float_3s_ease-in-out_infinite] rounded-xl border border-border/60 bg-white px-3.5 py-2.5 shadow-premium-lg">
                   <div className="flex items-center gap-2.5">
                     <div className="h-2.5 w-2.5 rounded-full bg-emerald-500" />

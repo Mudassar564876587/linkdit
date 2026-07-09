@@ -9,17 +9,17 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   PenLine, Image, Video, Code2, Zap, BarChart3, Music, TrendingUp, BookOpen, Palette,
 }
 
-const categoryStyles: Record<string, { iconBg: string }> = {
-  "ai-writing": { iconBg: "bg-blue-100 text-blue-600" },
-  "image-generation": { iconBg: "bg-violet-100 text-violet-600" },
-  video: { iconBg: "bg-rose-100 text-rose-600" },
-  coding: { iconBg: "bg-emerald-100 text-emerald-600" },
-  productivity: { iconBg: "bg-amber-100 text-amber-600" },
-  marketing: { iconBg: "bg-cyan-100 text-cyan-600" },
-  audio: { iconBg: "bg-purple-100 text-purple-600" },
-  analytics: { iconBg: "bg-orange-100 text-orange-600" },
-  education: { iconBg: "bg-teal-100 text-teal-600" },
-  design: { iconBg: "bg-pink-100 text-pink-600" },
+const categoryStyles: Record<string, { iconBg: string; gradient: string }> = {
+  "ai-writing": { iconBg: "bg-blue-100 text-blue-600", gradient: "from-blue-500 to-blue-600" },
+  "image-generation": { iconBg: "bg-violet-100 text-violet-600", gradient: "from-violet-500 to-violet-600" },
+  video: { iconBg: "bg-rose-100 text-rose-600", gradient: "from-rose-500 to-rose-600" },
+  coding: { iconBg: "bg-emerald-100 text-emerald-600", gradient: "from-emerald-500 to-emerald-600" },
+  productivity: { iconBg: "bg-amber-100 text-amber-600", gradient: "from-amber-500 to-amber-600" },
+  marketing: { iconBg: "bg-cyan-100 text-cyan-600", gradient: "from-cyan-500 to-cyan-600" },
+  audio: { iconBg: "bg-purple-100 text-purple-600", gradient: "from-purple-500 to-purple-600" },
+  analytics: { iconBg: "bg-orange-100 text-orange-600", gradient: "from-orange-500 to-orange-600" },
+  education: { iconBg: "bg-teal-100 text-teal-600", gradient: "from-teal-500 to-teal-600" },
+  design: { iconBg: "bg-pink-100 text-pink-600", gradient: "from-pink-500 to-pink-600" },
 }
 
 type CategoryItem = { id: string; name: string; slug: string; toolCount: number; iconName: string }
@@ -45,14 +45,24 @@ export default function CategoriesClient({ categories }: { categories: CategoryI
                 href={`/categories/${category.slug}`}
                 className="group card-depth rounded-xl block p-5 transition-all duration-200 hover:shadow-card-hover active:scale-[0.98] sm:p-6"
               >
-                <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${styles.iconBg} sm:h-12 sm:w-12`}>
-                  <Icon className="h-5 w-5" />
+                <div className="flex items-start justify-between">
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${styles.iconBg} shadow-sm`}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  {category.toolCount > 0 && (
+                    <span className={`inline-flex items-center gap-1 rounded-full bg-gradient-to-r ${styles.gradient} px-3 py-1 text-xs font-semibold text-white shadow-sm`}>
+                      {category.toolCount}
+                      <span className="hidden sm:inline">{category.toolCount === 1 ? "tool" : "tools"}</span>
+                    </span>
+                  )}
                 </div>
                 <h3 className="mt-4 text-base font-semibold text-foreground sm:mt-5 sm:text-lg">
                   {category.name}
                 </h3>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {category.toolCount > 0 ? `${category.toolCount} ${category.toolCount === 1 ? "tool" : "tools"}` : "Coming Soon"}
+                  {category.toolCount > 0
+                    ? `${category.toolCount} ${category.toolCount === 1 ? "tool" : "tools"} available`
+                    : "Coming soon"}
                 </p>
               </Link>
             </TiltCard>

@@ -93,7 +93,7 @@ NOTIFY pgrst, 'reload schema';`
   return NextResponse.json({
     error: "Schema issue detected.",
     reloadAttempted: !!notifyError,
-    migrationSQL,
+    migrationSQL: migrationSql,
     instructions: "Copy the SQL and run it in Supabase SQL Editor.",
   })
 }
