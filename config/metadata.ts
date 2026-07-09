@@ -27,6 +27,15 @@ export const defaultMetadata: Metadata = {
   verification: {
     google: "Fi8XZhJhn7ladGLqrmJ6-0jioFvJySHrAsS-PE2G_ZM",
   },
+  icons: {
+    icon: [
+      { url: "/favicon/favicon.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon/favicon.png", type: "image/png", sizes: "16x16" },
+    ],
+    apple: [
+      { url: "/favicon/favicon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 }
 
 export function createMetadata(overrides?: Partial<Metadata>): Metadata {

@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import Logo from "@/components/ui/logo"
 import {
   LayoutDashboard,
   Bookmark,
@@ -43,9 +44,7 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
         )}
       >
         <div className="flex h-16 items-center justify-between border-b border-border px-6">
-          <Link href="/dashboard" className="text-lg font-bold text-foreground">
-            LinkDit
-          </Link>
+          <Logo />
           <button onClick={onClose} className="text-muted-foreground md:hidden">
             <X className="h-5 w-5" />
           </button>
