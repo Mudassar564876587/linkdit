@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+export const dynamic = 'force-dynamic'
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import ArticleCard from "@/components/articles/article-card"
 import Pagination from "@/components/tools/pagination"

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+export const dynamic = 'force-dynamic'
 import { notFound } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import ResourceCard from "@/components/resources/resource-card"

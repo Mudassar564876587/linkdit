@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+export const dynamic = 'force-dynamic'
 import { Suspense } from "react"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import ToolCard from "@/components/tools/tool-card"
