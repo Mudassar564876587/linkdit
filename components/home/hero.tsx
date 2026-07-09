@@ -123,7 +123,7 @@ export default async function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-blue-50 via-white to-white" />
         <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-blue-100/40 blur-3xl" />
 
-        <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-[var(--header-h)] sm:px-6 sm:pb-28 sm:pt-[calc(var(--header-h)_+_0.5rem)] lg:px-8 lg:pb-36 lg:pt-24">
+        <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 sm:pb-28 sm:pt-20 lg:px-8 lg:pb-36 lg:pt-24">
           <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <div className="text-center lg:text-left">
               <div className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1.5 text-xs font-medium text-blue-700 sm:text-sm">

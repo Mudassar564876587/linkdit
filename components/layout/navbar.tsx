@@ -76,13 +76,13 @@ export default function Navbar() {
             <Button variant="ghost" size="icon" aria-label="Search">
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" asChild className="hidden sm:inline-flex items-center gap-1.5">
+            <Button variant="ghost" asChild className="hidden lg:inline-flex items-center gap-1.5">
               <Link href="/submit-article">
                 <FileEdit className="h-4 w-4" />
                 Write Article
               </Link>
             </Button>
-            <Button asChild className="hidden sm:inline-flex items-center gap-1.5">
+            <Button asChild className="hidden lg:inline-flex items-center gap-1.5">
               <Link href="/submit-tool">
                 <Plus className="h-4 w-4" />
                 Submit Tool
