@@ -25,6 +25,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      style={{ "--header-h": "4rem" } as React.CSSProperties}
     >
       <body className="min-h-screen bg-background font-sans text-foreground">
         {children}
