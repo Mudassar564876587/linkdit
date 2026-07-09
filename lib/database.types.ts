@@ -53,6 +53,7 @@ export interface Database {
           is_published: boolean
           sponsored: boolean
           is_verified: boolean
+          platforms: string[]
           screenshots: any
           features: string[]
           pros: string[]
@@ -80,6 +81,7 @@ export interface Database {
           is_published?: boolean
           sponsored?: boolean
           is_verified?: boolean
+          platforms?: string[]
           screenshots?: any
           features?: string[]
           pros?: string[]
@@ -106,6 +108,7 @@ export interface Database {
           is_published?: boolean
           sponsored?: boolean
           is_verified?: boolean
+          platforms?: string[]
           screenshots?: any
           features?: string[]
           pros?: string[]

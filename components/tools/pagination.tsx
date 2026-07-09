@@ -11,12 +11,14 @@ export default function Pagination({
   currentPage: number
   totalPages: number
   basePath: string
-  searchParams?: Record<string, string>
+  searchParams?: Record<string, string> | URLSearchParams
 }) {
   if (totalPages <= 1) return null
 
   function href(page: number) {
-    const params = new URLSearchParams(searchParams)
+    const params = searchParams instanceof URLSearchParams
+      ? new URLSearchParams(searchParams.toString())
+      : new URLSearchParams(searchParams)
     params.set("page", String(page))
     return `${basePath}?${params.toString()}`
   }

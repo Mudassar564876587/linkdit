@@ -1,9 +1,14 @@
 "use client"
 
 import Link from "next/link"
-import { ExternalLink, Zap, ShieldCheck, Sparkles } from "lucide-react"
+import { ExternalLink, Zap, ShieldCheck, Sparkles, Monitor, Smartphone, Laptop } from "lucide-react"
 import TiltCard from "@/components/ui/tilt-card"
 import RatingStars from "@/components/tools/rating-stars"
+import type { ToolPlatform } from "@/types/tool"
+
+const platformIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  Web: Monitor, Mobile: Smartphone, Mac: Laptop, Windows: Monitor, Linux: Laptop, iOS: Smartphone, Android: Smartphone, Chrome: Monitor, API: Monitor,
+}
 
 type ToolCardProps = {
   id: string
@@ -13,6 +18,7 @@ type ToolCardProps = {
   logoUrl: string | null
   websiteUrl: string
   pricing: string
+  platforms?: ToolPlatform[]
   rating: number
   reviewCount: number
   featured: boolean
@@ -33,16 +39,16 @@ export default function ToolCard({
   featured,
   sponsored,
   isVerified,
+  platforms,
   categoryName,
 }: ToolCardProps) {
-  return (
+return (
     <TiltCard maxTilt={6}>
       <Link
         href={`/tools/${slug}`}
         className="group card-depth p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary block"
         aria-label={`View details for ${name}`}
       >
-        {/* Badges */}
         <div className="absolute -top-2.5 right-4 flex items-center gap-1.5">
           {sponsored && (
             <span className="flex items-center gap-1 rounded-full bg-amber-500 px-3 py-1 text-[11px] font-semibold text-white" aria-label="Sponsored tool">
@@ -80,7 +86,7 @@ export default function ToolCard({
           </div>
         </div>
 
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-3 flex items-center gap-3">
           <div className="flex items-center gap-1.5">
             <RatingStars rating={rating} size={3.5} />
             <span className="text-xs text-muted-foreground" aria-label={`${rating.toFixed(1)} out of 5 stars, ${reviewCount} reviews`}>
@@ -89,24 +95,38 @@ export default function ToolCard({
           </div>
         </div>
 
-        <div className="mt-3 flex items-center gap-2">
+        <div className="mt-3 flex flex-wrap items-center gap-1.5">
           <span className="rounded-md bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
             {categoryName}
           </span>
           <span
             className={`rounded-md px-2 py-0.5 text-[11px] font-medium ${
               pricing === "Free"
-                ? "bg-emerald-50 text-emerald-700"
-                : pricing === "Freemium"
-                ? "bg-amber-50 text-amber-700"
-                : "bg-violet-50 text-violet-700"
+              ? "bg-emerald-50 text-emerald-700"
+              : pricing === "Freemium"
+              ? "bg-amber-50 text-amber-700"
+              : "bg-violet-50 text-violet-700"
             }`}
           >
             {pricing}
           </span>
         </div>
 
-        <div className="mt-4 flex items-center gap-2 border-t border-border pt-4">
+        {platforms && platforms.length > 0 && (
+          <div className="mt-2 flex flex-wrap items-center gap-1">
+            {platforms.map((p) => {
+              const Icon = platformIcons[p] ?? Monitor
+              return (
+                <span key={p} className="inline-flex items-center gap-0.5 rounded-md bg-secondary/80 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                  <Icon className="h-2.5 w-2.5" />
+                  {p}
+                </span>
+              )
+            })}
+          </div>
+        )}
+
+        <div className="mt-3 flex items-center gap-2 border-t border-border pt-3">
           <span className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
             <ExternalLink className="h-3 w-3" />
             Visit website

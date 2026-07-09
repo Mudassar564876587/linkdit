@@ -2,10 +2,24 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import { useCallback } from "react"
-import { SlidersHorizontal } from "lucide-react"
+import { SlidersHorizontal, Monitor, Smartphone, Laptop } from "lucide-react"
 import { cn } from "@/lib/utils"
+import type { ToolPlatform } from "@/types/tool"
 
-const pricingOptions = ["Free", "Freemium", "Paid"]
+const pricingOptions = ["Free", "Freemium", "Paid"] as const
+
+const platformOptions: { value: ToolPlatform; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { value: "Web", label: "Web", icon: Monitor },
+  { value: "Mobile", label: "Mobile", icon: Smartphone },
+  { value: "Mac", label: "Mac", icon: Laptop },
+  { value: "Windows", label: "Windows", icon: Monitor },
+  { value: "Linux", label: "Linux", icon: Laptop },
+  { value: "iOS", label: "iOS", icon: Smartphone },
+  { value: "Android", label: "Android", icon: Smartphone },
+  { value: "Chrome", label: "Chrome", icon: Monitor },
+  { value: "API", label: "API", icon: Monitor },
+]
+
 const sortOptions = [
   { value: "rating", label: "Highest rated" },
   { value: "newest", label: "Newest first" },
@@ -21,6 +35,7 @@ export default function ToolFilters({ categories }: { categories: { slug: string
   const currentSort = searchParams.get("sort") ?? "rating"
   const currentFeatured = searchParams.get("featured") ?? ""
   const currentVerified = searchParams.get("verified") ?? ""
+  const currentPlatforms = searchParams.getAll("platform")
 
   const setParam = useCallback(
     (key: string, value: string) => {
@@ -32,6 +47,31 @@ export default function ToolFilters({ categories }: { categories: { slug: string
     },
     [router, searchParams]
   )
+
+  const togglePlatform = useCallback(
+    (platform: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      const current = params.getAll("platform")
+      params.delete("platform")
+      const exists = current.includes(platform)
+      for (const p of current) if (p !== platform) params.append("platform", p)
+      if (exists) {
+        if (!params.has("platform")) {}
+      } else {
+        params.append("platform", platform)
+      }
+      params.delete("page")
+      router.push(`/tools?${params.toString()}`)
+    },
+    [router, searchParams]
+  )
+
+  const isAllPlatforms = useCallback(() => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete("platform")
+    params.delete("page")
+    router.push(`/tools?${params.toString()}`)
+  }, [router, searchParams])
 
   return (
     <div className="space-y-4" role="search" aria-label="Filter AI tools">
@@ -115,6 +155,42 @@ export default function ToolFilters({ categories }: { categories: { slug: string
           />
           Verified only
         </label>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs font-medium text-muted-foreground mr-1">Platform:</span>
+        <button
+          onClick={isAllPlatforms}
+          className={cn(
+            "rounded-lg px-2.5 py-1 text-[11px] font-medium transition-colors",
+            !currentPlatforms.length
+              ? "bg-primary text-primary-foreground"
+              : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground"
+          )}
+          aria-pressed={!currentPlatforms.length}
+        >
+          All
+        </button>
+        {platformOptions.map((p) => {
+          const isActive = currentPlatforms.includes(p.value)
+          const Icon = p.icon
+          return (
+            <button
+              key={p.value}
+              onClick={() => togglePlatform(p.value)}
+              className={cn(
+                "inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-medium transition-colors",
+                isActive
+                  ? "bg-primary/10 text-primary ring-1 ring-primary/30"
+                  : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground"
+              )}
+              aria-pressed={isActive}
+            >
+              <Icon className="h-3 w-3" />
+              {p.label}
+            </button>
+          )
+        })}
       </div>
     </div>
   )

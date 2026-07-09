@@ -5,6 +5,7 @@ import ToolCard from "@/components/tools/tool-card"
 import ToolFilters from "@/components/tools/tool-filters"
 import SearchBar from "@/components/tools/search-bar"
 import Pagination from "@/components/tools/pagination"
+import type { ToolPlatform } from "@/types/tool"
 
 export const metadata: Metadata = {
   title: "AI Tools Directory | LinkDit",
@@ -27,7 +28,7 @@ const PAGE_SIZE = 12
 export default async function ToolsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; category?: string; pricing?: string; sort?: string; featured?: string; verified?: string; page?: string }>
+  searchParams: Promise<{ q?: string; category?: string; pricing?: string; sort?: string; featured?: string; verified?: string; platform?: string | string[]; page?: string }>
 }) {
   const sp = await searchParams
   const supabase = await createServerSupabaseClient()
@@ -58,6 +59,12 @@ export default async function ToolsPage({
   if (sp.q) {
     query.ilike("name", `%${sp.q}%`)
   }
+  if (sp.platform) {
+    const platforms = Array.isArray(sp.platform) ? sp.platform : [sp.platform]
+    if (platforms.length > 0) {
+      query.overlaps("platforms", platforms)
+    }
+  }
 
   switch (sp.sort) {
     case "newest":
@@ -87,13 +94,17 @@ export default async function ToolsPage({
     bookmarkedIds = new Set((bm ?? []).map((b) => b.tool_id!))
   }
 
-  const searchParamsRecord: Record<string, string> = {}
-  if (sp.q) searchParamsRecord.q = sp.q
-  if (sp.category) searchParamsRecord.category = sp.category
-  if (sp.pricing) searchParamsRecord.pricing = sp.pricing
-  if (sp.sort) searchParamsRecord.sort = sp.sort
-  if (sp.featured) searchParamsRecord.featured = sp.featured
-  if (sp.verified) searchParamsRecord.verified = sp.verified
+  const paginationParams = new URLSearchParams()
+  if (sp.q) paginationParams.set("q", sp.q)
+  if (sp.category) paginationParams.set("category", sp.category)
+  if (sp.pricing) paginationParams.set("pricing", sp.pricing)
+  if (sp.sort) paginationParams.set("sort", sp.sort)
+  if (sp.featured) paginationParams.set("featured", sp.featured)
+  if (sp.verified) paginationParams.set("verified", sp.verified)
+  if (sp.platform) {
+    const platforms = Array.isArray(sp.platform) ? sp.platform : [sp.platform]
+    platforms.forEach(p => paginationParams.append("platform", p))
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -134,6 +145,7 @@ export default async function ToolsPage({
                 logoUrl={t.logo_url}
                 websiteUrl={t.website_url}
                 pricing={t.pricing}
+                platforms={(t.platforms ?? []) as ToolPlatform[]}
                 rating={t.rating}
                 reviewCount={t.review_count}
                 featured={t.featured}
@@ -150,7 +162,7 @@ export default async function ToolsPage({
           currentPage={page}
           totalPages={totalPages}
           basePath="/tools"
-          searchParams={searchParamsRecord}
+          searchParams={paginationParams}
         />
       </div>
     </div>

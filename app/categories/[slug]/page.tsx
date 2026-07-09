@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import ToolCard from "@/components/tools/tool-card"
 import Pagination from "@/components/tools/pagination"
+import type { ToolPlatform } from "@/types/tool"
 
 const PAGE_SIZE = 12
 
@@ -103,6 +104,7 @@ export default async function CategoryPage({
                 logoUrl={t.logo_url}
                 websiteUrl={t.website_url}
                 pricing={t.pricing}
+                platforms={(t.platforms ?? []) as ToolPlatform[]}
                 rating={t.rating}
                 reviewCount={t.review_count}
                 featured={t.featured}

@@ -14,6 +14,7 @@ type Tool = {
   logoUrl: string | null
   websiteUrl: string
   pricing: string
+  platforms?: string[]
   rating: number
   reviewCount: number
   categoryName: string

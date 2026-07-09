@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
-import type { Tool, ToolFilters } from "@/types/tool"
+import type { Tool, ToolFilters, ToolPlatform } from "@/types/tool"
 
 function mapRowToTool(row: {
   id: string
@@ -10,6 +10,7 @@ function mapRowToTool(row: {
   logo_url: string | null
   website_url: string
   pricing: "Free" | "Freemium" | "Paid"
+  platforms: string[]
   rating: number
   review_count: number
   featured: boolean
@@ -30,6 +31,7 @@ function mapRowToTool(row: {
     logoUrl: row.logo_url,
     websiteUrl: row.website_url,
     pricing: row.pricing,
+    platforms: (row.platforms ?? ["Web"]) as ToolPlatform[],
     rating: row.rating,
     reviewCount: row.review_count,
     featured: row.featured,
@@ -74,6 +76,10 @@ export async function getTools(filters?: ToolFilters): Promise<Tool[]> {
 
   if (filters?.pricing) {
     query = query.eq("pricing", filters.pricing)
+  }
+
+  if (filters?.platforms && filters.platforms.length > 0) {
+    query = query.overlaps("platforms", filters.platforms)
   }
 
   if (filters?.minRating) {

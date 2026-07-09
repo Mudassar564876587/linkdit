@@ -1,9 +1,8 @@
 import Link from "next/link"
-import Logo from "@/components/ui/logo"
 import { Button } from "@/components/ui/button"
 
 const quickLinks = [
-  { href: "/ai-tools", label: "AI Tools" },
+  { href: "/tools", label: "AI Tools" },
   { href: "/articles", label: "Articles" },
   { href: "/categories", label: "Categories" },
   { href: "/compare", label: "Compare" },
@@ -16,11 +15,11 @@ const quickLinks = [
 ]
 
 const resources = [
-  { label: "Tutorials" },
-  { label: "Guides" },
-  { label: "Glossary" },
-  { label: "Blog" },
-  { label: "FAQ" },
+  { href: "/resources", label: "Tutorials", desc: "Step-by-step AI tutorials for beginners & pros" },
+  { href: "/resources", label: "Guides", desc: "In-depth guides covering AI workflows & best practices" },
+  { href: "/resources", label: "Glossary", desc: "AI terminology explained in plain English" },
+  { href: "/articles", label: "Blog", desc: "Latest AI news, comparisons & industry insights" },
+  { href: "/resources", label: "FAQ", desc: "Answers to the most common AI questions" },
 ]
 
 export default function Footer() {
@@ -29,11 +28,14 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-12">
           <div className="sm:col-span-2 lg:col-span-2">
-            <Logo />
+            <Link href="/" className="inline-block text-xl font-bold text-foreground">
+              LinkDit
+            </Link>
             <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">
               LinkDit is your premium destination for discovering, comparing and
               mastering the world&apos;s best AI tools. We help creators,
-              developers and businesses work smarter.
+              developers and businesses work smarter with curated tutorials,
+              guides, and expert comparisons.
             </p>
           </div>
 
@@ -59,12 +61,20 @@ export default function Footer() {
             <h3 className="text-xs font-semibold tracking-wide text-foreground uppercase">
               Resources
             </h3>
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-4 space-y-4">
               {resources.map((link) => (
                 <li key={link.label}>
-                  <span className="text-sm text-muted-foreground/50 cursor-default">
-                    {link.label} — Coming soon
-                  </span>
+                  <Link
+                    href={link.href}
+                    className="group block transition-all duration-200"
+                  >
+                    <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                      {link.label}
+                    </span>
+                    <span className="block text-xs text-muted-foreground mt-0.5">
+                      {link.desc}
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ul>

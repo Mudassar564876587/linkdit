@@ -81,6 +81,8 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
     .eq("tool_id", tool.id)
     .order("sort_order", { ascending: true })
 
+  const platforms = Array.isArray(tool.platforms) ? tool.platforms : []
+
   const { data: { user } } = await supabase.auth.getUser()
 
   const { data: userReview } = user
@@ -182,6 +184,11 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
                   }`}>
                     {tool.pricing}
                   </span>
+                  {platforms.length > 0 && platforms.map((p: string) => (
+                    <span key={p} className="rounded-md bg-secondary/80 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                      {p}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
