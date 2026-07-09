@@ -24,6 +24,9 @@ export const defaultMetadata: Metadata = {
     index: true,
     follow: true,
   },
+  verification: {
+    google: "Fi8XZhJhn7ladGLqrmJ6-0jioFvJySHrAsS-PE2G_ZM",
+  },
 }
 
 export function createMetadata(overrides?: Partial<Metadata>): Metadata {
