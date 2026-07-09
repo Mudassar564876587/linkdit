@@ -57,7 +57,7 @@ export async function generateMetadata({
       images: images.length > 0 ? images.map((url) => ({ url, width: 200, height: 200 })) : [],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title,
       description,
       images: images.length > 0 ? [images[0]] : [],

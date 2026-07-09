@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import TiltCard from "@/components/ui/tilt-card"
 import { PenLine, Image, Video, Code2, Zap, BarChart3, Music, TrendingUp, BookOpen, Palette } from "lucide-react"
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -34,19 +33,22 @@ export default function CategoriesClient({ categories }: { categories: CategoryI
         return (
           <motion.div
             key={category.id}
-            initial={{ opacity: 0, rotateX: -15, y: 40 }}
-            whileInView={{ opacity: 1, rotateX: 0, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.08 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut", delay: index * 0.06 }}
             viewport={{ once: true, margin: "-50px" }}
             style={{ transformStyle: "preserve-3d" }}
           >
-            <TiltCard maxTilt={6}>
-              <Link
-                href={`/categories/${category.slug}`}
-                className="group card-depth rounded-xl block p-5 transition-all duration-200 hover:shadow-card-hover active:scale-[0.98] sm:p-6"
-              >
+            <Link
+              href={`/categories/${category.slug}`}
+              className="group relative block rounded-2xl border border-border/60 bg-white p-5 shadow-premium transition-all duration-200 hover:shadow-premium-lg hover:-translate-y-0.5 sm:p-6"
+            >
+              {/* Hover gradient */}
+              <div className={`pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br ${styles.gradient} opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300`} />
+
+              <div className="relative">
                 <div className="flex items-start justify-between">
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${styles.iconBg} shadow-sm`}>
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${styles.iconBg} shadow-sm ring-1 ring-border/10`}>
                     <Icon className="h-5 w-5" />
                   </div>
                   {category.toolCount > 0 && (
@@ -64,8 +66,8 @@ export default function CategoriesClient({ categories }: { categories: CategoryI
                     ? `${category.toolCount} ${category.toolCount === 1 ? "tool" : "tools"} available`
                     : "Coming soon"}
                 </p>
-              </Link>
-            </TiltCard>
+              </div>
+            </Link>
           </motion.div>
         )
       })}

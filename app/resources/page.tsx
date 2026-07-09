@@ -7,17 +7,19 @@ import { Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Resources",
-  description: "Curated resources, templates, guides and tools to help you work smarter with AI.",
+  title: "AI Resources & Templates",
+  description: "Curated AI resources, templates, guides and tools to help you work smarter with artificial intelligence.",
+  alternates: { canonical: "/resources" },
   openGraph: {
-    title: "Resources",
+    title: "AI Resources & Templates | LinkDit",
     description: "Curated resources, templates, guides and tools to help you work smarter with AI.",
     type: "website",
     siteName: "LinkDit",
+    url: "/resources",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Resources | LinkDit",
+    title: "AI Resources & Templates | LinkDit",
     description: "Curated resources, templates, guides and tools to help you work smarter with AI.",
   },
 }

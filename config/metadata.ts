@@ -14,11 +14,13 @@ export const defaultMetadata: Metadata = {
     siteName: SITE.name,
     title: `${SITE.name} - AI Discovery Platform`,
     description: SITE.description,
+    images: [{ url: "/images/og-default.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE.name} - AI Discovery Platform`,
     description: SITE.description,
+    images: ["/images/og-default.png"],
   },
   robots: {
     index: true,
@@ -29,13 +31,16 @@ export const defaultMetadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon/favicon.png", type: "image/png", sizes: "32x32" },
-      { url: "/favicon/favicon.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon/favicon.ico", sizes: "any" },
+      { url: "/favicon/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon/favicon.png", type: "image/png", sizes: "96x96" },
+      { url: "/favicon/favicon.png", type: "image/png", sizes: "192x192" },
     ],
     apple: [
-      { url: "/favicon/favicon.png", sizes: "180x180", type: "image/png" },
+      { url: "/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
   },
+  manifest: "/manifest.json",
 }
 
 export function createMetadata(overrides?: Partial<Metadata>): Metadata {

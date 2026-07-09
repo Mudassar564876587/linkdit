@@ -1,0 +1,13 @@
+{
+  "name": "LinkDit - AI Discovery Platform",
+  "short_name": "LinkDit",
+  "description": "Discover, compare and master the world's best AI tools.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    { "src": "/favicon/favicon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon/favicon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

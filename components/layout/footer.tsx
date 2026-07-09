@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { Sparkles } from "lucide-react"
 
 const quickLinks = [
   { href: "/tools", label: "AI Tools" },
@@ -24,11 +24,12 @@ const resources = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-background">
+    <footer className="border-t border-border bg-gradient-to-b from-background to-secondary/50">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-12">
           <div className="sm:col-span-2 lg:col-span-2">
-            <Link href="/" className="inline-block text-xl font-bold text-foreground">
+            <Link href="/" className="inline-flex items-center gap-2 text-xl font-bold text-foreground">
+              <Sparkles className="h-5 w-5 text-primary" />
               LinkDit
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">
@@ -48,7 +49,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground transition-all duration-200 hover:text-foreground"
+                    className="text-sm text-muted-foreground transition-all duration-200 hover:text-foreground hover:translate-x-0.5 inline-block"
                   >
                     {link.label}
                   </Link>
@@ -87,23 +88,28 @@ export default function Footer() {
             <p className="mt-2 text-sm text-muted-foreground">
               Get the latest AI tools and tutorials delivered to your inbox.
             </p>
-            <form className="mt-4 flex gap-2" action="#">
+            <form className="mt-4 flex gap-2" action="/">
               <input
                 type="email"
                 placeholder="Enter your email"
                 className="h-10 flex-1 rounded-xl border border-input bg-background px-3 text-sm shadow-soft-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               />
-              <Button size="sm" type="submit" className="rounded-xl px-4">
+              <button type="submit" className="btn-primary rounded-xl px-4 text-sm">
                 Subscribe
-              </Button>
+              </button>
             </form>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border pt-8 text-center">
+        <div className="mt-12 border-t border-border pt-8 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} LinkDit. All rights reserved.
           </p>
+          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
+            <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>
+          </div>
         </div>
       </div>
     </footer>

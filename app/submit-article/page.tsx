@@ -6,11 +6,18 @@ import ArticleSubmissionForm from "@/components/submit-article/article-submissio
 export const metadata: Metadata = {
   title: "Submit an Article",
   description: "Submit your AI-related article to be published on LinkDit. Share your knowledge with the community.",
+  alternates: { canonical: "/submit-article" },
   openGraph: {
     title: "Submit an Article | LinkDit",
     description: "Share your AI knowledge with the LinkDit community. Submit your article for review.",
     type: "website",
     siteName: "LinkDit",
+    url: "/submit-article",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Submit an Article | LinkDit",
+    description: "Share your AI knowledge with the LinkDit community. Submit your article for review.",
   },
 }
 

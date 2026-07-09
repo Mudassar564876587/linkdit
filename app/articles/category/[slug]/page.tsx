@@ -6,6 +6,7 @@ import ArticleCard from "@/components/articles/article-card"
 import Pagination from "@/components/tools/pagination"
 import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
+import { SITE } from "@/constants/site"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const slug = (await params).slug.toLowerCase()
@@ -17,8 +18,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${category.name} Articles`,
     description: category.description || `Browse articles in the ${category.name} category.`,
+    metadataBase: new URL(SITE.url),
+    alternates: { canonical: `/articles/category/${slug}` },
     openGraph: {
       title: `${category.name} Articles`,
+      description: category.description || `Browse articles in the ${category.name} category.`,
+      url: `/articles/category/${slug}`,
+      siteName: "LinkDit",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${category.name} Articles | LinkDit`,
       description: category.description || `Browse articles in the ${category.name} category.`,
     },
   }

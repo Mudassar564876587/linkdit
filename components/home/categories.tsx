@@ -15,7 +15,7 @@ export default async function Categories() {
   }
 
   return (
-    <section>
+    <section className="border-t border-border bg-gradient-to-b from-secondary/50 to-white">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
         <SectionHeader
           title="Browse by Category"
@@ -23,7 +23,7 @@ export default async function Categories() {
         />
 
         {categories.length === 0 ? (
-          <div className="mt-14 sm:mt-16 mx-auto max-w-sm rounded-2xl border border-border/60 bg-background p-8 text-center shadow-soft-sm">
+          <div className="mt-14 sm:mt-16 mx-auto max-w-sm rounded-2xl border border-border/60 bg-white p-8 text-center shadow-premium">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/5">
               <PenLine className="h-6 w-6 text-primary/40" />
             </div>
@@ -48,7 +48,7 @@ export default async function Categories() {
 
 export function CategoriesSkeleton() {
   return (
-    <section>
+    <section className="border-t border-border bg-gradient-to-b from-secondary/50 to-white">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
         <div className="mx-auto max-w-2xl text-center">
           <div className="mx-auto h-7 w-44 animate-pulse rounded bg-muted sm:h-8 sm:w-48" />

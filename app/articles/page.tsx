@@ -7,17 +7,19 @@ import { Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Articles",
-  description: "Stay ahead with tutorials, comparisons and insights from the AI world.",
+  title: "AI Articles & Tutorials",
+  description: "Stay ahead with tutorials, comparisons and insights from the AI world. Expert guides, how-to articles, and in-depth comparisons.",
+  alternates: { canonical: "/articles" },
   openGraph: {
-    title: "Articles",
+    title: "AI Articles & Tutorials | LinkDit",
     description: "Stay ahead with tutorials, comparisons and insights from the AI world.",
     type: "website",
     siteName: "LinkDit",
+    url: "/articles",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Articles | LinkDit",
+    title: "AI Articles & Tutorials | LinkDit",
     description: "Stay ahead with tutorials, comparisons and insights from the AI world.",
   },
 }
