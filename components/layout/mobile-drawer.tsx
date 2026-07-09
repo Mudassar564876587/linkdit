@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
+import { createBrowserClient } from "@supabase/ssr"
 import {
   Search,
   X,
@@ -14,14 +15,25 @@ import {
   GitCompare,
   Info,
   LogIn,
+  LogOut,
+  User,
+  Loader2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Logo from "@/components/ui/logo"
+import { logout } from "@/actions/auth/logout"
 
 interface MobileDrawerProps {
   isOpen: boolean
   onClose: () => void
 }
+
+type UserData = {
+  id: string
+  email: string | undefined
+  fullName: string | undefined
+  avatarUrl: string | undefined
+} | null
 
 const drawerLinks = [
   { href: "/ai-tools", label: "AI Tools", icon: LayoutGrid },
@@ -34,6 +46,8 @@ const drawerLinks = [
 
 export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null)
+  const [user, setUser] = useState<UserData>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!isOpen) return
@@ -52,6 +66,50 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
     document.addEventListener("keydown", onKeyDown)
     return () => document.removeEventListener("keydown", onKeyDown)
   }, [isOpen, onClose])
+
+  useEffect(() => {
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+
+    supabase.auth.getUser().then(({ data: { user: u } }) => {
+      if (u) {
+        setUser({
+          id: u.id,
+          email: u.email,
+          fullName: u.user_metadata?.full_name ?? u.email?.split("@")[0] ?? "User",
+          avatarUrl: u.user_metadata?.avatar_url,
+        })
+      } else {
+        setUser(null)
+      }
+      setLoading(false)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const u = session?.user ?? null
+      if (u) {
+        setUser({
+          id: u.id,
+          email: u.email,
+          fullName: u.user_metadata?.full_name ?? u.email?.split("@")[0] ?? "User",
+          avatarUrl: u.user_metadata?.avatar_url,
+        })
+      } else {
+        setUser(null)
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const initials = (user?.fullName ?? "U")
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2)
 
   return (
     <div
@@ -123,12 +181,57 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
         </div>
 
         <div className="border-t border-border px-4 py-5">
-          <Button asChild variant="outline" className="w-full">
-            <Link href="/login" onClick={onClose}>
-              <LogIn className="h-4 w-4" />
-              Sign In
-            </Link>
-          </Button>
+          {loading ? (
+            <div className="flex justify-center py-2">
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+            </div>
+          ) : user ? (
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 px-1">
+                {user.avatarUrl ? (
+                  <img
+                    src={user.avatarUrl}
+                    alt=""
+                    className="h-10 w-10 rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                    {initials}
+                  </span>
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-foreground">
+                    {user.fullName}
+                  </p>
+                  <p className="truncate text-xs text-muted-foreground">
+                    {user.email}
+                  </p>
+                </div>
+              </div>
+              <form
+                action={async () => {
+                  onClose()
+                  await logout()
+                }}
+              >
+                <Button
+                  type="submit"
+                  variant="outline"
+                  className="w-full items-center gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
+                </Button>
+              </form>
+            </div>
+          ) : (
+            <Button asChild variant="outline" className="w-full">
+              <Link href="/login" onClick={onClose}>
+                <LogIn className="h-4 w-4" />
+                Sign In
+              </Link>
+            </Button>
+          )}
           <p className="mt-3 text-center text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} LinkDit
           </p>
