@@ -10,6 +10,7 @@ import ReviewsList from "./reviews-list"
 import SimilarTools from "./similar-tools"
 import ReviewSection from "@/components/tools/review-section"
 import { ExternalLink, Check, X, ShieldCheck, Sparkles, ArrowLeft } from "lucide-react"
+import AdsterraNativeBanner from "@/components/ads/AdsterraNativeBanner"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const slug = (await params).slug.toLowerCase()
@@ -248,6 +249,10 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
             <p className="mt-3 text-base leading-relaxed text-muted-foreground">
               {tool.description}
             </p>
+          </div>
+
+          <div className="mt-10">
+            <AdsterraNativeBanner />
           </div>
 
           <div className="mt-12 grid gap-10 lg:grid-cols-2">

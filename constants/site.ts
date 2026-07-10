@@ -5,6 +5,7 @@ export const SITE = {
     "Explore AI tools, tutorials, comparisons and resources designed to help creators, developers, students and businesses work smarter.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://linkdit-omega.vercel.app",
   locale: "en-US",
+  localeOg: "en_US",
 } as const
 
 export const SOCIAL = {

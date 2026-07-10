@@ -1,5 +1,9 @@
+"use client"
+
+import { useState, type FormEvent } from "react"
 import Link from "next/link"
-import { Sparkles } from "lucide-react"
+import { Sparkles, CheckCircle2, Mail } from "lucide-react"
+import { subscribeToNewsletter } from "@/services/newsletter.service"
 
 const quickLinks = [
   { href: "/tools", label: "AI Tools" },
@@ -8,21 +12,41 @@ const quickLinks = [
   { href: "/compare", label: "Compare" },
   { href: "/about", label: "About" },
   { href: "/submit-tool", label: "Submit Tool" },
-  { href: "/submit-article", label: "Write Article" },
   { href: "/contact", label: "Contact" },
-  { href: "/privacy", label: "Privacy Policy" },
-  { href: "/terms", label: "Terms of Service" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
 ]
 
 const resources = [
-  { href: "/resources", label: "Tutorials", desc: "Step-by-step AI tutorials for beginners & pros" },
-  { href: "/resources", label: "Guides", desc: "In-depth guides covering AI workflows & best practices" },
-  { href: "/resources", label: "Glossary", desc: "AI terminology explained in plain English" },
-  { href: "/articles", label: "Blog", desc: "Latest AI news, comparisons & industry insights" },
-  { href: "/resources", label: "FAQ", desc: "Answers to the most common AI questions" },
+  { href: "/resources", label: "Tutorials" },
+  { href: "/resources", label: "Guides" },
+  { href: "/resources", label: "Glossary" },
+  { href: "/articles", label: "Blog" },
+  { href: "/resources", label: "FAQ" },
 ]
 
 export default function Footer() {
+  const [email, setEmail] = useState("")
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+  const [message, setMessage] = useState("")
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!email) return
+
+    setStatus("loading")
+    const result = await subscribeToNewsletter(email)
+
+    if (result.success) {
+      setStatus("success")
+      setMessage("Thanks for subscribing!")
+      setEmail("")
+    } else {
+      setStatus("error")
+      setMessage(result.error ?? "Something went wrong.")
+    }
+  }
+
   return (
     <footer className="border-t border-border bg-gradient-to-b from-background to-secondary/50">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -46,7 +70,7 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               {quickLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.href + link.label}>
                   <Link
                     href={link.href}
                     className="text-sm text-muted-foreground transition-all duration-200 hover:text-foreground hover:translate-x-0.5 inline-block"
@@ -62,19 +86,14 @@ export default function Footer() {
             <h3 className="text-xs font-semibold tracking-wide text-foreground uppercase">
               Resources
             </h3>
-            <ul className="mt-4 space-y-4">
+            <ul className="mt-4 space-y-3">
               {resources.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="group block transition-all duration-200"
+                    className="text-sm text-muted-foreground transition-all duration-200 hover:text-foreground hover:translate-x-0.5 inline-block"
                   >
-                    <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                      {link.label}
-                    </span>
-                    <span className="block text-xs text-muted-foreground mt-0.5">
-                      {link.desc}
-                    </span>
+                    {link.label}
                   </Link>
                 </li>
               ))}
@@ -88,16 +107,38 @@ export default function Footer() {
             <p className="mt-2 text-sm text-muted-foreground">
               Get the latest AI tools and tutorials delivered to your inbox.
             </p>
-            <form className="mt-4 flex gap-2" action="/">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="h-10 flex-1 rounded-xl border border-input bg-background px-3 text-sm shadow-soft-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              />
-              <button type="submit" className="btn-primary rounded-xl px-4 text-sm">
-                Subscribe
-              </button>
-            </form>
+
+            {status === "success" ? (
+              <div className="mt-4 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+                <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-500" />
+                <p className="text-sm font-medium text-emerald-700">{message}</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="mt-4">
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    required
+                    className="h-11 w-full rounded-xl border border-input bg-background pl-10 pr-4 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="btn-primary mt-2 w-full justify-center rounded-xl py-2.5 text-sm"
+                >
+                  {status === "loading" ? "Subscribing..." : "Subscribe"}
+                </button>
+                {status === "error" && (
+                  <p className="mt-1.5 text-xs text-destructive">{message}</p>
+                )}
+              </form>
+            )}
+            <p className="mt-2 text-[10px] text-muted-foreground">No spam. Unsubscribe anytime.</p>
           </div>
         </div>
 

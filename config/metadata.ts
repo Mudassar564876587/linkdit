@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { SITE } from "@/constants/site"
 
 export const defaultMetadata: Metadata = {
+  applicationName: SITE.name,
   title: {
     default: `${SITE.name} - AI Discovery Platform`,
     template: `%s | ${SITE.name}`,
@@ -10,7 +11,7 @@ export const defaultMetadata: Metadata = {
   metadataBase: new URL(SITE.url),
   openGraph: {
     type: "website",
-    locale: SITE.locale,
+    locale: SITE.localeOg,
     siteName: SITE.name,
     title: `${SITE.name} - AI Discovery Platform`,
     description: SITE.description,
@@ -29,9 +30,14 @@ export const defaultMetadata: Metadata = {
   verification: {
     google: "Fi8XZhJhn7ladGLqrmJ6-0jioFvJySHrAsS-PE2G_ZM",
   },
+  appleWebApp: {
+    capable: true,
+    title: SITE.name,
+    statusBarStyle: "black-translucent",
+  },
   icons: {
     icon: [
-      { url: "/favicon/favicon.ico", sizes: "any" },
+      { url: "/favicon/favicon.png", type: "image/png", sizes: "32x32" },
       { url: "/favicon/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon/favicon.png", type: "image/png", sizes: "96x96" },
       { url: "/favicon/favicon.png", type: "image/png", sizes: "192x192" },
@@ -39,8 +45,14 @@ export const defaultMetadata: Metadata = {
     apple: [
       { url: "/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
+    other: [
+      { rel: "mask-icon", url: "/favicon/favicon.svg", color: "#2563eb" },
+    ],
   },
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest",
+  other: {
+    "apple-mobile-web-app-capable": "yes",
+  },
 }
 
 export function createMetadata(overrides?: Partial<Metadata>): Metadata {
