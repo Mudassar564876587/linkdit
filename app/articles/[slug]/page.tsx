@@ -8,7 +8,6 @@ import { SITE } from "@/constants/site"
 import ArticleMeta from "@/components/articles/article-meta"
 import ShareButtons from "@/components/articles/share-buttons"
 import TableOfContents from "@/components/articles/table-of-contents"
-import AdsterraNativeBanner from "@/components/ads/AdsterraNativeBanner"
 import ArticleBookmarkButton from "@/components/articles/article-bookmark-button"
 import { Calendar, Clock, ArrowLeft, ArrowRight, ChevronLeft } from "lucide-react"
 import BackNav from "@/components/ui/back-nav"
@@ -191,10 +190,6 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                 className="prose prose-gray max-w-none prose-headings:scroll-mt-20 prose-img:rounded-xl prose-a:text-primary"
                 dangerouslySetInnerHTML={{ __html: article.content ? marked.parse(article.content) : "" }}
               />
-
-              <div className="mt-10">
-                <AdsterraNativeBanner />
-              </div>
 
               {tags.length > 0 && (
                 <div className="mt-10">

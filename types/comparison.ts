@@ -1,3 +1,5 @@
+export type ComparisonStatus = "prebuilt" | "auto"
+
 export interface Comparison {
   id: string
   slug: string
@@ -22,6 +24,7 @@ export interface Comparison {
   seoDescription: string | null
   createdAt: string
   updatedAt: string
+  status: ComparisonStatus
 }
 
 export interface ComparisonFeature {
@@ -42,39 +45,29 @@ export interface ComparisonRating {
   toolBRating: number
 }
 
+export interface ToolSummary {
+  id: string
+  name: string
+  slug: string
+  description: string
+  logoUrl: string | null
+  websiteUrl: string
+  websiteLabel: string
+  pricing: string
+  rating: number
+  reviewCount: number
+  features: string[]
+  pros: string[]
+  cons: string[]
+  platforms: string[]
+  categoryId: string | null
+  categoryName: string | null
+
+}
+
 export interface ComparisonWithTools extends Comparison {
-  toolA: {
-    id: string
-    name: string
-    slug: string
-    description: string
-    logoUrl: string | null
-    websiteUrl: string
-    websiteLabel: string
-    pricing: string
-    rating: number
-    reviewCount: number
-    features: string[]
-    pros: string[]
-    cons: string[]
-    categoryName: string | null
-  }
-  toolB: {
-    id: string
-    name: string
-    slug: string
-    description: string
-    logoUrl: string | null
-    websiteUrl: string
-    websiteLabel: string
-    pricing: string
-    rating: number
-    reviewCount: number
-    features: string[]
-    pros: string[]
-    cons: string[]
-    categoryName: string | null
-  }
+  toolA: ToolSummary
+  toolB: ToolSummary
   categoryName: string | null
 }
 
@@ -82,4 +75,29 @@ export interface ComparisonFilters {
   search?: string
   category?: string
   sort?: "popular" | "recent" | "featured"
+}
+
+export type UseCase =
+  | "students"
+  | "developers"
+  | "businesses"
+  | "marketing"
+  | "content-creation"
+  | "design"
+  | "video"
+  | "coding"
+  | "research"
+
+export interface UseCaseResult {
+  useCase: UseCase
+  label: string
+  winner: "A" | "B" | "tie"
+  reason: string
+}
+
+export interface WinnerResult {
+  section: string
+  label: string
+  winner: "A" | "B" | "tie"
+  reason: string
 }

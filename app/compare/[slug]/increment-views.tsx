@@ -23,6 +23,8 @@ export default function IncrementViews({
   toolBName: string
 }) {
   useEffect(() => {
+    if (comparisonId.startsWith("auto_")) return
+
     fetch(`/api/comparisons/${comparisonId}/views`, {
       method: "POST",
     }).catch(() => {})

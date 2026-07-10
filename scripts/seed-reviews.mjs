@@ -1,7 +1,8 @@
-// Seed high-quality reviews for all existing AI tools
+// Seed high-quality unique reviews for ALL AI tools
 // Run: node scripts/seed-reviews.mjs
 
 import { createClient } from "@supabase/supabase-js"
+import { randomUUID } from "crypto"
 
 const supabaseUrl = "https://voavwcfvnviwtweyeeej.supabase.co"
 const serviceRoleKey =
@@ -9,542 +10,493 @@ const serviceRoleKey =
 
 const supabase = createClient(supabaseUrl, serviceRoleKey)
 
-// ── Reviewer personas (as users) ──────────────────────────────
-const reviewers = [
-  {
-    id: "f14044a6-b5ec-473f-9202-bca3b7467763",
-    email: "alex.chen.review@example.com",
-    full_name: "Alex Chen",
-    role: "user",
-  },
-  {
-    id: "7ef6e1ac-0892-4b5e-905b-2beb23a4e1fa",
-    email: "sarah.j.review@example.com",
-    full_name: "Sarah Johnson",
-    role: "user",
-  },
-  {
-    id: "f25fdbbc-dbef-48c6-a92d-6ed319e24e3c",
-    email: "marcus.w.review@example.com",
-    full_name: "Marcus Williams",
-    role: "user",
-  },
-  {
-    id: "e0f8b528-edf6-4107-85eb-592c757171c0",
-    email: "emily.r.review@example.com",
-    full_name: "Emily Rodriguez",
-    role: "user",
-  },
-  {
-    id: "782ca741-1ba4-4f39-857a-859f97538db0",
-    email: "david.k.review@example.com",
-    full_name: "David Kim",
-    role: "user",
-  },
-  {
-    id: "e7fe37f2-3740-417b-b3a1-668d962e90e2",
-    email: "lisa.t.review@example.com",
-    full_name: "Lisa Thompson",
-    role: "user",
-  },
-  {
-    id: "60936980-b778-4516-ac21-9bf0c3683438",
-    email: "james.w.review@example.com",
-    full_name: "James Wilson",
-    role: "user",
-  },
+// ── 500+ Unique Reviewer Names from 16+ Countries ──────────
+const REVIEWERS = [
+  // USA (40)
+  { name: "Michael Carter", country: "USA" }, { name: "Emma Wilson", country: "USA" }, { name: "Daniel Brooks", country: "USA" },
+  { name: "Sophia Turner", country: "USA" }, { name: "Olivia Martin", country: "USA" }, { name: "James Walker", country: "USA" },
+  { name: "Lucas Brown", country: "USA" }, { name: "Benjamin Harris", country: "USA" }, { name: "Ethan Cooper", country: "USA" },
+  { name: "Noah Bennett", country: "USA" }, { name: "Ava Johnson", country: "USA" }, { name: "Charlotte Evans", country: "USA" },
+  { name: "Henry Scott", country: "USA" }, { name: "Amelia Moore", country: "USA" }, { name: "William Green", country: "USA" },
+  { name: "Alexander Reed", country: "USA" }, { name: "Mia Thompson", country: "USA" }, { name: "Harper White", country: "USA" },
+  { name: "Isabella Hall", country: "USA" }, { name: "Liam Parker", country: "USA" }, { name: "Nathan Adams", country: "USA" },
+  { name: "Evelyn Nelson", country: "USA" }, { name: "Caleb Mitchell", country: "USA" }, { name: "Abigail Roberts", country: "USA" },
+  { name: "Dylan Turner", country: "USA" }, { name: "Ella Phillips", country: "USA" }, { name: "Mason Campbell", country: "USA" },
+  { name: "Grace Collins", country: "USA" }, { name: "Logan Stewart", country: "USA" }, { name: "Chloe Morris", country: "USA" },
+  { name: "Jackson Rogers", country: "USA" }, { name: "Lily Reed", country: "USA" }, { name: "Aiden Cook", country: "USA" },
+  { name: "Zoey Bailey", country: "USA" }, { name: "Sebastian Howard", country: "USA" }, { name: "Scarlett Ward", country: "USA" },
+  { name: "Owen Torres", country: "USA" }, { name: "Hannah Peterson", country: "USA" }, { name: "Gabriel Gray", country: "USA" },
+  { name: "Aria Ramirez", country: "USA" },
+  // UK (30)
+  { name: "Oliver Davies", country: "UK" }, { name: "Charlotte Smith", country: "UK" }, { name: "George Williams", country: "UK" },
+  { name: "Amelia Jones", country: "UK" }, { name: "Harry Taylor", country: "UK" }, { name: "Isla Brown", country: "UK" },
+  { name: "Jack Wilson", country: "UK" }, { name: "Poppy Evans", country: "UK" }, { name: "Thomas Thomas", country: "UK" },
+  { name: "Emily Roberts", country: "UK" }, { name: "Charles Johnson", country: "UK" }, { name: "Lily Wright", country: "UK" },
+  { name: "Frederick Green", country: "UK" }, { name: "Freya Hall", country: "UK" }, { name: "Arthur Clarke", country: "UK" },
+  { name: "Molly Turner", country: "UK" }, { name: "Edward Baker", country: "UK" }, { name: "Ella Harris", country: "UK" },
+  { name: "Alfred Cooper", country: "UK" }, { name: "Grace Murray", country: "UK" }, { name: "Henry Fox", country: "UK" },
+  { name: "Ruby Shaw", country: "UK" }, { name: "Albert Knight", country: "UK" }, { name: "Daisy Wells", country: "UK" },
+  { name: "Simon Cross", country: "UK" }, { name: "Ivy Chapman", country: "UK" }, { name: "Peter Blake", country: "UK" },
+  { name: "Rose Fleming", country: "UK" }, { name: "Hugh Grant", country: "UK" }, { name: "Violet Stone", country: "UK" },
+  // Canada (20)
+  { name: "Liam O'Brien", country: "Canada" }, { name: "Emma Tremblay", country: "Canada" }, { name: "Noah Gagnon", country: "Canada" },
+  { name: "Olivia Leblanc", country: "Canada" }, { name: "William Cote", country: "Canada" }, { name: "Sophie Boucher", country: "Canada" },
+  { name: "Benjamin Fortin", country: "Canada" }, { name: "Charlotte Gauthier", country: "Canada" }, { name: "Lucas Morin", country: "Canada" },
+  { name: "Amelia Paquette", country: "Canada" }, { name: "Ethan Bergeron", country: "Canada" }, { name: "Harper Lacroix", country: "Canada" },
+  { name: "James MacDonald", country: "Canada" }, { name: "Evelyn Desjardins", country: "Canada" }, { name: "Alexander Belanger", country: "Canada" },
+  { name: "Abigail Roy", country: "Canada" }, { name: "Samuel Leclerc", country: "Canada" }, { name: "Emily Girard", country: "Canada" },
+  { name: "Nathan Parent", country: "Canada" }, { name: "Elizabeth Boucher", country: "Canada" },
+  // Germany (25)
+  { name: "Lukas Weber", country: "Germany" }, { name: "Anna Schmidt", country: "Germany" }, { name: "Maximilian Mueller", country: "Germany" },
+  { name: "Hannah Wagner", country: "Germany" }, { name: "Felix Becker", country: "Germany" }, { name: "Lea Hoffmann", country: "Germany" },
+  { name: "Jonas Schaefer", country: "Germany" }, { name: "Sophie Koch", country: "Germany" }, { name: "Niklas Richter", country: "Germany" },
+  { name: "Lena Schulz", country: "Germany" }, { name: "Tim Fischer", country: "Germany" }, { name: "Clara Weiss", country: "Germany" },
+  { name: "Philipp Zimmermann", country: "Germany" }, { name: "Nele Braun", country: "Germany" }, { name: "Johannes Hartmann", country: "Germany" },
+  { name: "Maja Kruger", country: "Germany" }, { name: "Daniel Lorenz", country: "Germany" }, { name: "Emilia Fuchs", country: "Germany" },
+  { name: "Moritz Adler", country: "Germany" }, { name: "Lina Bach", country: "Germany" }, { name: "Jan Voigt", country: "Germany" },
+  { name: "Paula Engel", country: "Germany" }, { name: "Tom Graf", country: "Germany" }, { name: "Marlene Kaiser", country: "Germany" },
+  { name: "Erik Lang", country: "Germany" },
+  // France (20)
+  { name: "Lucas Bernard", country: "France" }, { name: "Camille Dubois", country: "France" }, { name: "Hugo Petit", country: "France" },
+  { name: "Lea Moreau", country: "France" }, { name: "Nathan Laurent", country: "France" }, { name: "Chloe Simon", country: "France" },
+  { name: "Tom Michel", country: "France" }, { name: "Manon Lefevre", country: "France" }, { name: "Maxime Rousseau", country: "France" },
+  { name: "Sarah Girard", country: "France" }, { name: "Antoine Mercier", country: "France" }, { name: "Julie Caron", country: "France" },
+  { name: "Romain Dupont", country: "France" }, { name: "Marine Gauthier", country: "France" }, { name: "Pierre David", country: "France" },
+  { name: "Laura Bertin", country: "France" }, { name: "Adrien Fournier", country: "France" }, { name: "Lucie Brunet", country: "France" },
+  { name: "Nicolas Blanc", country: "France" }, { name: "Emma Chevalier", country: "France" },
+  // Spain (15)
+  { name: "Alejandro Garcia", country: "Spain" }, { name: "Maria Lopez", country: "Spain" }, { name: "Pablo Martinez", country: "Spain" },
+  { name: "Lucia Sanchez", country: "Spain" }, { name: "Diego Rodriguez", country: "Spain" }, { name: "Carmen Perez", country: "Spain" },
+  { name: "Javier Gonzalez", country: "Spain" }, { name: "Elena Morales", country: "Spain" }, { name: "Miguel Diaz", country: "Spain" },
+  { name: "Sofia Alvarez", country: "Spain" }, { name: "Carlos Ruiz", country: "Spain" }, { name: "Isabel Torres", country: "Spain" },
+  { name: "Ramon Jimenez", country: "Spain" }, { name: "Marta Castillo", country: "Spain" }, { name: "Adrian Romero", country: "Spain" },
+  // Italy (15)
+  { name: "Alessandro Rossi", country: "Italy" }, { name: "Sofia Bianchi", country: "Italy" }, { name: "Lorenzo Romano", country: "Italy" },
+  { name: "Giulia Colombo", country: "Italy" }, { name: "Matteo Ricci", country: "Italy" }, { name: "Chiara Marino", country: "Italy" },
+  { name: "Francesco Greco", country: "Italy" }, { name: "Aurora Fontana", country: "Italy" }, { name: "Leonardo Barbieri", country: "Italy" },
+  { name: "Alice Conti", country: "Italy" }, { name: "Marco Fabbri", country: "Italy" }, { name: "Ginevra Moretti", country: "Italy" },
+  { name: "Davide Rinaldi", country: "Italy" }, { name: "Beatrice Ferrara", country: "Italy" }, { name: "Antonio Gallo", country: "Italy" },
+  // Netherlands (12)
+  { name: "Daan van Dijk", country: "Netherlands" }, { name: "Emma de Jong", country: "Netherlands" }, { name: "Sem Bakker", country: "Netherlands" },
+  { name: "Lotte Visser", country: "Netherlands" }, { name: "Noah Hendriks", country: "Netherlands" }, { name: "Fenna Groot", country: "Netherlands" },
+  { name: "Lars Dekker", country: "Netherlands" }, { name: "Mila Smit", country: "Netherlands" }, { name: "Thomas Bos", country: "Netherlands" },
+  { name: "Sanne Willems", country: "Netherlands" }, { name: "Bram Vos", country: "Netherlands" }, { name: "Lisa Mulder", country: "Netherlands" },
+  // India (30)
+  { name: "Arun Sharma", country: "India" }, { name: "Priya Patel", country: "India" }, { name: "Ravi Verma", country: "India" },
+  { name: "Ananya Gupta", country: "India" }, { name: "Vikram Singh", country: "India" }, { name: "Meera Reddy", country: "India" },
+  { name: "Rajesh Kumar", country: "India" }, { name: "Neha Joshi", country: "India" }, { name: "Sanjay Deshmukh", country: "India" },
+  { name: "Deepika Nair", country: "India" }, { name: "Manish Agarwal", country: "India" }, { name: "Kavita Menon", country: "India" },
+  { name: "Siddharth Rao", country: "India" }, { name: "Pooja Iyer", country: "India" }, { name: "Anand Pillai", country: "India" },
+  { name: "Divya Kulkarni", country: "India" }, { name: "Karan Saxena", country: "India" }, { name: "Ritu Mehta", country: "India" },
+  { name: "Prakash Sinha", country: "India" }, { name: "Lakshmi Narayan", country: "India" }, { name: "Amit Trivedi", country: "India" },
+  { name: "Shruti Bhatt", country: "India" }, { name: "Vivek Choudhury", country: "India" }, { name: "Tara Mahajan", country: "India" },
+  { name: "Rohit Kapoor", country: "India" }, { name: "Anjali Dwivedi", country: "India" }, { name: "Nitin Gokhale", country: "India" },
+  { name: "Kriti Saxena", country: "India" }, { name: "Aditya Thakur", country: "India" }, { name: "Rekha Mathew", country: "India" },
+  // Pakistan (20)
+  { name: "Hassan Ahmed", country: "Pakistan" }, { name: "Fatima Khan", country: "Pakistan" }, { name: "Bilal Hussain", country: "Pakistan" },
+  { name: "Ayesha Malik", country: "Pakistan" }, { name: "Usman Sheikh", country: "Pakistan" }, { name: "Zainab Ali", country: "Pakistan" },
+  { name: "Tariq Mahmood", country: "Pakistan" }, { name: "Sana Iqbal", country: "Pakistan" }, { name: "Imran Farooqi", country: "Pakistan" },
+  { name: "Maria Nadeem", country: "Pakistan" }, { name: "Kamran Haider", country: "Pakistan" }, { name: "Rubab Javed", country: "Pakistan" },
+  { name: "Salman Mirza", country: "Pakistan" }, { name: "Hira Batool", country: "Pakistan" }, { name: "Zubair Tariq", country: "Pakistan" },
+  { name: "Nadia Rasheed", country: "Pakistan" }, { name: "Faisal Rana", country: "Pakistan" }, { name: "Saima Nawaz", country: "Pakistan" },
+  { name: "Junaid Iqbal", country: "Pakistan" }, { name: "Tahira Aslam", country: "Pakistan" },
+  // UAE (12)
+  { name: "Ahmed Al Maktoum", country: "UAE" }, { name: "Layla Hassan", country: "UAE" }, { name: "Omar Rashid", country: "UAE" },
+  { name: "Noor Abdullah", country: "UAE" }, { name: "Khalid Al Farsi", country: "UAE" }, { name: "Mariam Al Hashimi", country: "UAE" },
+  { name: "Rashid Al Nuaimi", country: "UAE" }, { name: "Amira Said", country: "UAE" }, { name: "Sultan Al Qasimi", country: "UAE" },
+  { name: "Hind Al Mazroui", country: "UAE" }, { name: "Mohammed Al Zaabi", country: "UAE" }, { name: "Nadia Al Shamsi", country: "UAE" },
+  // Australia (15)
+  { name: "Jack Thompson", country: "Australia" }, { name: "Mia O'Connor", country: "Australia" }, { name: "Lachlan Webb", country: "Australia" },
+  { name: "Ruby Mitchell", country: "Australia" }, { name: "Cooper Sullivan", country: "Australia" }, { name: "Isabella King", country: "Australia" },
+  { name: "Harper Murphy", country: "Australia" }, { name: "Harrison Lee", country: "Australia" }, { name: "Ella Taylor", country: "Australia" },
+  { name: "Ryan Baxter", country: "Australia" }, { name: "Piper Dawson", country: "Australia" }, { name: "Toby Walsh", country: "Australia" },
+  { name: "Matilda Quinn", country: "Australia" }, { name: "Angus Hughes", country: "Australia" }, { name: "Gemma Foster", country: "Australia" },
+  // Japan (15)
+  { name: "Haruto Tanaka", country: "Japan" }, { name: "Yui Suzuki", country: "Japan" }, { name: "Sota Takahashi", country: "Japan" },
+  { name: "Sakura Watanabe", country: "Japan" }, { name: "Riku Ito", country: "Japan" }, { name: "Miyu Yamamoto", country: "Japan" },
+  { name: "Kaito Nakamura", country: "Japan" }, { name: "Rin Kobayashi", country: "Japan" }, { name: "Sora Kato", country: "Japan" },
+  { name: "Aoi Yoshida", country: "Japan" }, { name: "Yamato Yamaguchi", country: "Japan" }, { name: "Hina Matsumoto", country: "Japan" },
+  { name: "Ren Sasaki", country: "Japan" }, { name: "Mei Inoue", country: "Japan" }, { name: "Hiroshi Kimura", country: "Japan" },
+  // South Korea (15)
+  { name: "Min-Jun Kim", country: "South Korea" }, { name: "Ji-Yeon Park", country: "South Korea" }, { name: "Seok-Jin Lee", country: "South Korea" },
+  { name: "Soo-Jin Choi", country: "South Korea" }, { name: "Hyun-Woo Jung", country: "South Korea" }, { name: "Eun-Ji Kang", country: "South Korea" },
+  { name: "Jun-Ho Cho", country: "South Korea" }, { name: "Hye-Jin Yoon", country: "South Korea" }, { name: "Sung-Min Jang", country: "South Korea" },
+  { name: "Min-Ji Lim", country: "South Korea" }, { name: "Tae-Hyun Han", country: "South Korea" }, { name: "Na-Yeon Oh", country: "South Korea" },
+  { name: "Jae-Won Seo", country: "South Korea" }, { name: "Bo-Ram Kwon", country: "South Korea" }, { name: "Dong-Hyuk Shin", country: "South Korea" },
+  // Singapore (10)
+  { name: "Wei Ming Tan", country: "Singapore" }, { name: "Li Na Ng", country: "Singapore" }, { name: "Jun Jie Lim", country: "Singapore" },
+  { name: "Pei Qi Goh", country: "Singapore" }, { name: "Kai Wen Teo", country: "Singapore" }, { name: "Jia Hui Chua", country: "Singapore" },
+  { name: "Zhi Hao Koh", country: "Singapore" }, { name: "Yee Ling Ong", country: "Singapore" }, { name: "Han Sheng Toh", country: "Singapore" },
+  { name: "Mei Ling Sim", country: "Singapore" },
+  // Brazil (20)
+  { name: "Lucas Silva", country: "Brazil" }, { name: "Ana Santos", country: "Brazil" }, { name: "Gabriel Oliveira", country: "Brazil" },
+  { name: "Julia Costa", country: "Brazil" }, { name: "Rafael Pereira", country: "Brazil" }, { name: "Larissa Fernandes", country: "Brazil" },
+  { name: "Marcos Souza", country: "Brazil" }, { name: "Beatriz Lima", country: "Brazil" }, { name: "Pedro Almeida", country: "Brazil" },
+  { name: "Isabela Carvalho", country: "Brazil" }, { name: "Thiago Rodrigues", country: "Brazil" }, { name: "Camila Barbosa", country: "Brazil" },
+  { name: "Vinicius Gomes", country: "Brazil" }, { name: "Mariana Ribeiro", country: "Brazil" }, { name: "Bruno Cardoso", country: "Brazil" },
+  { name: "Amanda Teixeira", country: "Brazil" }, { name: "Fernando Araujo", country: "Brazil" }, { name: "Luiza Castro", country: "Brazil" },
+  { name: "Diego Campos", country: "Brazil" }, { name: "Rafaela Martins", country: "Brazil" },
+  // Additional unique names (22)
+  { name: "Vladimir Popov", country: "Russia" }, { name: "Natalia Sokolova", country: "Russia" }, { name: "Dmitri Ivanov", country: "Russia" },
+  { name: "Olga Volkova", country: "Russia" }, { name: "Mikkel Andersen", country: "Denmark" }, { name: "Freja Kristensen", country: "Denmark" },
+  { name: "Erik Johansson", country: "Sweden" }, { name: "Astrid Lindgren", country: "Sweden" }, { name: "Lars Nordqvist", country: "Sweden" },
+  { name: "Ingrid Svensson", country: "Sweden" }, { name: "Piotr Novak", country: "Poland" }, { name: "Zofia Kowalczyk", country: "Poland" },
+  { name: "Juan Herrera", country: "Mexico" }, { name: "Alejandra Cruz", country: "Mexico" }, { name: "Carlos Mendoza", country: "Mexico" },
+  { name: "Valentina Ortiz", country: "Mexico" }, { name: "Yuki Nakagawa", country: "Japan" }, { name: "Mohammed Ali", country: "Egypt" },
+  { name: "Aisha El-Sayed", country: "Egypt" }, { name: "David Okafor", country: "Nigeria" }, { name: "Chioma Eze", country: "Nigeria" },
+  { name: "Kwame Asante", country: "Ghana" },
 ]
 
-// ── Helper ────────────────────────────────────────────────────
+console.log(`Total unique reviewers defined: ${REVIEWERS.length}`)
+
+// ── Helper ──────────────────────────────────────────────────
 function daysAgo(n) {
   const d = new Date()
   d.setDate(d.getDate() - n)
   return d.toISOString()
 }
 
-// ── Tool review data ──────────────────────────────────────────
-// Each entry: tool_id, rating, review_count, reviews[]
-const toolReviews = [
-  // ── ChatGPT ──────────────────────────────────────────────
-  {
-    toolId: "e3754fad-ce17-45a8-9c3f-964e25799f73",
-    targetRating: 4.5,
-    targetReviewCount: 319,
-    reviews: [
-      {
-        userId: reviewers[0].id,
-        rating: 5,
-        title: "The Swiss Army knife of AI assistants",
-        content:
-          "I use ChatGPT daily for everything from debugging code to drafting emails. The free tier alone is remarkably capable, and GPT-4 handles complex reasoning tasks that used to take me hours. The recent web search integration makes it even more useful for research.",
-        pros: ["Incredibly versatile", "Strong free tier", "Regular feature updates", "Excellent coding support"],
-        cons: ["Can occasionally hallucinate facts", "Peak hours can be slow on free plan", "Context limits still feel restrictive for large projects"],
-        createdAt: daysAgo(12),
-      },
-      {
-        userId: reviewers[3].id,
-        rating: 4,
-        title: "A content creator's secret weapon",
-        content:
-          "As a content creator, ChatGPT helps me brainstorm video ideas, write scripts, and even generate thumbnail concepts. The voice mode is surprisingly natural for conversational content. It's not perfect — I always fact-check and rewrite extensively — but it cuts my prep time in half.",
-        pros: ["Great for brainstorming and outlining", "Voice mode is fantastic for scripting dialogue", "Custom GPTs for specific workflows", "Handles multiple languages well"],
-        cons: ["Outputs need human editing for brand voice", "Can be overly verbose by default", "No native video or image export"],
-        createdAt: daysAgo(25),
-      },
-      {
-        userId: reviewers[4].id,
-        rating: 5,
-        title: "Made my university research 10x faster",
-        content:
-          "As a computer science student, ChatGPT is essentially a 24/7 tutor. I use it to explain complex algorithms, review my code, and help structure essays. The new web search with citations has been a game-changer for academic research — it actually links to sources now.",
-        pros: ["Amazing for learning and tutoring", "Explains concepts at any depth", "Web search with real citations", "Great at code review and debugging"],
-        cons: ["Shouldn't be relied on for critical academic sources", "Free tier rate limits can be frustrating during exam season", "Math reasoning has improved but still makes errors"],
-        createdAt: daysAgo(40),
-      },
-      {
-        userId: reviewers[6].id,
-        rating: 4,
-        title: "Solid tool but know its limits",
-        content:
-          "I've been using ChatGPT since GPT-3.5 and the progress is remarkable. The coding capabilities in particular have saved me hundreds of hours. That said, I've caught it confidently giving wrong answers on niche technical topics. Always verify critical outputs, but for 95% of tasks it's excellent.",
-        pros: ["Exceptional coding assistant", "Huge knowledge base", "Continuously improving", "API access for custom integration"],
-        cons: ["Confident hallucinations on niche topics", "Token limits on longer projects", "No built-in project management for teams"],
-        createdAt: daysAgo(55),
-      },
-    ],
-  },
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
 
-  // ── Claude ───────────────────────────────────────────────
-  {
-    toolId: "63805926-515c-4bda-9806-9b63d0b966d7",
-    targetRating: 4.7,
-    targetReviewCount: 241,
-    reviews: [
-      {
-        userId: reviewers[6].id,
-        rating: 5,
-        title: "The benchmark for thoughtful AI assistance",
-        content:
-          "Claude's 1M token context window is not a gimmick — I regularly feed entire codebases into it for analysis and it maintains coherence throughout. The safety-first approach means fewer hallucinations and more honest 'I don't know' answers, which I actually prefer over confident wrong guesses.",
-        pros: ["Massive 1M token context", "More honest about its limitations", "Superb document analysis", "Excellent at long-form reasoning"],
-        cons: ["No image generation", "Smaller plugin ecosystem than ChatGPT", "Can be overly cautious on some topics"],
-        createdAt: daysAgo(8),
-      },
-      {
-        userId: reviewers[0].id,
-        rating: 5,
-        title: "My go-to for complex coding tasks",
-        content:
-          "For serious development work, Claude outperforms everything else I've tried. The artifacts feature lets me see and edit code in real time, and the project knowledge system remembers context across sessions. I've migrated most of my professional work to Claude.",
-        pros: ["Artifacts for live code editing", "Projects feature retains context", "Excellent at multi-file refactoring", "Clear, well-structured explanations"],
-        cons: ["Desktop app could be more polished", "Occasional rate limiting on Max plan", "No native IDE plugin yet"],
-        createdAt: daysAgo(18),
-      },
-      {
-        userId: reviewers[4].id,
-        rating: 4,
-        title: "Perfect for deep research and writing",
-        content:
-          "I use Claude for writing heavy research papers and literature reviews. The ability to upload 500+ page PDFs and get meaningful analysis is incredible. The writing style is more natural and less formulaic than other AIs I've tried.",
-        pros: ["Handles enormous documents effortlessly", "Natural, readable writing style", "Excellent summarization", "Good citation tracking"],
-        cons: ["Web search feels less integrated than ChatGPT", "Can be slow with very large contexts", "Limited multimodal capabilities"],
-        createdAt: daysAgo(32),
-      },
-    ],
-  },
+function randomFloat(min, max, decimals = 2) {
+  return parseFloat((Math.random() * (max - min) + min).toFixed(decimals))
+}
 
-  // ── GitHub Copilot ───────────────────────────────────────
-  {
-    toolId: "4ba46927-2454-4080-b739-8731388df353",
-    targetRating: 4.4,
-    targetReviewCount: 203,
-    reviews: [
-      {
-        userId: reviewers[0].id,
-        rating: 5,
-        title: "Indispensable for everyday development",
-        content:
-          "Copilot has fundamentally changed how I write code. The inline suggestions are spookily accurate, especially for boilerplate and common patterns. The chat feature lets me ask context-aware questions about my codebase. The free tier is generous enough that every developer should try it.",
-        pros: ["Excellent autocomplete suggestions", "Deep IDE integration", "Context-aware chat", "Free tier for individuals"],
-        cons: ["Can struggle with very niche frameworks", "Occasionally suggests insecure patterns", "Uses significant CPU during analysis"],
-        createdAt: daysAgo(5),
-      },
-      {
-        userId: reviewers[6].id,
-        rating: 4,
-        title: "Great pair programmer, not a replacement",
-        content:
-          "Copilot excels at reducing boilerplate and suggesting the next few lines of code, but it's not a replacement for understanding your codebase. I've found it most useful for tests, documentation, and repetitive patterns. The chat-based debugging is genuinely helpful.",
-        pros: ["Massive productivity boost for routine code", "Multi-language support is excellent", "Chat understands your open files", "Great test generation"],
-        cons: ["No architectural-level suggestions", "Can be noisy with too many suggestions", "Enterprise pricing is steep"],
-        createdAt: daysAgo(22),
-      },
-      {
-        userId: reviewers[4].id,
-        rating: 4,
-        title: "A learning accelerator for new developers",
-        content:
-          "As someone learning full-stack development, Copilot has been like having a senior developer looking over my shoulder. It suggests idiomatic patterns I wouldn't have known and explains code when I ask. It has definitely accelerated my learning curve.",
-        pros: ["Teaches idiomatic code patterns", "Great for learning new languages", "Explains code clearly", "Reduces frustration with syntax"],
-        cons: ["Can encourage copy-paste without understanding", "Sometimes suggests outdated libraries", "Not always aware of project conventions"],
-        createdAt: daysAgo(48),
-      },
-    ],
-  },
+function shuffle(arr) {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
 
-  // ── Midjourney ───────────────────────────────────────────
-  {
-    toolId: "d82f3d61-c7ca-4f5c-b3fe-b97420308014",
-    targetRating: 4.6,
-    targetReviewCount: 167,
-    reviews: [
-      {
-        userId: reviewers[1].id,
-        rating: 5,
-        title: "The gold standard for AI image generation",
-        content:
-          "As a designer, Midjourney's artistic quality is unmatched. The V6 model produces images with proper hands, coherent compositions, and stunning lighting. The web app has made it much more accessible than the old Discord-only interface.",
-        pros: ["Best-in-class image quality", "Artistic and stylized outputs", "Excellent prompt interpretation", "Web app is polished and fast"],
-        cons: ["Paid plans only, no free tier", "Less photorealistic than some competitors", "Learning curve for advanced prompting"],
-        createdAt: daysAgo(7),
-      },
-      {
-        userId: reviewers[2].id,
-        rating: 5,
-        title: "Transformed our marketing visuals",
-        content:
-          "We use Midjourney for all our social media graphics and blog imagery. The consistency feature lets us maintain a cohesive brand aesthetic across all generated images. The upscaling quality is phenomenal — we've printed some outputs at poster size.",
-        pros: ["Brand-consistent image generation", "Commercial usage rights on paid plans", "Stunning upscaling quality", "Active community for prompt inspiration"],
-        cons: ["No inpainting or local editing", "Can be slow during peak hours", "Discord legacy workflows still present"],
-        createdAt: daysAgo(20),
-      },
-      {
-        userId: reviewers[3].id,
-        rating: 4,
-        title: "Beautiful but has a learning curve",
-        content:
-          "Midjourney produces gorgeous images, but mastering the prompting language takes time. I've spent hours learning about style references, aspect ratios, and parameter tuning. Once you get it though, the results are incredible.",
-        pros: ["Absolutely stunning output quality", "Style reference feature is powerful", "Great for concept art and mood boards", "Active community support"],
-        cons: ["Steep learning curve for prompts", "Discord reliance can be frustrating", "No API for programmatic access (officially)"],
-        createdAt: daysAgo(35),
-      },
-    ],
-  },
-
-  // ── Cursor ───────────────────────────────────────────────
-  {
-    toolId: "cb9f9b53-67f4-40ca-81af-d18a93d77663",
-    targetRating: 4.6,
-    targetReviewCount: 148,
-    reviews: [
-      {
-        userId: reviewers[6].id,
-        rating: 5,
-        title: "The best AI-native code editor available",
-        content:
-          "Cursor has completely replaced VS Code for me. The AI agent mode is revolutionary — I can describe a feature and it creates the files, writes the code, and even runs terminal commands. The codebase-aware chat understands my entire project structure.",
-        pros: ["AI agent mode is groundbreaking", "Full VS Code extension compatibility", "Codebase-aware autocomplete", "Multi-file editing with AI context"],
-        cons: ["Can be resource-intensive", "Agent mode sometimes overreaches", "Newer product, occasional rough edges"],
-        createdAt: daysAgo(10),
-      },
-      {
-        userId: reviewers[0].id,
-        rating: 4,
-        title: "A huge leap forward in AI-assisted coding",
-        content:
-          "Cursor's Ctrl+K feature for editing code with natural language is something I didn't know I needed. The tab-to-accept completions are faster than Copilot. It's not perfect — the AI agent sometimes makes assumptions that break things — but the productivity gain is real.",
-        pros: ["Natural language code editing", "Faster than Copilot for completions", "Excellent project-wide refactoring", "Good onboarding documentation"],
-        cons: ["Agent can make breaking changes without warning", "Monthly cost adds up for teams", "Still maturing, some bugs expected"],
-        createdAt: daysAgo(28),
-      },
-      {
-        userId: reviewers[4].id,
-        rating: 5,
-        title: "Made me a more confident developer",
-        content:
-          "As a junior developer, Cursor has been transformative. When I get stuck, I can ask the AI for help in context of my actual codebase. It explains patterns and suggests improvements that would take me hours to figure out alone.",
-        pros: ["Incredible learning tool", "Context-aware help is amazing", "Makes complex refactoring accessible", "Great documentation generator"],
-        cons: ["Can be overwhelming with too many suggestions", "Premium pricing for full features", "Requires good project structure for best results"],
-        createdAt: daysAgo(60),
-      },
-    ],
-  },
-
-  // ── Perplexity ───────────────────────────────────────────
-  {
-    toolId: "0d4a87e8-a5d4-4c00-831e-dee682e81f6a",
-    targetRating: 4.5,
-    targetReviewCount: 126,
-    reviews: [
-      {
-        userId: reviewers[4].id,
-        rating: 5,
-        title: "The research tool I always wanted",
-        content:
-          "Perplexity has replaced Google for most of my research needs. The cited answers mean I can verify claims instantly, and the follow-up questions feature lets me dive deeper without starting new searches. The Pro mode with GPT-4 and Claude integration is worth every penny.",
-        pros: ["Answers with real citations", "Excellent for academic research", "Follow-up questions maintain context", "Multiple AI model options on Pro"],
-        cons: ["Free tier has daily search limits", "Can miss very recent or niche information", "Sometimes cites sources that don't fully support the answer"],
-        createdAt: daysAgo(15),
-      },
-      {
-        userId: reviewers[2].id,
-        rating: 4,
-        title: "Saves hours of market research time",
-        content:
-          "For business research — competitive analysis, market trends, industry reports — Perplexity is incredibly efficient. Instead of wading through 20 search results, I get a synthesized answer with sources. The collection feature lets me organize research by project.",
-        pros: ["Synthesizes information from multiple sources", "Time-saving for business research", "Collections feature for project organization", "Source transparency builds trust"],
-        cons: ["Not all sources are equally authoritative", "Struggles with data behind paywalls", "No offline access"],
-        createdAt: daysAgo(30),
-      },
-      {
-        userId: reviewers[3].id,
-        rating: 4,
-        title: "Great for content research and fact-checking",
-        content:
-          "I use Perplexity daily to research video topics and fact-check claims. The cited answers give me confidence in my content, and the related searches help me find angles I hadn't considered. It's become an essential part of my creative workflow.",
-        pros: ["Cited research saves fact-checking time", "Related questions spark content ideas", "Fast and responsive interface", "Good for comparing different viewpoints"],
-        cons: ["Not great for creative or subjective topics", "Can be biased toward more popular sources", "Limited customization options"],
-        createdAt: daysAgo(45),
-      },
-    ],
-  },
-
-  // ── Canva ────────────────────────────────────────────────
-  {
-    toolId: "518dd7cb-9f00-4f3d-aca3-2ef8acc231ec",
-    targetRating: 4.3,
-    targetReviewCount: 91,
-    reviews: [
-      {
-        userId: reviewers[1].id,
-        rating: 4,
-        title: "AI features are catching up to the design giants",
-        content:
-          "Canva's Magic Studio AI tools are surprisingly capable. The Magic Design feature creates complete designs from a text prompt, and background removal works better than dedicated tools. For non-designers, it's revolutionary. As a professional designer, I find it useful for quick mockups and social templates.",
-        pros: ["Magic Design from text prompts is impressive", "Huge template library", "Background removal works flawlessly", "Team collaboration features are solid"],
-        cons: ["AI outputs can be generic", "Limited control over fine details", "Export quality doesn't match professional tools"],
-        createdAt: daysAgo(14),
-      },
-      {
-        userId: reviewers[2].id,
-        rating: 4,
-        title: "My marketing team's daily driver",
-        content:
-          "Canva has democratized design in our marketing department. Team members without design backgrounds can create professional-looking social posts, presentations, and flyers. The brand kit ensures consistency across all outputs. The AI features are a nice bonus, but the template ecosystem is the real value.",
-        pros: ["Brand kit ensures consistency", "Team collaboration and approval flows", "Massive template ecosystem", "Easy learning curve for non-designers"],
-        cons: ["Advanced design features are limited", "Can become expensive per seat", "Some templates feel overused"],
-        createdAt: daysAgo(33),
-      },
-      {
-        userId: reviewers[3].id,
-        rating: 4,
-        title: "Perfect for quick content creation",
-        content:
-          "When I need a thumbnail, social post, or banner fast, Canva is my go-to. The AI background removal and Magic Eraser are genuinely useful. I wish the text-to-image generation was more controllable, but for 80% of my needs it works great.",
-        pros: ["Fast and intuitive interface", "AI background removal is excellent", "Great for social media content", "Magic Studio tools keep improving"],
-        cons: ["Text-to-image needs more control", "Can get laggy with complex designs", "Some premium elements cost extra"],
-        createdAt: daysAgo(50),
-      },
-    ],
-  },
-
-  // ── Runway ───────────────────────────────────────────────
-  {
-    toolId: "8227f61e-976e-4c50-aa8f-01d0ede9fb6f",
-    targetRating: 4.4,
-    targetReviewCount: 73,
-    reviews: [
-      {
-        userId: reviewers[3].id,
-        rating: 5,
-        title: "The future of video creation is here",
-        content:
-          "Runway's Gen-3 Alpha is mind-blowing. Text-to-video clips are coherent, the motion brush lets me control specific elements, and the green screen removal is flawless. It has replaced several tools in my editing pipeline. The real-time collaboration is a bonus for team projects.",
-        pros: ["Best text-to-video quality available", "Motion brush for targeted animations", "Excellent green screen removal", "Real-time team collaboration"],
-        cons: ["Generation can be slow during peak times", "Free tier watermark is prominent", "Still limited in output resolution"],
-        createdAt: daysAgo(9),
-      },
-      {
-        userId: reviewers[6].id,
-        rating: 4,
-        title: "Powerful but still maturing",
-        content:
-          "Runway is the most impressive AI video tool I've used, but it's clear the technology is still evolving. Short clips look great, but longer sequences can have consistency issues between frames. The image-to-video feature is particularly impressive for creating animated content from stills.",
-        pros: ["Image-to-video works surprisingly well", "Inpainting and outpainting for video", "Clean, intuitive interface", "Active development with frequent updates"],
-        cons: ["Long video generation lacks consistency", "Expensive for high-volume usage", "Limited export formats"],
-        createdAt: daysAgo(38),
-      },
-      {
-        userId: reviewers[1].id,
-        rating: 4,
-        title: "A game-changer for motion designers",
-        content:
-          "As a motion designer, Runway has opened up creative possibilities I couldn't explore before. The ability to generate video backgrounds, remove objects from footage, and extend video clips with AI is incredible. It's not replacing traditional tools yet, but it's an amazing addition to the workflow.",
-        pros: ["Opens new creative possibilities", "Excellent object removal from video", "Green screen features are best in class", "Good integration with editing workflows"],
-        cons: ["Not a replacement for traditional editing", "Pricing escalates quickly", "Occasional artifacts in complex scenes"],
-        createdAt: daysAgo(52),
-      },
-    ],
-  },
-
-  // ── Jasper ───────────────────────────────────────────────
-  {
-    toolId: "cb594f1e-ff61-4d0e-bb63-e012e4150eba",
-    targetRating: 4.2,
-    targetReviewCount: 58,
-    reviews: [
-      {
-        userId: reviewers[5].id,
-        rating: 4,
-        title: "Best for brand-aligned content at scale",
-        content:
-          "Jasper's brand voice training is what sets it apart from generic AI writing tools. Once you train it on your brand guidelines, the output is remarkably on-brand. The campaign workflows are excellent for marketing teams producing content at scale.",
-        pros: ["Brand voice training is genuinely effective", "Campaign workflow templates", "Team collaboration with approval flows", "Integrates with Surfer SEO for optimization"],
-        cons: ["Expensive for small teams", "Can be over-engineered for simple tasks", "Output still needs human editing"],
-        createdAt: daysAgo(16),
-      },
-      {
-        userId: reviewers[2].id,
-        rating: 4,
-        title: "Scaled our content production significantly",
-        content:
-          "Jasper has helped us produce 3x more content without increasing headcount. The long-form assistant writes solid first drafts that our editors can polish quickly. The SEO integration is particularly valuable for our blog content strategy.",
-        pros: ["Scales content production effectively", "SEO integration is valuable", "Good template library for different content types", "Brand voice consistency across outputs"],
-        cons: ["Not great for creative or storytelling content", "Can produce formulaic copy", "Learning curve for advanced features"],
-        createdAt: daysAgo(42),
-      },
-    ],
-  },
-
-  // ── Notion AI ────────────────────────────────────────────
-  {
-    toolId: "f7c6c969-3c98-49a0-b535-65deb1313d26",
-    targetRating: 4.3,
-    targetReviewCount: 42,
-    reviews: [
-      {
-        userId: reviewers[2].id,
-        rating: 4,
-        title: "Made our team wiki actually useful",
-        content:
-          "Notion AI turned our chaotic team wiki into a genuinely useful knowledge base. The Q&A feature answers questions based on our documents, the summarization helps with long meeting notes, and the AI writing assistance makes documentation less of a chore.",
-        pros: ["Q&A over workspace is transformative", "Excellent meeting note summarization", "Seamless integration with existing Notion setup", "AI writing feels native, not bolted on"],
-        cons: ["Requires well-organized workspace for best results", "Can be slow with very large databases", "Limited to text-based AI features"],
-        createdAt: daysAgo(11),
-      },
-      {
-        userId: reviewers[3].id,
-        rating: 4,
-        title: "Great for content planning and drafting",
-        content:
-          "I use Notion AI to plan my content calendar, draft outlines, and summarize research. Having AI built directly into my workspace means I don't need to switch between tools. The translate feature is also handy for reaching international audiences.",
-        pros: ["AI built into existing workflow", "Content calendar planning is smooth", "Translation for international content", "Good brainstorming partner"],
-        cons: ["AI features require separate paid add-on", "Can generate generic suggestions", "No image or design AI capabilities"],
-        createdAt: daysAgo(36),
-      },
-    ],
-  },
-
-  // ── ElevenLabs ───────────────────────────────────────────
-  {
-    toolId: "975ad8eb-c955-4bd2-8bfa-7660518e7667",
-    targetRating: 4.6,
-    targetReviewCount: 35,
-    reviews: [
-      {
-        userId: reviewers[3].id,
-        rating: 5,
-        title: "Uncanny voice quality that keeps improving",
-        content:
-          "ElevenLabs text-to-speech is indistinguishable from human narration in many cases. The voice cloning is remarkably accurate with just a few minutes of audio. I use it for voiceovers in my videos and the multilingual dubbing opens up international audiences.",
-        pros: ["Best TTS quality on the market", "Voice cloning from minimal audio", "Multilingual dubbing is excellent", "API is well-documented and reliable"],
-        cons: ["Premium pricing for high-quality voices", "Voice cloning has ethical safeguards (necessary but limiting)", "Long-form generation can have occasional glitches"],
-        createdAt: daysAgo(19),
-      },
-      {
-        userId: reviewers[0].id,
-        rating: 4,
-        title: "Great API for developers",
-        content:
-          "I integrated ElevenLabs into our app for generating audio content. The API is clean, documented, and reliable. The voice quality options let us choose the right tone for different use cases. Latency is good for real-time applications.",
-        pros: ["Developer-friendly API", "Low latency for real-time use", "Wide range of voice options", "Good documentation and SDKs"],
-        cons: ["Cost can add up at scale", "Some voices sound better than others", "No on-premise deployment option"],
-        createdAt: daysAgo(44),
-      },
-    ],
-  },
-
-  // ── Grammarly ────────────────────────────────────────────
-  {
-    toolId: "b6d6a584-4dd2-4905-a8bf-8ee0ea1e47b2",
-    targetRating: 4.2,
-    targetReviewCount: 27,
-    reviews: [
-      {
-        userId: reviewers[5].id,
-        rating: 4,
-        title: "An essential tool for polished communication",
-        content:
-          "Grammarly catches mistakes I'd never spot on my own and the tone suggestions have genuinely improved my professional communication. The generative AI features for rewriting and drafting are useful, though not as powerful as dedicated AI writing tools.",
-        pros: ["Excellent grammar and spell checking", "Tone detection is surprisingly accurate", "Works everywhere via browser extension", "Generative AI rewriting is handy"],
-        cons: ["Premium is pricey for individual users", "Can be overly prescriptive about style", "Privacy concerns with cloud processing"],
-        createdAt: daysAgo(6),
-      },
-      {
-        userId: reviewers[4].id,
-        rating: 4,
-        title: "Saved my grades on essay submissions",
-        content:
-          "As a student, Grammarly has caught countless typos and awkward phrasings in my essays. The plagiarism checker gives me peace of mind, and the clarity suggestions help me write more persuasively. It's like having an editor review every assignment.",
-        pros: ["Catches errors traditional spellcheck misses", "Plagiarism detection is reliable", "Clarity and engagement suggestions improve writing", "Citations assistant for academic work"],
-        cons: ["Can suggest changes that alter your voice", "Premium subscription needed for full features", "Academic mode could be more robust"],
-        createdAt: daysAgo(58),
-      },
-    ],
-  },
-
-  // ── Julius AI ────────────────────────────────────────────
-  {
-    toolId: "bd765dad-77fd-4a4f-936c-f2d0a1843d4a",
-    targetRating: 4.5,
-    targetReviewCount: 18,
-    reviews: [
-      {
-        userId: reviewers[2].id,
-        rating: 5,
-        title: "The data analyst I always wanted on my team",
-        content:
-          "Julius AI has completely changed how I work with data. I upload CSV files and ask questions in plain English — it generates visualizations, runs statistical tests, and explains the insights in context. For a business owner who isn't a data scientist, it's invaluable.",
-        pros: ["Natural language data analysis works beautifully", "Generates publication-ready charts", "Statistical analysis without the math", "Handles large datasets well"],
-        cons: ["Some advanced statistical methods not available", "Can struggle with messy/unclean data", "No real-time data connection"],
-        createdAt: daysAgo(21),
-      },
-      {
-        userId: reviewers[4].id,
-        rating: 4,
-        title: "Perfect for academic data analysis",
-        content:
-          "As a graduate student analyzing survey data, Julius AI has saved me weeks of work. I can describe the analysis I want in plain language and it generates the right statistical tests and visualizations. It's like having a stats tutor on demand.",
-        pros: ["Makes statistics accessible to everyone", "Great visualization quality", "Supports multiple file formats", "Explains statistical concepts as it works"],
-        cons: ["Not suitable for highly specialized analysis", "Can misinterpret complex research questions", "Free tier is limited"],
-        createdAt: daysAgo(65),
-      },
-    ],
-  },
+// ── Review Templates ────────────────────────────────────────
+const shortReviews = [
+  "Exactly what I needed for quick content generation. The interface is clean and the output quality surpasses most competitors.",
+  "Solid tool that does what it promises. Not perfect, but the core functionality is excellent.",
+  "I've tried several alternatives and this one stands out for its reliability and consistent output quality.",
+  "Great value for the price point. The free tier is generous enough for small projects.",
+  "The best in its category right now. I've recommended it to my entire team.",
+  "Does the job well. Some features could be more polished but overall a great experience.",
+  "Impressed with the accuracy and speed. This has become an essential part of my daily workflow.",
+  "Simple, effective, and reliable. Exactly what I look for in a productivity tool.",
+  "After testing five alternatives, I chose this one. No regrets so far.",
+  "Good tool with room for improvement. The core features work great but some advanced options feel incomplete.",
 ]
 
-// ── Main ──────────────────────────────────────────────────────
+const mediumReviews = [
+  "I've been using this tool for about three months now and it has significantly streamlined my workflow. The learning curve was gentle and within a week I was producing quality output. Customer support has been responsive when I had questions about integrations. My only wish is for more template options, but overall it's a solid choice for professionals.",
+  "What sets this apart is the attention to user experience. The onboarding process is smooth, the dashboard is intuitive, and the output quality is consistently good. I particularly appreciate the regular updates that add meaningful features rather than bloat. Would recommend to anyone looking for a reliable solution.",
+  "After trying the free trial, I upgraded within a week. The difference between this and free alternatives is night and day. The AI quality is noticeably better, the speed is impressive, and the customer support team actually understands the product. A few more export options would make it perfect.",
+  "This tool has transformed how our team operates. We've reduced content production time by roughly 40% while maintaining quality. The collaboration features could use some work, but the core AI capabilities are best-in-class. Integration with our existing tools was straightforward and well-documented.",
+  "I was skeptical at first but the results speak for themselves. The AI understands context remarkably well and produces natural-sounding output. The pricing is fair for what you get. My one criticism is the occasional slowness during peak hours, but the recent infrastructure upgrades seem to have helped.",
+  "A well-rounded tool that excels in most areas. The feature set is comprehensive, the UI is modern and clean, and the output quality is consistently high. I've had a few minor issues with integrations but support resolved them quickly. Definitely worth considering for your tech stack.",
+  "The recent updates have made a significant improvement. What was already a good tool is becoming great. The new features are genuinely useful rather than gimmicky. I appreciate that the development team seems to listen to user feedback and prioritizes practical improvements.",
+  "I use this daily for both personal projects and client work. The consistency of the output is what keeps me coming back. While I wish some advanced features were available on lower-tier plans, the Pro plan offers excellent value. The API documentation is particularly well-written.",
+  "Found this through a colleague's recommendation and it exceeded my expectations. The setup was quick, the results were impressive from day one, and I keep discovering new features that make my work easier. Occasional glitches but updates are frequent and the team is responsive.",
+  "Solid performance across the board. The AI model handles nuance well and rarely requires significant editing of the output. I especially value the thoughtful design choices that make complex tasks feel simple. A few pain points around billing but the product itself is excellent.",
+]
+
+const longReviews = [
+  "I've been using this tool extensively for the past six months across multiple projects and it has genuinely changed the way I work. The AI quality is consistently impressive, handling complex prompts with nuance and producing output that requires minimal editing. What really sets it apart is the attention to detail in the user interface — every feature feels thoughtfully placed and the learning curve is remarkably gentle for such a powerful tool.\n\nI initially started with the free tier to test capabilities and upgraded within two weeks. The premium features justify the cost, especially for power users who need advanced customization. Customer support has been responsive and helpful, though I've only needed to contact them a couple of times.\n\nWhere I see room for improvement is in the collaboration features. While the basic sharing works well, more robust team workflows would make this indispensable for agency work. The API is well-documented and reliable for those looking to build custom integrations. Overall, it's become an essential part of my toolkit and I recommend it to colleagues regularly.",
+  "After evaluating dozens of options in this space over the past year, I can confidently say this is among the best. The development team has done an exceptional job balancing power with usability. What could have been an overwhelming tool is instead intuitive and accessible from day one.\n\nThe quality of AI-generated output varies by use case — it excels at structured tasks like summarization and data extraction, while creative tasks sometimes need more human guidance. That said, the speed is remarkable and the consistency across long sessions is better than any competitor I've tested.\n\nI particularly want to highlight the documentation and onboarding experience. The guides are thorough without being overwhelming, and the example workflows helped me understand best practices quickly. The community forum is active and the team actively participates in discussions about future features.\n\nPricing is competitive for the value provided. The mid-tier plan offers the best balance of features and cost for most professionals. Enterprise features like SSO and advanced audit logs are handled well. If the team continues this trajectory of improvement, this will be the undisputed leader in the space within a year.",
+  "I've been in the software evaluation business for over a decade and this product demonstrates a rare combination of technical excellence and user-centric design. The core AI engine is built on impressive architecture that delivers fast, accurate results even with complex, multi-step prompts.\n\nWhat impressed me most during the evaluation period was the consistency. Many AI tools produce great results 60% of the time and confusing outputs the rest. This tool delivers quality results reliably, with only occasional edge cases requiring regeneration. The confidence calibration is notably better than alternatives.\n\nThe platform has evolved significantly since launch. Each update has brought meaningful improvements rather than cosmetic changes. The roadmap they've shared internally with enterprise customers suggests even more exciting capabilities in development. The mobile experience could be improved but the desktop and web apps are polished.\n\nFor organizations considering adoption, I recommend starting with a pilot team on the Pro plan. The admin controls are comprehensive and the analytics dashboard provides useful insights into usage patterns. The API has been reliable with 99.9% uptime over my testing period. Support response times average under two hours for critical issues.",
+  "Switching to this tool was one of the better technology decisions our company made this year. We evaluated several alternatives and conducted a two-week trial before committing. The migration was smooth, the team adapted quickly, and within a month we saw measurable improvements in our content production metrics.\n\nThe AI quality is the standout feature. It understands industry-specific terminology accurately, maintains brand voice consistently, and handles multiple languages with impressive fluency. The speed has improved significantly since we started using it, with most tasks completing in seconds rather than minutes.\n\nCustomer support deserves special mention. When we had a complex integration requirement, their technical team worked with us directly to find a solution rather than pointing us to documentation. This level of support is rare and valuable.\n\nAreas for improvement include more granular permission controls, better reporting dashboards, and native integration with a few more third-party tools. But these are minor compared to the overall value. Our team's productivity has increased measurably and the quality of our output has been consistently high.",
+  "I've tested this product extensively across various use cases and I'm impressed by its versatility. Whether I'm using it for quick brainstorming sessions, in-depth research analysis, or content creation, it delivers consistent quality. The key strength is its ability to understand context and maintain coherence across long interactions.\n\nThe user interface deserves praise. It's clean without being sparse, powerful without being overwhelming. New features are integrated thoughtfully rather than just piled on. I particularly appreciate the keyboard shortcuts and power-user features that make frequent tasks faster.\n\nPerformance has been excellent with fast response times and minimal downtime. The occasional slowdown during peak hours has improved with recent infrastructure upgrades. The API is robust and well-documented, making integration straightforward for developers.\n\nWhere the product could improve is in advanced customization options for enterprise users and more granular analytics. The current reporting provides good overview data but could go deeper. That said, the core product is exceptional and I've recommended it to several colleagues who've had similarly positive experiences.",
+]
+
+const reviewTemplates = { short: shortReviews, medium: mediumReviews, long: longReviews }
+
+// ── Tool-specific themes and content ────────────────────────
+const TOPIC_THEMES = {
+  chatgpt: [{ aiRef: "ChatGPT's language model", featureRef: "GPT-4's reasoning" }],
+  claude: [{ aiRef: "Claude's safety-focused AI", featureRef: "Claude's long context" }],
+  jasper: [{ aiRef: "Jasper's brand voice AI", featureRef: "Jasper's campaign tools" }],
+  grammarly: [{ aiRef: "Grammarly's language AI", featureRef: "Grammarly's tone detection" }],
+  midjourney: [{ aiRef: "Midjourney's image generation", featureRef: "Midjourney's artistic quality" }],
+  runway: [{ aiRef: "Runway's video AI", featureRef: "Runway's Gen-3 model" }],
+  cursor: [{ aiRef: "Cursor's AI code engine", featureRef: "Cursor's agent mode" }],
+  "github-copilot": [{ aiRef: "Copilot's code AI", featureRef: "Copilot's autocomplete" }],
+  "notion-ai": [{ aiRef: "Notion's workspace AI", featureRef: "Notion AI's Q&A" }],
+  elevenlabs: [{ aiRef: "ElevenLabs' voice AI", featureRef: "ElevenLabs' TTS quality" }],
+  "julius-ai": [{ aiRef: "Julius' data analysis AI", featureRef: "Julius' chart generation" }],
+  canva: [{ aiRef: "Canva's design AI", featureRef: "Canva's Magic Studio" }],
+  perplexity: [{ aiRef: "Perplexity's search AI", featureRef: "Perplexity's citation system" }],
+  "augment-code": [{ aiRef: "Augment's code AI", featureRef: "Augment's context engine" }],
+  pearai: [{ aiRef: "PearAI's code assistant", featureRef: "PearAI's multi-model support" }],
+  "continue-dev": [{ aiRef: "Continue's open-source AI", featureRef: "Continue's customization" }],
+  cline: [{ aiRef: "Cline's autonomous AI", featureRef: "Cline's agent capabilities" }],
+  openhands: [{ aiRef: "OpenHands' coding AI", featureRef: "OpenHands' autonomous mode" }],
+  "browser-use": [{ aiRef: "Browser Use's automation", featureRef: "Browser Use's web agent" }],
+  skyvern: [{ aiRef: "Skyvern's browser AI", featureRef: "Skyvern's visual understanding" }],
+  "lindy-ai": [{ aiRef: "Lindy's automation AI", featureRef: "Lindy's workflow builder" }],
+  "n8n-ai-agent": [{ aiRef: "n8n's agentic AI", featureRef: "n8n's workflow automation" }],
+  "tavily-ai": [{ aiRef: "Tavily's search AI", featureRef: "Tavily's real-time data" }],
+  "exa-ai": [{ aiRef: "Exa's search engine", featureRef: "Exa's semantic search" }],
+  "jina-ai": [{ aiRef: "Jina's neural search", featureRef: "Jina's embeddings API" }],
+  "tavus-ai": [{ aiRef: "Tavus's video AI", featureRef: "Tavus's personalized videos" }],
+  "manus-ai": [{ aiRef: "Manus's agent AI", featureRef: "Manus's task execution" }],
+  "genspark-ai": [{ aiRef: "Genspark's search AI", featureRef: "Genspark's SparkPages" }],
+  "comet-browser": [{ aiRef: "Comet's browsing AI", featureRef: "Comet's automation" }],
+  "dia-browser": [{ aiRef: "Dia's browser AI", featureRef: "Dia's agent platform" }],
+  "higgsfield-ai": [{ aiRef: "Higgsfield's video AI", featureRef: "Higgsfield's generation" }],
+  "seedream-ai": [{ aiRef: "Seedream's creative AI", featureRef: "Seedream's image quality" }],
+  "minimax-ai": [{ aiRef: "MiniMax's generative AI", featureRef: "MiniMax's video models" }],
+  "hunyuan-ai": [{ aiRef: "Hunyuan's multimodal AI", featureRef: "Hunyuan's video generation" }],
+  "qwen-chat": [{ aiRef: "Qwen's language model", featureRef: "Qwen's reasoning" }],
+  "kimi-ai": [{ aiRef: "Kimi's long context AI", featureRef: "Kimi's document analysis" }],
+  "trae-ai": [{ aiRef: "Trae's coding AI", featureRef: "Trae's IDE integration" }],
+  "devin-ai": [{ aiRef: "Devin's autonomous AI", featureRef: "Devin's end-to-end development" }],
+}
+
+function getTopicThemes(slug) {
+  return TOPIC_THEMES[slug] || []
+}
+
+function getTitles(toolName, slug, lengthType) {
+  const generic = [
+    `Excellent ${toolName} experience`,
+    `${toolName} exceeded my expectations`,
+    `Why I switched to ${toolName}`,
+    `${toolName}: A comprehensive review`,
+    `Using ${toolName} for professional work`,
+    `${toolName} transformed my workflow`,
+    `Honest review of ${toolName}`,
+    `${toolName} vs the competition`,
+    `${toolName} after three months`,
+    `Getting the most out of ${toolName}`,
+    `${toolName} for enterprise teams`,
+    `${toolName} pros and cons`,
+    `Is ${toolName} worth it?`,
+    `${toolName} for beginners`,
+    `My experience with ${toolName}`,
+  ]
+  if (lengthType === "short") return generic.slice(0, 5)
+  if (lengthType === "medium") return generic.slice(3, 10)
+  return generic
+}
+
+function getPros(seed) {
+  const options = [
+    ["Excellent output quality", "Fast performance", "Clean interface"],
+    ["Great value for money", "Reliable uptime", "Easy to learn"],
+    ["Powerful features", "Regular updates", "Good documentation"],
+    ["Responsive support", "Active community", "Stable API"],
+    ["Intuitive design", "Consistent results", "Good integrations"],
+    ["High accuracy", "Good customization", "Fast response times"],
+    ["Works well for teams", "Affordable pricing", "Regular improvements"],
+    ["Quality AI models", "User-friendly interface", "Good onboarding"],
+  ]
+  return options[seed % options.length]
+}
+
+function getCons(seed) {
+  const options = [
+    ["Premium features require upgrade", "Could be faster for large tasks", "Occasional UI quirks"],
+    ["Steep learning curve for advanced features", "Mobile experience needs work", "Limited free tier"],
+    ["Integration with some tools could be better", "Customer support can be slow", "Export options limited"],
+    ["Occasional bugs after updates", "Documentation could be more detailed", "Price increase on renewal"],
+    ["No offline mode", "Some features feel unfinished", "API rate limits restrictive"],
+    ["Advanced features behind paywall", "Can be resource intensive", "Occasional downtime"],
+    ["Collaboration features basic", "Limited customization", "No self-hosted option"],
+    ["Learning curve for new users", "Some features redundant", "Pricing for teams adds up"],
+  ]
+  return options[seed % options.length]
+}
+
+function generateReviewsForTool(toolName, toolSlug, reviewerPool, count) {
+  const selectedReviewers = reviewerPool.slice(0, count)
+  const reviews = []
+  const topicThemes = getTopicThemes(toolSlug)
+
+  for (let i = 0; i < count; i++) {
+    const reviewer = selectedReviewers[i]
+    const lengthType = ["short", "medium", "long"][i % 3]
+    const templates = reviewTemplates[lengthType]
+    let content = templates[i % templates.length]
+
+    if (topicThemes.length > 0) {
+      const theme = topicThemes[i % topicThemes.length]
+      content = content.replace("tool", toolName)
+      content = content.replace("The AI", theme.aiRef || "The AI")
+      content = content.replace("The feature", theme.featureRef || "The feature")
+    } else {
+      content = content.replace("tool", toolName)
+    }
+
+    const rating = randomInt(3, 5)
+    const titles = getTitles(toolName, toolSlug, lengthType)
+
+    reviews.push({
+      userId: reviewer.id,
+      rating,
+      title: titles[i % titles.length],
+      content,
+      pros: getPros(i),
+      cons: getCons(i),
+      createdAt: daysAgo(randomInt(1, 365)),
+    })
+  }
+
+  return reviews
+}
+
+// ── Tool configurations ─────────────────────────────────────
+// All 38 tools from the database, each gets 8-9 reviews
+// Total: 322 (within the 336 reviewer pool)
+const TOOL_CONFIGS = [
+  // Popular tools get 9 reviews
+  { name: "ChatGPT", slug: "chatgpt", count: 9 },
+  { name: "Claude", slug: "claude", count: 9 },
+  { name: "Jasper", slug: "jasper", count: 8 },
+  { name: "Grammarly", slug: "grammarly", count: 9 },
+  { name: "Midjourney", slug: "midjourney", count: 9 },
+  { name: "Runway", slug: "runway", count: 8 },
+  { name: "Cursor", slug: "cursor", count: 9 },
+  { name: "GitHub Copilot", slug: "github-copilot", count: 9 },
+  { name: "Notion AI", slug: "notion-ai", count: 9 },
+  { name: "ElevenLabs", slug: "elevenlabs", count: 8 },
+  { name: "Julius AI", slug: "julius-ai", count: 8 },
+  { name: "Canva", slug: "canva", count: 9 },
+  { name: "Perplexity", slug: "perplexity", count: 9 },
+  // Newer/less popular tools get 8 reviews
+  { name: "Augment Code", slug: "augment-code", count: 8 },
+  { name: "PearAI", slug: "pearai", count: 8 },
+  { name: "Continue.dev", slug: "continue-dev", count: 8 },
+  { name: "Cline", slug: "cline", count: 8 },
+  { name: "OpenHands", slug: "openhands", count: 8 },
+  { name: "Browser Use", slug: "browser-use", count: 8 },
+  { name: "Skyvern", slug: "skyvern", count: 8 },
+  { name: "Lindy AI", slug: "lindy-ai", count: 8 },
+  { name: "n8n AI Agent", slug: "n8n-ai-agent", count: 8 },
+  { name: "Tavily AI", slug: "tavily-ai", count: 8 },
+  { name: "Exa AI", slug: "exa-ai", count: 8 },
+  { name: "Jina AI", slug: "jina-ai", count: 8 },
+  { name: "Tavus AI", slug: "tavus-ai", count: 8 },
+  { name: "Manus AI", slug: "manus-ai", count: 8 },
+  { name: "Genspark AI", slug: "genspark-ai", count: 8 },
+  { name: "Comet Browser", slug: "comet-browser", count: 8 },
+  { name: "Dia Browser", slug: "dia-browser", count: 8 },
+  { name: "Higgsfield AI", slug: "higgsfield-ai", count: 8 },
+  { name: "Seedream AI", slug: "seedream-ai", count: 8 },
+  { name: "MiniMax AI", slug: "minimax-ai", count: 8 },
+  { name: "Hunyuan AI", slug: "hunyuan-ai", count: 8 },
+  { name: "Qwen Chat", slug: "qwen-chat", count: 8 },
+  { name: "Kimi AI", slug: "kimi-ai", count: 8 },
+  { name: "Trae AI", slug: "trae-ai", count: 8 },
+  { name: "Devin AI", slug: "devin-ai", count: 8 },
+]
+
+const totalNeeded = TOOL_CONFIGS.reduce((s, c) => s + c.count, 0)
+console.log(`Total reviews needed: ${totalNeeded}`)
+
+if (totalNeeded > REVIEWERS.length) {
+  console.error(`Not enough unique reviewers! Need ${totalNeeded}, have ${REVIEWERS.length}`)
+  process.exit(1)
+}
+
+// ── Main ─────────────────────────────────────────────────────
 async function main() {
   console.log("Starting review seed...\n")
 
-  // 1. Insert reviews for each tool
-  let totalReviews = 0
-  for (const entry of toolReviews) {
-    console.log(`\nProcessing ${entry.reviews.length} reviews for tool ${entry.toolId}...`)
-    for (const review of entry.reviews) {
+  // 1. Delete existing reviews and reset tool ratings
+  console.log("Deleting existing reviews...")
+  const { data: allTools } = await supabase.from("tools").select("id")
+  const { error: deleteErr } = await supabase.from("reviews").delete().neq("id", "00000000-0000-0000-0000-000000000000")
+  if (deleteErr) {
+    console.error(`  Error deleting reviews: ${deleteErr.message}`)
+  } else {
+    console.log("  ✓ All existing reviews deleted")
+  }
+  // Reset tool ratings to 0 (trigger may not exist)
+  if (allTools) {
+    for (const t of allTools) {
+      await supabase.from("tools").update({ rating: 0, review_count: 0 }).eq("id", t.id)
+    }
+    console.log("  ✓ Tool ratings reset to 0")
+  }
+
+  // 2. Create reviewer users via auth.admin to satisfy FK constraints
+  console.log("\nCreating reviewer users...")
+  const shuffledReviewers = shuffle(REVIEWERS)
+  const assignedReviewers = shuffledReviewers.slice(0, totalNeeded)
+
+  let userCount = 0
+  for (const reviewer of assignedReviewers) {
+    const email = `${reviewer.name.toLowerCase().replace(/\s+/g, ".")}.${randomInt(100, 999)}@review.example.com`
+    try {
+      const { data, error } = await supabase.auth.admin.createUser({
+        email,
+        password: "temporaryPass123!",
+        email_confirm: true,
+        user_metadata: { full_name: reviewer.name },
+      })
+      if (!error && data?.user) {
+        reviewer.id = data.user.id
+        userCount++
+      } else if (error) {
+        // Try to find existing user with same email
+        const { data: existing } = await supabase.from("users").select("id").eq("email", email).maybeSingle()
+        if (existing) {
+          reviewer.id = existing.id
+          userCount++
+        }
+      }
+    } catch {
+      // Skip on failure
+    }
+  }
+  console.log(`  ✓ ${userCount} users created/verified`)
+
+  // 3. Fetch actual tool IDs from database
+  console.log("\nFetching tools from database...")
+  const { data: tools, error: toolsError } = await supabase
+    .from("tools")
+    .select("id, name, slug")
+    .eq("is_published", true)
+
+  if (toolsError) {
+    console.error(`  Error fetching tools: ${toolsError.message}`)
+    process.exit(1)
+  }
+
+  const toolMap = {}
+  for (const t of tools) {
+    toolMap[t.slug] = t
+  }
+
+  console.log(`  ✓ Found ${tools.length} tools`)
+
+  // 4. Generate and insert reviews
+  console.log("\nGenerating and inserting reviews...")
+  let currentUserIndex = 0
+  let totalInserted = 0
+
+  for (const config of TOOL_CONFIGS) {
+    const tool = toolMap[config.slug]
+    if (!tool) {
+      console.log(`  ✗ Tool not found: ${config.name} (${config.slug})`)
+      continue
+    }
+
+    const reviewerSlice = assignedReviewers.slice(currentUserIndex, currentUserIndex + config.count)
+    currentUserIndex += config.count
+
+    const reviews = generateReviewsForTool(
+      config.name,
+      config.slug,
+      reviewerSlice,
+      config.count
+    )
+
+    let inserted = 0
+    for (const review of reviews) {
       const { error } = await supabase.from("reviews").insert({
         user_id: review.userId,
-        tool_id: entry.toolId,
+        tool_id: tool.id,
         rating: review.rating,
         title: review.title,
         content: review.content,
@@ -555,46 +507,88 @@ async function main() {
         updated_at: review.createdAt,
       })
       if (error) {
-        console.error(`  ✗ Error inserting review "${review.title}":`, error.message)
+        if (error.code !== "23505") {
+          console.error(`  ✗ Error: ${error.message}`)
+        }
       } else {
-        totalReviews++
-        console.log(`  ✓ ${review.title}`)
+        inserted++
       }
     }
+
+    totalInserted += inserted
+    console.log(`  ✓ ${config.name}: ${inserted}/${config.count} reviews inserted`)
   }
 
-  console.log(`\nInserted ${totalReviews} reviews total.`)
+  console.log(`\nTotal reviews inserted: ${totalInserted}`)
 
-  // 3. Directly update tools with target rating & review count
-  //    (bypassing trigger since actual review count doesn't match target)
-  console.log("\nUpdating tools with target ratings and review counts...")
-  for (const entry of toolReviews) {
-    const { error } = await supabase
-      .from("tools")
-      .update({
-        rating: entry.targetRating,
-        review_count: entry.targetReviewCount,
-      })
-      .eq("id", entry.toolId)
-    if (error) {
-      console.error(`  ✗ Error updating tool ${entry.toolId}:`, error.message)
-    } else {
-      console.log(`  ✓ Tool ${entry.toolId}: rating=${entry.targetRating}, count=${entry.targetReviewCount}`)
+  // 5. Manually update tool ratings and review counts
+  console.log("\nUpdating tool ratings...")
+  for (const config of TOOL_CONFIGS) {
+    const tool = toolMap[config.slug]
+    if (!tool) continue
+    const { data: reviews } = await supabase
+      .from("reviews")
+      .select("rating")
+      .eq("tool_id", tool.id)
+      .eq("is_approved", true)
+    if (reviews && reviews.length > 0) {
+      const avg = parseFloat((reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(2))
+      await supabase.from("tools").update({ rating: avg, review_count: reviews.length }).eq("id", tool.id)
+    }
+  }
+  console.log("  ✓ Tool ratings updated")
+
+  // 6. Verify results
+  console.log("\n=== FINAL VERIFICATION ===\n")
+
+  const { data: finalTools } = await supabase
+    .from("tools")
+    .select("name, slug, rating, review_count")
+    .order("review_count", { ascending: false })
+
+  if (finalTools) {
+    console.log("Tool Ratings & Review Counts:")
+    for (const t of finalTools) {
+      const stars = "⭐".repeat(Math.round(t.rating))
+      console.log(`  ${t.name.padEnd(16)} ${String(t.rating).padEnd(5)} ${stars}  ${t.review_count} reviews`)
     }
   }
 
-  // 4. Verify
-  console.log("\nVerifying results...")
-  const { data: tools, error: toolsError } = await supabase
-    .from("tools")
-    .select("name, rating, review_count")
-    .order("review_count", { ascending: false })
-  if (toolsError) {
-    console.error("  Error fetching tools:", toolsError.message)
-  } else {
-    console.log("\nFinal tool ratings & counts:")
-    for (const t of tools) {
-      console.log(`  ${t.name.padEnd(16)} ${t.rating} ⭐  ${t.review_count} reviews`)
+  // Check for duplicate reviewer names
+  const { data: allReviews } = await supabase
+    .from("reviews")
+    .select("*, users!inner(full_name)")
+
+  if (allReviews) {
+    const nameCounts = {}
+    let duplicates = 0
+    for (const r of allReviews) {
+      nameCounts[r.users.full_name] = (nameCounts[r.users.full_name] || 0) + 1
+      if (nameCounts[r.users.full_name] > 1) duplicates++
+    }
+    if (duplicates > 0) {
+      console.log(`\n⚠ Found ${duplicates} duplicate reviewer names!`)
+      for (const [name, count] of Object.entries(nameCounts)) {
+        if (count > 1) console.log(`  ${name}: ${count} reviews`)
+      }
+    } else {
+      console.log("\n✓ No duplicate reviewer names found!")
+    }
+
+    const contents = allReviews.map((r) => r.content)
+    const uniqueContents = new Set(contents)
+    if (contents.length !== uniqueContents.size) {
+      console.log(`⚠ Found ${contents.length - uniqueContents.size} duplicate review texts!`)
+    } else {
+      console.log("✓ All review texts are unique!")
+    }
+
+    const titles = allReviews.map((r) => r.title)
+    const uniqueTitles = new Set(titles)
+    if (titles.length !== uniqueTitles.size) {
+      console.log(`⚠ Found ${titles.length - uniqueTitles.size} duplicate review titles!`)
+    } else {
+      console.log("✓ All review titles are unique!")
     }
   }
 

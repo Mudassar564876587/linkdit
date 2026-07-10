@@ -9,10 +9,10 @@ export default async function ComparisonList({ search }: { search?: string }) {
 
   if (comparisons.length === 0) {
     return (
-      <div className="mt-4 rounded-xl border border-border bg-muted/30 p-12 text-center">
+      <div className="mt-4 rounded-2xl border border-border/80 bg-muted/20 p-12 text-center">
         <p className="text-muted-foreground">
           {search
-            ? `No comparisons found for "${search}".`
+            ? `No comparisons found for "${search}". Try searching for tools instead.`
             : "No comparisons yet. Check back soon!"}
         </p>
       </div>

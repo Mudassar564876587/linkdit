@@ -16,7 +16,6 @@ import LatestArticles, {
 import CommunityReviews from "@/components/home/community-reviews"
 import CTASection from "@/components/home/cta-section"
 import Footer from "@/components/layout/footer"
-import AdsterraNativeBanner from "@/components/ads/AdsterraNativeBanner"
 
 const description = "Professional AI tools discovery platform. Explore curated AI tools, in-depth comparisons, and expert tutorials."
 
@@ -85,7 +84,6 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <TrustedBy />
-        <AdsterraNativeBanner />
         <Suspense fallback={<FeaturedToolsSkeleton />}>
           <FeaturedTools />
         </Suspense>
@@ -99,9 +97,6 @@ export default function Home() {
           <CommunityReviews />
         </Suspense>
         <CTASection />
-        <div className="border-t border-border bg-background py-8">
-          <AdsterraNativeBanner />
-        </div>
       </main>
       <Footer />
     </>

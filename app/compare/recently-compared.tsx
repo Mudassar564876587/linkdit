@@ -35,21 +35,21 @@ export default function RecentlyCompared() {
           <Link
             key={r.slug}
             href={`/compare/${r.slug}`}
-            className="flex items-center gap-3 rounded-xl border border-border bg-background p-4 transition-colors hover:bg-accent hover:border-primary/30"
+            className="group flex items-center gap-3 rounded-xl border border-border/80 bg-background p-4 shadow-soft transition-all hover:shadow-premium hover:border-primary/20"
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/5 text-xs font-bold text-primary ring-1 ring-border/50">
               {r.toolAName.charAt(0)}
             </div>
-            <ArrowRightLeft className="h-3 w-3 shrink-0 text-muted-foreground" aria-hidden="true" />
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
+            <ArrowRightLeft className="h-3 w-3 shrink-0 text-muted-foreground/60" aria-hidden="true" />
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/5 text-xs font-bold text-primary ring-1 ring-border/50">
               {r.toolBName.charAt(0)}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-foreground">
+              <p className="truncate text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                 {r.title || `${r.toolAName} vs ${r.toolBName}`}
               </p>
             </div>
-            <Clock className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+            <Clock className="h-3.5 w-3.5 shrink-0 text-muted-foreground/60" aria-hidden="true" />
           </Link>
         ))}
       </div>
