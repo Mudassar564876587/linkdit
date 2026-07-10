@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { Trash2, Star } from "lucide-react"
+import { toast } from "sonner"
 import {
   adminDeleteComparison,
   adminToggleComparisonPublish,
@@ -21,7 +22,8 @@ export default function ComparisonActions({
 
   async function handleDelete() {
     if (!confirm("Delete this comparison?")) return
-    await adminDeleteComparison(id)
+    const result = await adminDeleteComparison(id)
+    if (result.error) toast.error(result.error); else toast.success("Comparison deleted")
     router.refresh()
   }
 
@@ -29,7 +31,8 @@ export default function ComparisonActions({
     <div className="flex items-center gap-1">
       <button
         onClick={async () => {
-          await adminToggleComparisonPublish(id, !isPublished)
+          const r = await adminToggleComparisonPublish(id, !isPublished)
+          if (r.error) toast.error(r.error); else toast.success(isPublished ? "Comparison unpublished" : "Comparison published")
           router.refresh()
         }}
         className={`flex h-7 w-7 items-center justify-center rounded-md transition-colors ${
@@ -37,13 +40,12 @@ export default function ComparisonActions({
         }`}
         title={isPublished ? "Unpublish" : "Publish"}
       >
-        <span
-          className={`h-2 w-2 rounded-full ${isPublished ? "bg-emerald-500" : "bg-gray-300"}`}
-        />
+        <span className={`h-2 w-2 rounded-full ${isPublished ? "bg-emerald-500" : "bg-gray-300"}`} />
       </button>
       <button
         onClick={async () => {
-          await adminToggleComparisonFeatured(id, !isFeatured)
+          const r = await adminToggleComparisonFeatured(id, !isFeatured)
+          if (r.error) toast.error(r.error); else toast.success(isFeatured ? "Comparison unfeatured" : "Comparison featured")
           router.refresh()
         }}
         className={`flex h-7 w-7 items-center justify-center rounded-md transition-colors ${

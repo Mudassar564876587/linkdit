@@ -246,6 +246,66 @@ export async function adminToggleVerified(id: string, verified: boolean) {
   return { success: true }
 }
 
+export async function adminBulkVerify(ids: string[]) {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  await supabase.from("tools").update({ is_verified: true }).in("id", ids)
+  await logAuditEvent({ action: "bulk_verify", entityType: "tool", metadata: { count: ids.length } })
+  revalidatePath("/linkdit-studio-8k92/tools")
+  return { success: true }
+}
+
+export async function adminBulkUnverify(ids: string[]) {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  await supabase.from("tools").update({ is_verified: false }).in("id", ids)
+  await logAuditEvent({ action: "bulk_unverify", entityType: "tool", metadata: { count: ids.length } })
+  revalidatePath("/linkdit-studio-8k92/tools")
+  return { success: true }
+}
+
+export async function adminBulkFeature(ids: string[]) {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  await supabase.from("tools").update({ featured: true }).in("id", ids)
+  await logAuditEvent({ action: "bulk_feature", entityType: "tool", metadata: { count: ids.length } })
+  revalidatePath("/linkdit-studio-8k92/tools")
+  return { success: true }
+}
+
+export async function adminBulkUnfeature(ids: string[]) {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  await supabase.from("tools").update({ featured: false }).in("id", ids)
+  await logAuditEvent({ action: "bulk_unfeature", entityType: "tool", metadata: { count: ids.length } })
+  revalidatePath("/linkdit-studio-8k92/tools")
+  return { success: true }
+}
+
+export async function adminBulkPublish(ids: string[]) {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  await supabase.from("tools").update({ is_published: true }).in("id", ids)
+  await logAuditEvent({ action: "bulk_publish", entityType: "tool", metadata: { count: ids.length } })
+  revalidatePath("/linkdit-studio-8k92/tools")
+  return { success: true }
+}
+
+export async function adminBulkUnpublish(ids: string[]) {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  await supabase.from("tools").update({ is_published: false }).in("id", ids)
+  await logAuditEvent({ action: "bulk_unpublish", entityType: "tool", metadata: { count: ids.length } })
+  revalidatePath("/linkdit-studio-8k92/tools")
+  return { success: true }
+}
+
 export async function adminUpdateTool(id: string, formData: FormData): Promise<AdminToolResult> {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()

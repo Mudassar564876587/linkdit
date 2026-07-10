@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { CheckCircle, XCircle, Loader2 } from "lucide-react"
+import { toast } from "sonner"
 import {
   adminApproveArticleSubmission,
   adminRejectArticleSubmission,
@@ -39,9 +40,14 @@ export default function ArticleReviewActions({ submission }: { submission: Submi
 
     setLoading(null)
     if (result.success) {
+      if (action === "approve") toast.success("Article approved and published")
+      else if (action === "reject") toast.success("Article submission rejected")
+      else if (action === "delete") toast.success("Submission deleted")
       router.refresh()
       setShowReject(false)
       setReason("")
+    } else if (result.error) {
+      toast.error(result.error)
     }
   }
 

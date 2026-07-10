@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { CheckCircle, XCircle, Send, Loader2 } from "lucide-react"
+import { toast } from "sonner"
 import {
   adminApproveSubmission,
   adminRejectSubmission,
@@ -45,10 +46,16 @@ export default function ReviewActions({ submission }: { submission: Submission }
 
     setLoading(null)
     if (result.success) {
+      if (action === "approve") toast.success("Tool approved and published")
+      else if (action === "reject") toast.success("Submission rejected")
+      else if (action === "changes") toast.success("Changes requested")
+      else if (action === "delete") toast.success("Submission deleted")
       router.refresh()
       setShowReject(false)
       setShowChanges(false)
       setReason("")
+    } else if (result.error) {
+      toast.error(result.error)
     }
   }
 

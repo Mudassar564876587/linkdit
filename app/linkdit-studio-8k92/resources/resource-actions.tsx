@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { Trash2, Star } from "lucide-react"
+import { toast } from "sonner"
 import { adminDeleteResource, adminToggleResourcePublish, adminToggleResourceFeatured } from "@/actions/admin/resources"
 
 export default function ResourceActions({ id, isPublished, isFeatured }: { id: string; isPublished?: boolean; isFeatured?: boolean }) {
@@ -9,13 +10,19 @@ export default function ResourceActions({ id, isPublished, isFeatured }: { id: s
 
   async function handleDelete() {
     if (!confirm("Delete this resource?")) return
-    await adminDeleteResource(id); router.refresh()
+    const result = await adminDeleteResource(id)
+    if (result.error) toast.error(result.error); else toast.success("Resource deleted")
+    router.refresh()
   }
 
   return (
     <div className="flex items-center gap-1">
       <button
-        onClick={async () => { await adminToggleResourcePublish(id, !isPublished); router.refresh() }}
+        onClick={async () => {
+          const r = await adminToggleResourcePublish(id, !isPublished)
+          if (r.error) toast.error(r.error); else toast.success(isPublished ? "Resource unpublished" : "Resource published")
+          router.refresh()
+        }}
         className={`flex h-7 w-7 items-center justify-center rounded-md transition-colors ${
           isPublished ? "text-emerald-500" : "text-muted-foreground hover:bg-accent"
         }`}
@@ -24,7 +31,11 @@ export default function ResourceActions({ id, isPublished, isFeatured }: { id: s
         <span className={`h-2 w-2 rounded-full ${isPublished ? "bg-emerald-500" : "bg-gray-300"}`} />
       </button>
       <button
-        onClick={async () => { await adminToggleResourceFeatured(id, !isFeatured); router.refresh() }}
+        onClick={async () => {
+          const r = await adminToggleResourceFeatured(id, !isFeatured)
+          if (r.error) toast.error(r.error); else toast.success(isFeatured ? "Resource unfeatured" : "Resource featured")
+          router.refresh()
+        }}
         className={`flex h-7 w-7 items-center justify-center rounded-md transition-colors ${
           isFeatured ? "text-amber-500 bg-amber-50" : "text-muted-foreground hover:bg-accent"
         }`}

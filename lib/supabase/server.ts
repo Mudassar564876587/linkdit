@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr"
+import { createClient } from "@supabase/supabase-js"
 import { cookies } from "next/headers"
 import type { Database } from "../database.types"
 
@@ -24,5 +25,14 @@ export async function createServerSupabaseClient() {
         },
       },
     }
+  )
+}
+
+/** Creates a Supabase client using the service_role key for admin operations.
+ *  Only use in server components / server actions — NEVER expose to the client. */
+export function createAdminClient() {
+  return createClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
   )
 }

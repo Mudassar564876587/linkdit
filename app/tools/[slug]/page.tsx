@@ -152,7 +152,10 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
                 <div className="flex items-center gap-2 flex-wrap">
                   <h1 className="text-3xl font-bold text-foreground">{tool.name}</h1>
                   {tool.is_verified && (
-                    <ShieldCheck className="h-6 w-6 text-emerald-500" aria-label="Verified tool" />
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                      <ShieldCheck className="h-3.5 w-3.5" />
+                      Verified by LinkDit
+                    </span>
                   )}
                   {tool.featured && (
                     <span className="rounded-full bg-primary px-3 py-0.5 text-xs font-semibold text-primary-foreground">
