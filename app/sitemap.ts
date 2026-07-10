@@ -1,19 +1,24 @@
 import type { MetadataRoute } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
-import { SITE } from "@/constants/site"
 
-const BASE = SITE.url
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://linkdit-omega.vercel.app"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createServerSupabaseClient()
 
-  const [{ data: tools }, { data: categories }, { data: articles }, { data: resources }, { data: comparisons }] = await Promise.all([
-    supabase.from("tools").select("slug, updated_at, logo_url").eq("is_published", true),
+  const results = await Promise.allSettled([
+    supabase.from("tools").select("slug, updated_at").eq("is_published", true),
     supabase.from("categories").select("slug, updated_at"),
-    supabase.from("articles").select("slug, updated_at, cover_image_url").eq("is_published", true),
+    supabase.from("articles").select("slug, updated_at").eq("is_published", true),
     supabase.from("resources").select("slug, updated_at").eq("is_published", true),
     supabase.from("comparisons").select("slug, updated_at").eq("is_published", true),
   ])
+
+  const tools = results[0].status === "fulfilled" ? results[0].value.data : null
+  const categories = results[1].status === "fulfilled" ? results[1].value.data : null
+  const articles = results[2].status === "fulfilled" ? results[2].value.data : null
+  const resources = results[3].status === "fulfilled" ? results[3].value.data : null
+  const comparisons = results[4].status === "fulfilled" ? results[4].value.data : null
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE, changeFrequency: "weekly", priority: 1 },
@@ -30,18 +35,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/submit-article`, changeFrequency: "monthly", priority: 0.5 },
   ]
 
-  const toolPages: MetadataRoute.Sitemap = (tools ?? []).map((t) => {
-    const entry: MetadataRoute.Sitemap[0] = {
-      url: `${BASE}/tools/${t.slug}`,
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
-      lastModified: t.updated_at ? new Date(t.updated_at) : undefined,
-    }
-    if (t.logo_url) {
-      entry.images = [t.logo_url]
-    }
-    return entry
-  })
+  const toolPages: MetadataRoute.Sitemap = (tools ?? []).map((t) => ({
+    url: `${BASE}/tools/${t.slug}`,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+    lastModified: t.updated_at ? new Date(t.updated_at) : undefined,
+  }))
 
   const categoryPages: MetadataRoute.Sitemap = (categories ?? []).map((c) => ({
     url: `${BASE}/categories/${c.slug}`,
