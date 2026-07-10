@@ -21,7 +21,7 @@ function mapToolSummary(t: any): ToolSummary {
     features: t.features ?? [],
     pros: t.pros ?? [],
     cons: t.cons ?? [],
-    platforms: t.platforms ?? ["Web"],
+    platforms: ["Web"],
     categoryId: t.category_id || null,
     categoryName: t.categories?.name ?? null,
 
@@ -68,7 +68,7 @@ function mapRowToComparisonWithTools(row: any): ComparisonWithTools {
 
 const TOOL_SELECT = `
   id, name, slug, description, logo_url, website_url,
-  pricing, rating, review_count, features, pros, cons, platforms,
+  pricing, rating, review_count, features, pros, cons,
   category_id, categories(name)
 `
 
@@ -131,7 +131,7 @@ export async function getPopularComparisons(
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from("comparisons")
-    .select(`*, tool_a:tools!tool_a_id(id, name, slug, logo_url, pricing, rating, review_count, platforms, categories(name)), tool_b:tools!tool_b_id(id, name, slug, logo_url, pricing, rating, review_count, platforms, categories(name)), categories(name)`)
+    .select(`*, tool_a:tools!tool_a_id(id, name, slug, logo_url, pricing, rating, review_count, categories(name)), tool_b:tools!tool_b_id(id, name, slug, logo_url, pricing, rating, review_count, categories(name)), categories(name)`)
     .eq("is_published", true)
     .order("views", { ascending: false })
     .limit(limit)
@@ -147,7 +147,7 @@ export async function getSimilarComparisons(
   const supabase = await createServerSupabaseClient()
   let query = supabase
     .from("comparisons")
-    .select(`*, tool_a:tools!tool_a_id(id, name, slug, logo_url, pricing, rating, review_count, platforms, categories(name)), tool_b:tools!tool_b_id(id, name, slug, logo_url, pricing, rating, review_count, platforms, categories(name)), categories(name)`)
+    .select(`*, tool_a:tools!tool_a_id(id, name, slug, logo_url, pricing, rating, review_count, categories(name)), tool_b:tools!tool_b_id(id, name, slug, logo_url, pricing, rating, review_count, categories(name)), categories(name)`)
     .eq("is_published", true)
     .neq("id", currentId)
   if (categoryId) query = query.eq("category_id", categoryId)
@@ -167,7 +167,7 @@ export async function searchTools(query: string) {
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from("tools")
-    .select(`id, name, slug, logo_url, pricing, rating, review_count, features, pros, cons, platforms, website_url, category_id, categories(name)`)
+    .select(`id, name, slug, logo_url, pricing, rating, review_count, features, pros, cons, website_url, category_id, categories(name)`)
     .eq("is_published", true)
     .or(`name.ilike.%${query}%,description.ilike.%${query}%`)
     .order("rating", { ascending: false })
@@ -420,7 +420,7 @@ export async function getRelatedComparisons(
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from("comparisons")
-    .select(`*, tool_a:tools!tool_a_id(id, name, slug, logo_url, pricing, rating, review_count, platforms, categories(name)), tool_b:tools!tool_b_id(id, name, slug, logo_url, pricing, rating, review_count, platforms, categories(name)), categories(name)`)
+    .select(`*, tool_a:tools!tool_a_id(id, name, slug, logo_url, pricing, rating, review_count, categories(name)), tool_b:tools!tool_b_id(id, name, slug, logo_url, pricing, rating, review_count, categories(name)), categories(name)`)
     .eq("is_published", true)
     .neq("slug", currentSlug)
     .or(`tool_a_id.eq.${toolAId},tool_a_id.eq.${toolBId},tool_b_id.eq.${toolAId},tool_b_id.eq.${toolBId}`)
