@@ -108,7 +108,7 @@ export default function TelegramBotWidget() {
     <>
       {showPopup && !open && (
         <div className="fixed bottom-24 right-6 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
-          <div className="relative rounded-2xl bg-card border border-border p-4 shadow-xl max-w-64">
+          <div className="relative rounded-2xl bg-background border border-border p-4 shadow-xl max-w-64">
             <button
               onClick={() => setShowPopup(false)}
               className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-muted-foreground/60 text-white hover:bg-muted-foreground transition-colors"
@@ -127,7 +127,7 @@ export default function TelegramBotWidget() {
       )}
 
       {open && (
-        <div className="fixed bottom-6 right-6 z-50 flex w-96 max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-border bg-card shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-200">
+        <div className="fixed bottom-6 right-6 z-50 flex w-96 max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-border bg-background shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-200">
           {/* Header */}
           <div className="flex items-center justify-between rounded-t-2xl bg-[#0088cc] px-4 py-3 text-white">
             <div className="flex items-center gap-2.5">
