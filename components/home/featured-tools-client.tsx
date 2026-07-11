@@ -21,7 +21,7 @@ type Tool = {
 
 const pricingStyles: Record<string, string> = {
   Free: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  Freemium: "bg-amber-50 text-amber-700 border-amber-200",
+  Preemium: "bg-amber-50 text-amber-700 border-amber-200",
   Paid: "bg-violet-50 text-violet-700 border-violet-200",
 }
 

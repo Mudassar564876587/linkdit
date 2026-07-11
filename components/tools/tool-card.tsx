@@ -103,7 +103,7 @@ return (
             className={`rounded-md px-2 py-0.5 text-[11px] font-medium ${
               pricing === "Free"
               ? "bg-emerald-50 text-emerald-700"
-              : pricing === "Freemium"
+              : pricing === "Preemium"
               ? "bg-amber-50 text-amber-700"
               : "bg-violet-50 text-violet-700"
             }`}

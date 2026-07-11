@@ -170,7 +170,7 @@ export default async function Hero() {
                       C
                     </div>
                     <span className="text-sm font-medium text-foreground">Claude</span>
-                    <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">Freemium</span>
+                    <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">Preemium</span>
                   </div>
                 </div>
                 <div className="absolute -right-6 bottom-28 animate-[float-slow_4s_ease-in-out_infinite] rounded-xl border border-white/60 bg-white/80 backdrop-blur-md px-3.5 py-2.5 shadow-premium-lg">

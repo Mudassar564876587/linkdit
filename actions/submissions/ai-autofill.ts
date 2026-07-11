@@ -91,7 +91,7 @@ Return ONLY valid JSON with these fields:
   "shortDescription": "string (brief description under 200 characters)",
   "fullDescription": "string (detailed description)",
   "categoryName": "string (best matching category like AI Writing, Image Generation, Coding, etc.)",
-  "pricing": "Free" | "Freemium" | "Paid",
+  "pricing": "Free" | "Preemium" | "Paid",
   "contactEmail": "string (the support/contact email if visible in the content, otherwise empty string)",
   "tags": ["string", "string", ...] (5-10 relevant keywords as tags),
   "features": ["string", "string", ...] (key features, max 10),

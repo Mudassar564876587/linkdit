@@ -131,7 +131,7 @@ export default async function ResourcesPage({
           >
             All Pricing
           </a>
-          {["Free", "Freemium", "Paid"].map((p) => (
+          {["Free", "Preemium", "Paid"].map((p) => (
             <a
               key={p}
               href={buildUrl("/resources", { ...searchParamsRecord, pricing: sp.pricing === p ? "" : p })}

@@ -46,7 +46,7 @@ export interface Database {
           logo_url: string | null
           cover_image_url: string | null
           website_url: string
-          pricing: "Free" | "Freemium" | "Paid"
+          pricing: "Free" | "Preemium" | "Paid"
           rating: number
           review_count: number
           featured: boolean
@@ -74,7 +74,7 @@ export interface Database {
           logo_url?: string | null
           cover_image_url?: string | null
           website_url: string
-          pricing: "Free" | "Freemium" | "Paid"
+          pricing: "Free" | "Preemium" | "Paid"
           rating?: number
           review_count?: number
           featured?: boolean
@@ -101,7 +101,7 @@ export interface Database {
           logo_url?: string | null
           cover_image_url?: string | null
           website_url?: string
-          pricing?: "Free" | "Freemium" | "Paid"
+          pricing?: "Free" | "Preemium" | "Paid"
           rating?: number
           review_count?: number
           featured?: boolean

@@ -154,7 +154,7 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
       if (match) setCategoryId(match.id)
     }
     if (data.contactEmail) setContactEmail(data.contactEmail)
-    if (data.pricing && ["Free", "Freemium", "Paid"].includes(data.pricing)) setPricing(data.pricing)
+    if (data.pricing && ["Free", "Preemium", "Paid"].includes(data.pricing)) setPricing(data.pricing)
     if (data.tags && Array.isArray(data.tags)) setTags(data.tags.join(", "))
     if (data.features && Array.isArray(data.features)) setFeatures(data.features.slice(0, 10))
     if (data.pros && Array.isArray(data.pros)) setPros(data.pros.slice(0, 5))
@@ -420,7 +420,7 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
                           className="h-10 w-full rounded-xl border border-input bg-background pl-9 pr-3 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                         >
                           <option value="Free">Free</option>
-                          <option value="Freemium">Freemium</option>
+                          <option value="Preemium">Preemium</option>
                           <option value="Paid">Paid</option>
                         </select>
                       </div>
@@ -677,7 +677,7 @@ export default function SubmissionForm({ categories }: SubmissionFormProps) {
                                 <span className={cn(
                                   "rounded-md px-2.5 py-1 text-xs font-medium",
                                   pricing === "Free" && "bg-emerald-50 text-emerald-700",
-                                  pricing === "Freemium" && "bg-amber-50 text-amber-700",
+                                  pricing === "Preemium" && "bg-amber-50 text-amber-700",
                                   pricing === "Paid" && "bg-violet-50 text-violet-700"
                                 )}>
                                   {pricing}

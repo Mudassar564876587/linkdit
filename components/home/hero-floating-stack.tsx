@@ -6,7 +6,7 @@ import { Zap, Sparkles, ShieldCheck, Bot } from "lucide-react"
 
 const stackCards = [
   { name: "ChatGPT", gradient: "from-emerald-500 to-emerald-600", pricing: "Free", icon: Sparkles, letterColor: "#059669" },
-  { name: "Claude", gradient: "from-orange-500 to-orange-600", pricing: "Freemium", icon: Bot, letterColor: "#ea580c" },
+  { name: "Claude", gradient: "from-orange-500 to-orange-600", pricing: "Preemium", icon: Bot, letterColor: "#ea580c" },
   { name: "Midjourney", gradient: "from-violet-500 to-violet-600", pricing: "Paid", icon: Zap, letterColor: "#7c3aed" },
   { name: "Cursor", gradient: "from-blue-500 to-blue-600", pricing: "Free", icon: ShieldCheck, letterColor: "#2563eb" },
 ]

@@ -122,7 +122,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
     operatingSystem: "Web",
     offers: {
       "@type": "Offer",
-      price: tool.pricing === "Free" ? "0" : tool.pricing === "Freemium" ? "0" : undefined,
+      price: tool.pricing === "Free" ? "0" : tool.pricing === "Preemium" ? "0" : undefined,
       priceCurrency: "USD",
     },
     aggregateRating: {
@@ -186,7 +186,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
                   <span className={`rounded-md px-2.5 py-1 text-xs font-medium ${
                     tool.pricing === "Free"
                       ? "bg-emerald-50 text-emerald-700"
-                      : tool.pricing === "Freemium"
+                      : tool.pricing === "Preemium"
                       ? "bg-amber-50 text-amber-700"
                       : "bg-violet-50 text-violet-700"
                   }`}>

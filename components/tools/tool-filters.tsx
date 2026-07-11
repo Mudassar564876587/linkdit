@@ -6,7 +6,7 @@ import { SlidersHorizontal, Monitor, Smartphone, Laptop } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { ToolPlatform } from "@/types/tool"
 
-const pricingOptions = ["Free", "Freemium", "Paid"] as const
+const pricingOptions = ["Free", "Preemium", "Paid"] as const
 
 const platformOptions: { value: ToolPlatform; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { value: "Web", label: "Web", icon: Monitor },

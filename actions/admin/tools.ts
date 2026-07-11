@@ -99,8 +99,8 @@ export async function adminCreateTool(formData: FormData): Promise<AdminToolResu
   if (!websiteUrl) return { error: "Website URL is required." }
   if (!isValidUrl(websiteUrl)) return { error: "Website URL is not valid." }
 
-  const validPricings = ["Free", "Freemium", "Paid"] as const
-  if (!validPricings.includes(pricing as "Free" | "Freemium" | "Paid")) return { error: "Invalid pricing value." }
+  const validPricings = ["Free", "Preemium", "Paid"] as const
+  if (!validPricings.includes(pricing as "Free" | "Preemium" | "Paid")) return { error: "Invalid pricing value." }
 
   const featuresArr = featuresRaw.split("\n").map((f) => f.trim()).filter(Boolean)
   const prosArr = prosRaw.split("\n").map((p) => p.trim()).filter(Boolean)
@@ -138,7 +138,7 @@ export async function adminCreateTool(formData: FormData): Promise<AdminToolResu
       category_id: categoryId,
       website_url: websiteUrl,
       logo_url: logoUrl,
-      pricing: pricing as "Free" | "Freemium" | "Paid",
+      pricing: pricing as "Free" | "Preemium" | "Paid",
       features: featuresArr,
       pros: prosArr,
       cons: consArr,

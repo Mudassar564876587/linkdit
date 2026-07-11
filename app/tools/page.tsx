@@ -49,7 +49,7 @@ export default async function ToolsPage({
     query.eq("categories.slug", sp.category.toLowerCase())
   }
   if (sp.pricing) {
-    query.eq("pricing", sp.pricing as "Free" | "Freemium" | "Paid")
+    query.eq("pricing", sp.pricing as "Free" | "Preemium" | "Paid")
   }
   if (sp.featured === "true") {
     query.eq("featured", true)

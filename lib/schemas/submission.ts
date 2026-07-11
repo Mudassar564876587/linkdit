@@ -13,7 +13,7 @@ export const SubmissionSchema = z.object({
   ),
   shortDescription: z.string().min(10, "Description must be at least 10 characters").max(1000),
   fullDescription: z.string().min(10, "Full description must be at least 10 characters").or(z.literal("")).optional().default(""),
-  pricing: z.enum(["Free", "Freemium", "Paid"]).optional().default("Free"),
+  pricing: z.enum(["Free", "Preemium", "Paid"]).optional().default("Free"),
   categoryId: z.string().uuid("Select a category"),
   tags: z.array(z.string()).max(20, "Maximum 20 tags").default([]),
   features: z.array(z.string().min(1)).max(30, "Maximum 30 features").default([]),

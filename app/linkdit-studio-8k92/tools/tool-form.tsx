@@ -179,7 +179,7 @@ export default function ToolForm({ categories, initial, isNew }: Props) {
               className="h-10 w-full rounded-xl border border-input bg-background px-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             >
               <option value="Free">Free</option>
-              <option value="Freemium">Freemium</option>
+              <option value="Preemium">Preemium</option>
               <option value="Paid">Paid</option>
             </select>
           </div>

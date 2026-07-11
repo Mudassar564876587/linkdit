@@ -9,7 +9,7 @@ function mapRowToTool(row: {
   category_id: string
   logo_url: string | null
   website_url: string
-  pricing: "Free" | "Freemium" | "Paid"
+  pricing: "Free" | "Preemium" | "Paid"
   platforms: string[]
   rating: number
   review_count: number

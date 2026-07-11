@@ -1,4 +1,4 @@
-export type ToolPricing = "Free" | "Freemium" | "Paid"
+export type ToolPricing = "Free" | "Preemium" | "Paid"
 export type ToolPlatform = "Web" | "Mobile" | "Mac" | "Windows" | "Linux" | "iOS" | "Android" | "Chrome" | "API"
 
 export interface Tool {

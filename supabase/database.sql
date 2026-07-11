@@ -50,7 +50,7 @@ create table public.tools (
   logo_url        text,
   website_url     text        not null,
   pricing         text        not null default 'Free'
-                                check (pricing in ('Free', 'Freemium', 'Paid')),
+                                check (pricing in ('Free', 'Preemium', 'Paid')),
   rating          numeric(3,2) not null default 0
                                 check (rating >= 0 and rating <= 5),
   review_count    integer     not null default 0,

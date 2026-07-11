@@ -63,7 +63,7 @@ export default function ResourceCard({
             <span className={cn(
               "rounded-md px-2.5 py-0.5 text-xs font-medium",
               pricing === "Free" ? "bg-emerald-50 text-emerald-700" :
-              pricing === "Freemium" ? "bg-amber-50 text-amber-700" :
+              pricing === "Preemium" ? "bg-amber-50 text-amber-700" :
               "bg-violet-50 text-violet-700"
             )}>
               {pricing}

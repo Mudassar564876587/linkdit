@@ -27,9 +27,9 @@ insert into public.tools (name, slug, description, category_id, website_url, pri
   ('ChatGPT',      'chatGPT',       'Advanced conversational AI for content, coding, brainstorming and creative tasks.',       (select id from cat), 'https://chat.openai.com',     'Free',     4.8, 2400, true,  true),
   ('Claude',       'claude',        'Safe, accurate AI assistant built for enterprise reasoning and analysis.',               (select id from cat), 'https://claude.ai',          'Free',     4.6, 1200, true,  true),
   ('Jasper AI',    'jasper-ai',     'AI content platform for marketing teams to create on-brand content at scale.',           (select id from cat), 'https://jasper.ai',          'Paid',     4.3, 850,  false, true),
-  ('Copy.ai',      'copy-ai',       'AI copywriting tool that generates high-converting marketing copy in seconds.',          (select id from cat), 'https://copy.ai',           'Freemium', 4.1, 620,  false, true),
-  ('Writesonic',   'writesonic',    'AI writer for blogs, ads and product descriptions with SEO optimization.',               (select id from cat), 'https://writesonic.com',    'Freemium', 4.2, 540,  false, true),
-  ('Grammarly',    'grammarly',     'AI writing assistant that improves grammar, clarity and tone across all platforms.',       (select id from cat), 'https://grammarly.com',     'Freemium', 4.7, 3100, true,  true);
+  ('Copy.ai',      'copy-ai',       'AI copywriting tool that generates high-converting marketing copy in seconds.',          (select id from cat), 'https://copy.ai',           'Preemium', 4.1, 620,  false, true),
+  ('Writesonic',   'writesonic',    'AI writer for blogs, ads and product descriptions with SEO optimization.',               (select id from cat), 'https://writesonic.com',    'Preemium', 4.2, 540,  false, true),
+  ('Grammarly',    'grammarly',     'AI writing assistant that improves grammar, clarity and tone across all platforms.',       (select id from cat), 'https://grammarly.com',     'Preemium', 4.7, 3100, true,  true);
 
 -- Image Generation
 with cat as (select id from public.categories where slug = 'image-generation' limit 1)
@@ -37,7 +37,7 @@ insert into public.tools (name, slug, description, category_id, website_url, pri
   ('Midjourney',   'midjourney',    'Generate stunning photorealistic images from natural language descriptions.',              (select id from cat), 'https://midjourney.com',    'Paid',     4.7, 1800, true,  true),
   ('DALL-E 3',     'dall-e-3',      'OpenAI image generation model with exceptional prompt adherence and detail.',             (select id from cat), 'https://openai.com/dall-e-3','Paid',     4.6, 1500, true,  true),
   ('Stable Diffusion', 'stable-diffusion', 'Open-source image generation model with fine-tuning and customisation options.',    (select id from cat), 'https://stability.ai',      'Free',     4.4, 1100, false, true),
-  ('Leonardo AI',  'leonardo-ai',   'AI art generator for game assets, concept art and creative projects.',                   (select id from cat), 'https://leonardo.ai',      'Freemium', 4.3, 780,  false, true),
+  ('Leonardo AI',  'leonardo-ai',   'AI art generator for game assets, concept art and creative projects.',                   (select id from cat), 'https://leonardo.ai',      'Preemium', 4.3, 780,  false, true),
   ('Adobe Firefly','adobe-firefly', 'Generative AI for images, vectors and design assets integrated with Creative Cloud.',    (select id from cat), 'https://firefly.adobe.com','Paid',     4.5, 920,  true,  true);
 
 -- Video
@@ -52,34 +52,34 @@ with cat as (select id from public.categories where slug = 'coding' limit 1)
 insert into public.tools (name, slug, description, category_id, website_url, pricing, rating, review_count, featured, is_published) values
   ('Cursor',       'cursor',        'AI-first code editor that helps you ship software faster with context-aware completions.',(select id from cat), 'https://cursor.com',        'Free',     4.9, 3100, true,  true),
   ('GitHub Copilot','github-copilot','AI pair programmer that suggests code and functions in real time across IDEs.',           (select id from cat), 'https://github.com/features/copilot','Paid',4.8, 4500, true, true),
-  ('Tabnine',      'tabnine',       'AI code completion tool that learns your coding patterns and provides suggestions.',    (select id from cat), 'https://tabnine.com',       'Freemium', 4.2, 870,  false, true),
-  ('Replit AI',    'replit-ai',     'Cloud IDE with AI-powered code generation and debugging capabilities.',                   (select id from cat), 'https://replit.com',        'Freemium', 4.4, 1200, false, true);
+  ('Tabnine',      'tabnine',       'AI code completion tool that learns your coding patterns and provides suggestions.',    (select id from cat), 'https://tabnine.com',       'Preemium', 4.2, 870,  false, true),
+  ('Replit AI',    'replit-ai',     'Cloud IDE with AI-powered code generation and debugging capabilities.',                   (select id from cat), 'https://replit.com',        'Preemium', 4.4, 1200, false, true);
 
 -- Productivity
 with cat as (select id from public.categories where slug = 'productivity' limit 1)
 insert into public.tools (name, slug, description, category_id, website_url, pricing, rating, review_count, featured, is_published) values
   ('Gamma',        'gamma',         'Create beautiful presentations, documents and websites in seconds with AI.',             (select id from cat), 'https://gamma.app',         'Free',     4.5, 980,  true,  true),
   ('Notion AI',    'notion-ai',     'Integrated AI assistant for note-taking, project management and knowledge base.',        (select id from cat), 'https://notion.so',         'Paid',     4.6, 2100, true,  true),
-  ('Mem',          'mem',           'AI-powered workspace that organises your notes and knowledge automatically.',            (select id from cat), 'https://mem.ai',           'Freemium', 4.0, 340,  false, true);
+  ('Mem',          'mem',           'AI-powered workspace that organises your notes and knowledge automatically.',            (select id from cat), 'https://mem.ai',           'Preemium', 4.0, 340,  false, true);
 
 -- Marketing
 with cat as (select id from public.categories where slug = 'marketing' limit 1)
 insert into public.tools (name, slug, description, category_id, website_url, pricing, rating, review_count, featured, is_published) values
-  ('HubSpot AI',   'hubspot-ai',    'CRM platform with AI-powered marketing automation, analytics and content tools.',         (select id from cat), 'https://hubspot.com',       'Freemium', 4.5, 1800, true,  true),
+  ('HubSpot AI',   'hubspot-ai',    'CRM platform with AI-powered marketing automation, analytics and content tools.',         (select id from cat), 'https://hubspot.com',       'Preemium', 4.5, 1800, true,  true),
   ('Surfer SEO',   'surfer-seo',    'AI-driven SEO tool that helps optimise content for better search rankings.',             (select id from cat), 'https://surferseo.com',     'Paid',     4.3, 760,  false, true),
-  ('Pictory',      'pictory',       'AI tool that transforms long-form content into engaging social media posts.',            (select id from cat), 'https://pictory.ai',       'Freemium', 4.1, 490,  false, true);
+  ('Pictory',      'pictory',       'AI tool that transforms long-form content into engaging social media posts.',            (select id from cat), 'https://pictory.ai',       'Preemium', 4.1, 490,  false, true);
 
 -- Audio
 with cat as (select id from public.categories where slug = 'audio' limit 1)
 insert into public.tools (name, slug, description, category_id, website_url, pricing, rating, review_count, featured, is_published) values
-  ('ElevenLabs',   'elevenlabs',    'AI voice synthesis with realistic intonation, emotion and multilingual support.',        (select id from cat), 'https://elevenlabs.io',     'Freemium', 4.7, 1400, true,  true),
+  ('ElevenLabs',   'elevenlabs',    'AI voice synthesis with realistic intonation, emotion and multilingual support.',        (select id from cat), 'https://elevenlabs.io',     'Preemium', 4.7, 1400, true,  true),
   ('Soundraw',     'soundraw',      'AI music generation tool for creating royalty-free background tracks and beats.',        (select id from cat), 'https://soundraw.io',      'Paid',     4.2, 380,  false, true);
 
 -- Analytics
 with cat as (select id from public.categories where slug = 'analytics' limit 1)
 insert into public.tools (name, slug, description, category_id, website_url, pricing, rating, review_count, featured, is_published) values
   ('Tableau AI',   'tableau-ai',    'AI-powered data visualisation and business intelligence platform.',                      (select id from cat), 'https://tableau.com',       'Paid',     4.4, 900,  false, true),
-  ('Julius AI',    'julius-ai',     'AI data analyst that answers questions about your data in plain English.',               (select id from cat), 'https://julius.ai',         'Freemium', 4.3, 520,  true,  true);
+  ('Julius AI',    'julius-ai',     'AI data analyst that answers questions about your data in plain English.',               (select id from cat), 'https://julius.ai',         'Preemium', 4.3, 520,  true,  true);
 
 -- Education
 with cat as (select id from public.categories where slug = 'education' limit 1)
@@ -89,7 +89,7 @@ insert into public.tools (name, slug, description, category_id, website_url, pri
 -- Design
 with cat as (select id from public.categories where slug = 'design' limit 1)
 insert into public.tools (name, slug, description, category_id, website_url, pricing, rating, review_count, featured, is_published) values
-  ('Canva AI',     'canva-ai',      'AI-powered design platform for creating graphics, presentations and social media visuals.',(select id from cat), 'https://canva.com',        'Freemium', 4.6, 2800, true,  true);
+  ('Canva AI',     'canva-ai',      'AI-powered design platform for creating graphics, presentations and social media visuals.',(select id from cat), 'https://canva.com',        'Preemium', 4.6, 2800, true,  true);
 
 -- 3. Articles
 -- ============================================================================

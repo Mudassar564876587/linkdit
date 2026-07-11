@@ -110,7 +110,7 @@ export default async function ResourceDetailPage({ params }: { params: Promise<{
                   )}
                   <span className={`rounded-md px-2.5 py-0.5 text-xs font-medium ${
                     res.pricing === "Free" ? "bg-emerald-50 text-emerald-700" :
-                    res.pricing === "Freemium" ? "bg-amber-50 text-amber-700" :
+                    res.pricing === "Preemium" ? "bg-amber-50 text-amber-700" :
                     "bg-violet-50 text-violet-700"
                   }`}>
                     {res.pricing}
@@ -207,7 +207,7 @@ export default async function ResourceDetailPage({ params }: { params: Promise<{
                       <div className="mt-4 flex items-center justify-between">
                         <span className={`rounded-md px-2.5 py-0.5 text-xs font-medium ${
                           r.pricing === "Free" ? "bg-emerald-50 text-emerald-700" :
-                          r.pricing === "Freemium" ? "bg-amber-50 text-amber-700" :
+                          r.pricing === "Preemium" ? "bg-amber-50 text-amber-700" :
                           "bg-violet-50 text-violet-700"
                         }`}>{r.pricing}</span>
                       </div>

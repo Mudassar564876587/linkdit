@@ -271,7 +271,7 @@ export function determineWinners(comparison: ComparisonWithTools): WinnerResult[
       : `${ratingWinner === "A" ? toolA.name : toolB.name} has a higher overall rating.`,
   })
 
-  const pricingOrder = { Free: 0, Freemium: 1, Paid: 2 }
+  const pricingOrder = { Free: 0, Preemium: 1, Paid: 2 }
   const aVal = pricingOrder[toolA.pricing as keyof typeof pricingOrder] ?? 1
   const bVal = pricingOrder[toolB.pricing as keyof typeof pricingOrder] ?? 1
   const pricingWinner = aVal < bVal ? "A" as const : bVal < aVal ? "B" as const : "tie" as const

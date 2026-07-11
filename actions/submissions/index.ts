@@ -317,7 +317,7 @@ export async function adminApproveSubmission(id: string) {
       logo_url: sub.logo_url,
       cover_image_url: sub.cover_image_url,
       website_url: sub.tool_url,
-      pricing: (sub.pricing as "Free" | "Freemium" | "Paid") || "Free",
+      pricing: (sub.pricing as "Free" | "Preemium" | "Paid") || "Free",
       features: Array.isArray(sub.features) ? sub.features : [],
       pros: Array.isArray(sub.pros) ? sub.pros : [],
       cons: Array.isArray(sub.cons) ? sub.cons : [],
