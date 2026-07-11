@@ -1,6 +1,7 @@
 "use server"
 
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import { revalidatePath } from "next/cache"
 import { logAuditEvent } from "@/lib/audit"
 
@@ -24,24 +25,24 @@ async function isAdmin(userId: string): Promise<boolean> {
 }
 
 async function uploadFile(bucket: string, file: File, userId: string): Promise<string> {
-  const supabase = await createServerSupabaseClient()
+  const admin = getAdminClient()
   const ext = file.name.split(".").pop()
   const path = `admin/${userId}/${crypto.randomUUID()}.${ext}`
-  const { error } = await supabase.storage.from(bucket).upload(path, file, { cacheControl: "3600" })
+  const { error } = await admin.storage.from(bucket).upload(path, file, { cacheControl: "3600" })
   if (error) throw new Error(error.message)
-  const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(path)
+  const { data: urlData } = admin.storage.from(bucket).getPublicUrl(path)
   return urlData.publicUrl
 }
 
 async function upsertTags(tagNames: string[], toolId: string) {
   if (tagNames.length === 0) return
-  const supabase = await createServerSupabaseClient()
+  const admin = getAdminClient()
 
   for (const raw of tagNames) {
     const name = raw.trim()
     if (!name) continue
 
-    const { data: existing } = await supabase
+    const { data: existing } = await admin
       .from("tags")
       .select("id")
       .eq("name", name)
@@ -49,7 +50,7 @@ async function upsertTags(tagNames: string[], toolId: string) {
 
     let tagId = existing?.id
     if (!tagId) {
-      const { data: inserted } = await supabase
+      const { data: inserted } = await admin
         .from("tags")
         .insert({ name, slug: slugify(name) })
         .select("id")
@@ -58,7 +59,7 @@ async function upsertTags(tagNames: string[], toolId: string) {
     }
 
     if (tagId) {
-      const { error: ttErr } = await supabase
+      const { error: ttErr } = await admin
         .from("tool_tags")
         .insert({ tool_id: toolId, tag_id: tagId })
       if (ttErr && ttErr.code !== "23505") {
@@ -74,6 +75,7 @@ export async function adminCreateTool(formData: FormData): Promise<AdminToolResu
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  const admin = getAdminClient()
 
   const name = (formData.get("name") as string)?.trim()
   const description = (formData.get("description") as string)?.trim()
@@ -108,7 +110,7 @@ export async function adminCreateTool(formData: FormData): Promise<AdminToolResu
   let slug = slugify(name)
   let counter = 1
   while (true) {
-    const { data: existing } = await supabase.from("tools").select("id").eq("slug", slug).maybeSingle()
+    const { data: existing } = await admin.from("tools").select("id").eq("slug", slug).maybeSingle()
     if (!existing) break
     slug = `${slugify(name)}-${counter++}`
   }
@@ -127,7 +129,7 @@ export async function adminCreateTool(formData: FormData): Promise<AdminToolResu
     logoUrl = logoField.trim()
   }
 
-  const { data: insertedTool, error } = await supabase
+  const { data: insertedTool, error } = await admin
     .from("tools")
     .insert({
       name,
@@ -173,7 +175,7 @@ export async function adminCreateTool(formData: FormData): Promise<AdminToolResu
       }
     }
     if (screenshotUrls.length > 0) {
-      await supabase.from("tool_screenshots").insert(
+      await admin.from("tool_screenshots").insert(
         screenshotUrls.map((s) => ({ tool_id: toolId, ...s }))
       )
     }
@@ -189,12 +191,13 @@ export async function adminDeleteTool(id: string) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  const { data: tool } = await supabase.from("tools").select("name").eq("id", id).single()
-  await supabase.from("tool_screenshots").delete().eq("tool_id", id)
-  await supabase.from("tool_tags").delete().eq("tool_id", id)
-  await supabase.from("bookmarks").delete().eq("tool_id", id)
-  await supabase.from("reviews").delete().eq("tool_id", id)
-  await supabase.from("tools").delete().eq("id", id)
+  const admin = getAdminClient()
+  const { data: tool } = await admin.from("tools").select("name").eq("id", id).single()
+  await admin.from("tool_screenshots").delete().eq("tool_id", id)
+  await admin.from("tool_tags").delete().eq("tool_id", id)
+  await admin.from("bookmarks").delete().eq("tool_id", id)
+  await admin.from("reviews").delete().eq("tool_id", id)
+  await admin.from("tools").delete().eq("id", id)
   await logAuditEvent({ action: "delete", entityType: "tool", entityId: id, metadata: { name: tool?.name } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
@@ -204,13 +207,14 @@ export async function adminBulkDeleteTools(ids: string[]) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  const admin = getAdminClient()
   for (const id of ids) {
-    await supabase.from("tool_screenshots").delete().eq("tool_id", id)
-    await supabase.from("tool_tags").delete().eq("tool_id", id)
-    await supabase.from("bookmarks").delete().eq("tool_id", id)
-    await supabase.from("reviews").delete().eq("tool_id", id)
+    await admin.from("tool_screenshots").delete().eq("tool_id", id)
+    await admin.from("tool_tags").delete().eq("tool_id", id)
+    await admin.from("bookmarks").delete().eq("tool_id", id)
+    await admin.from("reviews").delete().eq("tool_id", id)
   }
-  await supabase.from("tools").delete().in("id", ids)
+  await admin.from("tools").delete().in("id", ids)
   await logAuditEvent({ action: "bulk_delete", entityType: "tool", metadata: { count: ids.length } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
@@ -220,7 +224,8 @@ export async function adminTogglePublish(id: string, published: boolean) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("tools").update({ is_published: published }).eq("id", id)
+  const admin = getAdminClient()
+  await admin.from("tools").update({ is_published: published }).eq("id", id)
   await logAuditEvent({ action: "toggle_publish", entityType: "tool", entityId: id, metadata: { published } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
@@ -230,7 +235,8 @@ export async function adminToggleFeatured(id: string, featured: boolean) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("tools").update({ featured }).eq("id", id)
+  const admin = getAdminClient()
+  await admin.from("tools").update({ featured }).eq("id", id)
   await logAuditEvent({ action: "toggle_featured", entityType: "tool", entityId: id, metadata: { featured } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
@@ -240,7 +246,8 @@ export async function adminToggleVerified(id: string, verified: boolean) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("tools").update({ is_verified: verified }).eq("id", id)
+  const admin = getAdminClient()
+  await admin.from("tools").update({ is_verified: verified }).eq("id", id)
   await logAuditEvent({ action: "toggle_verified", entityType: "tool", entityId: id, metadata: { verified } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
@@ -250,7 +257,8 @@ export async function adminBulkVerify(ids: string[]) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("tools").update({ is_verified: true }).in("id", ids)
+  const admin = getAdminClient()
+  await admin.from("tools").update({ is_verified: true }).in("id", ids)
   await logAuditEvent({ action: "bulk_verify", entityType: "tool", metadata: { count: ids.length } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
@@ -260,7 +268,8 @@ export async function adminBulkUnverify(ids: string[]) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("tools").update({ is_verified: false }).in("id", ids)
+  const admin = getAdminClient()
+  await admin.from("tools").update({ is_verified: false }).in("id", ids)
   await logAuditEvent({ action: "bulk_unverify", entityType: "tool", metadata: { count: ids.length } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
@@ -270,7 +279,8 @@ export async function adminBulkFeature(ids: string[]) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("tools").update({ featured: true }).in("id", ids)
+  const admin = getAdminClient()
+  await admin.from("tools").update({ featured: true }).in("id", ids)
   await logAuditEvent({ action: "bulk_feature", entityType: "tool", metadata: { count: ids.length } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
@@ -280,7 +290,8 @@ export async function adminBulkUnfeature(ids: string[]) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("tools").update({ featured: false }).in("id", ids)
+  const admin = getAdminClient()
+  await admin.from("tools").update({ featured: false }).in("id", ids)
   await logAuditEvent({ action: "bulk_unfeature", entityType: "tool", metadata: { count: ids.length } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
@@ -290,7 +301,8 @@ export async function adminBulkPublish(ids: string[]) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("tools").update({ is_published: true }).in("id", ids)
+  const admin = getAdminClient()
+  await admin.from("tools").update({ is_published: true }).in("id", ids)
   await logAuditEvent({ action: "bulk_publish", entityType: "tool", metadata: { count: ids.length } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
@@ -300,7 +312,8 @@ export async function adminBulkUnpublish(ids: string[]) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
-  await supabase.from("tools").update({ is_published: false }).in("id", ids)
+  const admin = getAdminClient()
+  await admin.from("tools").update({ is_published: false }).in("id", ids)
   await logAuditEvent({ action: "bulk_unpublish", entityType: "tool", metadata: { count: ids.length } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
@@ -310,6 +323,7 @@ export async function adminUpdateTool(id: string, formData: FormData): Promise<A
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
+  const admin = getAdminClient()
 
   const name = formData.get("name") as string | null
   const description = formData.get("description") as string | null
@@ -362,13 +376,13 @@ export async function adminUpdateTool(id: string, formData: FormData): Promise<A
   const tagsRaw = formData.get("tags") as string | null
   if (tagsRaw !== null) {
     const tagNames = tagsRaw.split(",").map((t) => t.trim()).filter(Boolean)
-    await supabase.from("tool_tags").delete().eq("tool_id", id)
+    await admin.from("tool_tags").delete().eq("tool_id", id)
     if (tagNames.length > 0) {
       await upsertTags(tagNames, id)
     }
   }
 
-  const { error } = await supabase.from("tools").update(updates as any).eq("id", id)
+  const { error } = await admin.from("tools").update(updates as any).eq("id", id)
   if (error) return { error: error.message }
   await logAuditEvent({ action: "update", entityType: "tool", entityId: id })
   revalidatePath("/linkdit-studio-8k92/tools")
