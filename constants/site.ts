@@ -14,3 +14,7 @@ export const SOCIAL = {
   linkedin: "https://linkedin.com/company/linkdit",
   email: "hello@linkdit.com",
 } as const
+
+export const TELEGRAM_BOT = {
+  username: process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "YourBotUsername",
+} as const

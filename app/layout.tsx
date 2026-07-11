@@ -4,6 +4,7 @@ import { defaultMetadata } from "@/config/metadata";
 import { AnalyticsScript } from "@/components/layout/analytics-script";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
+import TelegramBotWidget from "@/components/telegram-bot-widget";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,6 +34,7 @@ export default function RootLayout({
         <ThemeProvider>
           {children}
           <Toaster position="top-right" richColors closeButton />
+          <TelegramBotWidget />
         </ThemeProvider>
         <AnalyticsScript />
       </body>
