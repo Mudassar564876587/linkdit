@@ -10,32 +10,27 @@ const sampleReviews = [
   { rating: 3, title: "Decent but room for improvement", content: "It does the job but there are better alternatives available. Support response time could be faster.", pros: ["Works as advertised", "Clean interface"], cons: ["Slow support", "Limited integrations"] },
 ]
 
-export async function POST() {
+async function seed() {
   const userSupabase = await createServerSupabaseClient()
   const { data: { user } } = await userSupabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: "Not authenticated." }, { status: 401 })
+  if (!user) return { error: "Not authenticated." }
 
   const { data: adminUser } = await userSupabase.from("users").select("role").eq("id", user.id).single()
-  if (adminUser?.role !== "admin") return NextResponse.json({ error: "Permission denied." }, { status: 403 })
+  if (adminUser?.role !== "admin") return { error: "Permission denied." }
 
   const admin = getAdminClient()
 
-  const { data: tools } = await admin.from("tools").select("id, name, pricing")
-  if (!tools || tools.length === 0) {
-    return NextResponse.json({ error: "No tools found." })
-  }
+  const { data: tools } = await admin.from("tools").select("id, name")
+  if (!tools || tools.length === 0) return { error: "No tools found." }
 
-  const { data: existingReviews } = await admin.from("reviews").select("tool_id").not("tool_id", "is", null)
-  const existingIds = new Set(existingReviews?.map((r: any) => r.tool_id) ?? [])
+  const { data: existing } = await admin.from("reviews").select("tool_id").not("tool_id", "is", null)
+  const existingIds = new Set(existing?.map((r: any) => r.tool_id) ?? [])
 
   let inserted = 0
   let skipped = 0
 
   for (const tool of tools) {
-    if (existingIds.has(tool.id)) {
-      skipped++
-      continue
-    }
+    if (existingIds.has(tool.id)) { skipped++; continue }
 
     const count = 2 + Math.floor(Math.random() * 3)
     const selected = [...sampleReviews].sort(() => Math.random() - 0.5).slice(0, count)
@@ -55,5 +50,24 @@ export async function POST() {
     }
   }
 
-  return NextResponse.json({ inserted, skipped, total: tools.length })
+  return { inserted, skipped, total: tools.length }
+}
+
+export async function GET() {
+  const result = await seed()
+  if (result.error) {
+    const html = `<html><body><h2>Error: ${result.error}</h2>
+<p>Login to admin panel first, then visit this URL again.</p>
+<a href="/linkdit-studio-8k92">Go to Admin Panel</a></body></html>`
+    return new NextResponse(html, { headers: { "content-type": "text/html" } })
+  }
+
+  const html = `<html><body>
+<h2>Reviews Seeded!</h2>
+<p>Inserted: ${result.inserted}</p>
+<p>Skipped (already had reviews): ${result.skipped}</p>
+<p>Total tools: ${result.total}</p>
+<a href="/tools">View Tools</a>
+</body></html>`
+  return new NextResponse(html, { headers: { "content-type": "text/html" } })
 }
