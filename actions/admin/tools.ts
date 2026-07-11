@@ -247,7 +247,17 @@ export async function adminToggleVerified(id: string, verified: boolean) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !(await isAdmin(user.id))) return { error: "Permission denied." }
   const admin = getAdminClient()
-  await admin.from("tools").update({ is_verified: verified }).eq("id", id)
+
+  const { error } = await admin.from("tools").update({ is_verified: verified }).eq("id", id)
+  if (error) {
+    if (error.message?.includes("does not exist")) {
+      return {
+        error: `Database column "is_verified" is missing. Go to your Supabase SQL Editor and run: ALTER TABLE public.tools ADD COLUMN IF NOT EXISTS is_verified boolean NOT NULL DEFAULT false; NOTIFY pgrst, 'reload schema';`,
+      }
+    }
+    return { error: error.message }
+  }
+
   await logAuditEvent({ action: "toggle_verified", entityType: "tool", entityId: id, metadata: { verified } })
   revalidatePath("/linkdit-studio-8k92/tools")
   return { success: true }
