@@ -74,11 +74,15 @@ export default function AdminReviewsClient({ reviews }: { reviews: Review[] }) {
   const handleSeed = useCallback(async () => {
     if (!confirm("This will add sample reviews to all tools that don't have reviews yet. Continue?")) return
     setSeeding(true)
-    const result = await adminSeedReviews()
+    try {
+      const result = await adminSeedReviews()
+      if (result.error) toast.error(result.error)
+      else if (result.errors?.length) toast.warning(`Seeded ${result.inserted} reviews (${result.skipped} skipped). ${result.errors.length} errors.`)
+      else toast.success(`Seeded ${result.inserted} reviews (${result.skipped} tools skipped, ${result.total} total)`)
+    } catch (e: any) {
+      toast.error(e?.message ?? "Something went wrong.")
+    }
     setSeeding(false)
-    if (result.error) toast.error(result.error)
-    else if (result.errors?.length) toast.warning(`Seeded ${result.inserted} reviews (${result.skipped} skipped). ${result.errors.length} errors.`)
-    else toast.success(`Seeded ${result.inserted} reviews (${result.skipped} tools skipped, ${result.total} total)`)
     router.refresh()
   }, [router])
 

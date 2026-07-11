@@ -43,31 +43,32 @@ const sampleReviews = [
 ]
 
 export async function adminSeedReviews() {
-  const supabase = await createServerSupabaseClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: "Not authenticated." }
+  try {
+    const supabase = await createServerSupabaseClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { error: "Not authenticated." }
 
-  const admin = getAdminClient()
+    const admin = getAdminClient()
 
-  // Ensure user exists in public.users (trigger may not have fired for old accounts)
-  const { data: existingUser } = await admin
-    .from("users")
-    .select("id, role")
-    .eq("id", user.id)
-    .maybeSingle()
+    // Ensure user exists in public.users (trigger may not have fired for old accounts)
+    const { data: existingUser } = await admin
+      .from("users")
+      .select("id, role")
+      .eq("id", user.id)
+      .maybeSingle()
 
-  let userId = user.id
-  if (!existingUser) {
-    const { error: insertError } = await admin.from("users").insert({
-      id: user.id,
-      email: user.email ?? "admin@linkdit.com",
-      full_name: user.user_metadata?.full_name ?? "Admin",
-      role: "admin",
-    })
-    if (insertError) return { error: `Failed to create user profile: ${insertError.message}` }
-  } else if (existingUser.role !== "admin") {
-    return { error: "Permission denied. Admin role required." }
-  }
+    let userId = user.id
+    if (!existingUser) {
+      const { error: insertError } = await admin.from("users").insert({
+        id: user.id,
+        email: user.email ?? "admin@linkdit.com",
+        full_name: user.user_metadata?.full_name ?? "Admin",
+        role: "admin",
+      })
+      if (insertError) return { error: `Failed to create user profile: ${insertError.message}` }
+    } else if (existingUser.role !== "admin") {
+      return { error: "Permission denied. Admin role required." }
+    }
 
   const { data: tools } = await admin.from("tools").select("id, name")
   if (!tools || tools.length === 0) return { error: "No tools found." }
@@ -103,6 +104,9 @@ export async function adminSeedReviews() {
 
   revalidatePath("/", "layout")
   return { success: true, inserted, skipped, total: tools.length, errors: errors.length > 0 ? errors : undefined }
+  } catch (e: any) {
+    return { error: e?.message ?? "Unknown error occurred." }
+  }
 }
 
 export async function adminDeleteReview(id: string) {
