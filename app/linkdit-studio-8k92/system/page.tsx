@@ -1,11 +1,11 @@
 import type { Metadata } from "next"
-import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 
 export const metadata: Metadata = { title: "System | Admin | LinkDit" }
 
 export default async function AdminSystemPage() {
-  const supabase = await createServerSupabaseClient()
-  const { data: logs } = await supabase
+  const admin = getAdminClient()
+  const { data: logs } = await admin
     .from("audit_logs")
     .select("*, users(full_name, email)")
     .order("created_at", { ascending: false })

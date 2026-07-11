@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import ResourceForm from "../resource-form"
 
 export const metadata: Metadata = { title: "Edit Resource | Admin | LinkDit" }
@@ -8,10 +9,11 @@ export const metadata: Metadata = { title: "Edit Resource | Admin | LinkDit" }
 export default async function EditResourcePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const supabase = await createServerSupabaseClient()
-  const { data: resource } = await supabase.from("resources").select("*").eq("id", id).single()
+  const admin = getAdminClient()
+  const { data: resource } = await admin.from("resources").select("*").eq("id", id).single()
   if (!resource) notFound()
 
-  const { data: categories } = await supabase.from("categories").select("id, name").order("name")
+  const { data: categories } = await admin.from("categories").select("id, name").order("name")
 
   return (
     <div className="max-w-3xl space-y-6">

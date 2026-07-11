@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import Link from "next/link"
 import { Plus, ExternalLink, Pencil } from "lucide-react"
 import ArticleActions from "./article-actions"
@@ -7,8 +8,8 @@ import ArticleActions from "./article-actions"
 export const metadata: Metadata = { title: "Blog | Admin | LinkDit" }
 
 export default async function AdminArticlesPage() {
-  const supabase = await createServerSupabaseClient()
-  const { data: articles } = await supabase
+  const admin = getAdminClient()
+  const { data: articles } = await admin
     .from("articles")
     .select("id, title, slug, is_published, featured, created_at, category_id")
     .order("created_at", { ascending: false })

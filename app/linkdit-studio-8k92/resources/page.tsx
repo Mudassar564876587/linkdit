@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import Link from "next/link"
 import { Plus, ExternalLink, Pencil } from "lucide-react"
 import ResourceActions from "./resource-actions"
@@ -7,8 +8,8 @@ import ResourceActions from "./resource-actions"
 export const metadata: Metadata = { title: "Resources | Admin | LinkDit" }
 
 export default async function AdminResourcesPage() {
-  const supabase = await createServerSupabaseClient()
-  const { data: resources } = await supabase
+  const admin = getAdminClient()
+  const { data: resources } = await admin
     .from("resources")
     .select("*, categories(name)")
     .order("created_at", { ascending: false })

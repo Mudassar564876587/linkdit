@@ -1,17 +1,18 @@
 import type { Metadata } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import AdminTagsClient from "./admin-tags-client"
 
 export const metadata: Metadata = { title: "Tags | Admin | LinkDit" }
 
 export default async function AdminTagsPage() {
-  const supabase = await createServerSupabaseClient()
-  const { data: tags } = await supabase
+  const admin = getAdminClient()
+  const { data: tags } = await admin
     .from("tags")
     .select("id, name, slug, created_at")
     .order("name", { ascending: true })
 
-  const { data: tagCounts } = await supabase
+  const { data: tagCounts } = await admin
     .from("tool_tags")
     .select("tag_id")
 

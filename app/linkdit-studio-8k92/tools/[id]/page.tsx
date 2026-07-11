@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import ToolForm from "../tool-form"
 
 export const metadata: Metadata = { title: "Edit Tool | Admin | LinkDit" }
@@ -8,10 +9,11 @@ export const metadata: Metadata = { title: "Edit Tool | Admin | LinkDit" }
 export default async function EditToolPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const supabase = await createServerSupabaseClient()
-  const { data: tool } = await supabase.from("tools").select("*, categories(name)").eq("id", id).single()
+  const admin = getAdminClient()
+  const { data: tool } = await admin.from("tools").select("*, categories(name)").eq("id", id).single()
   if (!tool) notFound()
 
-  const { data: categories } = await supabase.from("categories").select("id, name").order("name")
+  const { data: categories } = await admin.from("categories").select("id, name").order("name")
 
   return (
     <div className="max-w-3xl space-y-6">

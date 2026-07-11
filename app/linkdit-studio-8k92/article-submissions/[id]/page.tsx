@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import ArticleReviewActions from "./review-actions"
 
 export const metadata: Metadata = {
@@ -10,12 +11,13 @@ export const metadata: Metadata = {
 export default async function ReviewArticleSubmissionPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const supabase = await createServerSupabaseClient()
+  const admin = getAdminClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/login")
   const { data: adminUser } = await supabase.from("users").select("role").eq("id", user.id).single()
   if (adminUser?.role !== "admin") redirect("/dashboard")
 
-  const { data: raw } = await supabase
+  const { data: raw } = await admin
     .from("article_submissions")
     .select("*, users(full_name, email)")
     .eq("id", id)

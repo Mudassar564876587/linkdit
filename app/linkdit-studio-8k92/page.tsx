@@ -1,9 +1,9 @@
-import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import { LayoutDashboard, Grid3X3, Users, Star, Send, Bookmark } from "lucide-react"
 import Link from "next/link"
 
 export default async function AdminDashboard() {
-  const supabase = await createServerSupabaseClient()
+  const admin = getAdminClient()
 
   const [
     { count: totalUsers },
@@ -15,14 +15,14 @@ export default async function AdminDashboard() {
     { data: recentLogs },
     { data: recentSubmissions },
   ] = await Promise.all([
-    supabase.from("users").select("*", { count: "exact", head: true }),
-    supabase.from("tools").select("*", { count: "exact", head: true }),
-    supabase.from("tool_submissions").select("*", { count: "exact", head: true }).eq("submission_status", "submitted"),
-    supabase.from("categories").select("*", { count: "exact", head: true }),
-    supabase.from("reviews").select("*", { count: "exact", head: true }),
-    supabase.from("bookmarks").select("*", { count: "exact", head: true }),
-    supabase.from("audit_logs").select("*").order("created_at", { ascending: false }).limit(10),
-    supabase.from("tool_submissions").select("id, tool_name, submission_status, created_at").order("created_at", { ascending: false }).limit(5),
+    admin.from("users").select("*", { count: "exact", head: true }),
+    admin.from("tools").select("*", { count: "exact", head: true }),
+    admin.from("tool_submissions").select("*", { count: "exact", head: true }).eq("submission_status", "submitted"),
+    admin.from("categories").select("*", { count: "exact", head: true }),
+    admin.from("reviews").select("*", { count: "exact", head: true }),
+    admin.from("bookmarks").select("*", { count: "exact", head: true }),
+    admin.from("audit_logs").select("*").order("created_at", { ascending: false }).limit(10),
+    admin.from("tool_submissions").select("id, tool_name, submission_status, created_at").order("created_at", { ascending: false }).limit(5),
   ])
 
   const stats = [

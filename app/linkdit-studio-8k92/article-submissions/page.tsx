@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import Link from "next/link"
 import { Clock, CheckCircle, XCircle, FileText, type LucideProps } from "lucide-react"
 import type React from "react"
@@ -17,12 +18,13 @@ const statusConfig: Record<string, { label: string; color: string; icon: React.C
 
 export default async function AdminArticleSubmissionsPage() {
   const supabase = await createServerSupabaseClient()
+  const admin = getAdminClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/login")
   const { data: adminUser } = await supabase.from("users").select("role").eq("id", user.id).single()
   if (adminUser?.role !== "admin") redirect("/dashboard")
 
-  const { data: raw } = await supabase
+  const { data: raw } = await admin
     .from("article_submissions")
     .select("*, users(full_name, email)")
     .order("created_at", { ascending: false }) as unknown as { data: any; error: any }

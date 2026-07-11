@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import ComparisonForm from "../comparison-form"
 
 export const metadata: Metadata = { title: "Edit Comparison | Admin | LinkDit" }
@@ -8,8 +9,9 @@ export const metadata: Metadata = { title: "Edit Comparison | Admin | LinkDit" }
 export default async function EditComparisonPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const supabase = await createServerSupabaseClient()
+  const admin = getAdminClient()
 
-  const { data: comparison } = await supabase
+  const { data: comparison } = await admin
     .from("comparisons")
     .select("*, tool_a:tools!tool_a_id(id, name, slug, logo_url, pricing, rating), tool_b:tools!tool_b_id(id, name, slug, logo_url, pricing, rating)")
     .eq("id", id)
@@ -17,7 +19,7 @@ export default async function EditComparisonPage({ params }: { params: Promise<{
 
   if (!comparison) notFound()
 
-  const { data: categories } = await supabase.from("categories").select("id, name").order("name")
+  const { data: categories } = await admin.from("categories").select("id, name").order("name")
 
   return (
     <div className="max-w-4xl space-y-6">

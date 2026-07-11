@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import Link from "next/link"
 import { Plus, ExternalLink, Pencil } from "lucide-react"
 import ComparisonActions from "./comparison-actions"
@@ -7,9 +8,9 @@ import ComparisonActions from "./comparison-actions"
 export const metadata: Metadata = { title: "Comparisons | Admin | LinkDit" }
 
 export default async function AdminComparisonsPage() {
-  const supabase = await createServerSupabaseClient()
+  const admin = getAdminClient()
 
-  const { data: comparisons } = await supabase
+  const { data: comparisons } = await admin
     .from("comparisons")
     .select("*, tool_a:tools!tool_a_id(name, slug), tool_b:tools!tool_b_id(name, slug)")
     .order("created_at", { ascending: false })
