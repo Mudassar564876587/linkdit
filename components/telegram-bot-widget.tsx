@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback } from "react"
+import { usePathname } from "next/navigation"
 import { MessageCircle, X, Send, Loader2, ExternalLink } from "lucide-react"
 
 type ButtonRow = {
@@ -21,6 +22,9 @@ type ChatResponse = {
 }
 
 export default function TelegramBotWidget() {
+  const pathname = usePathname()
+  const isAdmin = pathname?.startsWith("/linkdit-studio-8k92")
+
   const [open, setOpen] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
@@ -103,6 +107,8 @@ export default function TelegramBotWidget() {
     }
     sendMessage("", value)
   }, [sendMessage])
+
+  if (isAdmin) return null
 
   return (
     <>
