@@ -152,7 +152,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
                 <div className="flex items-center gap-2 flex-wrap">
                   <h1 className="text-3xl font-bold text-foreground">{tool.name}</h1>
                   {tool.is_verified && (
-                    <span className="relative group inline-flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 drop-shadow-[0_0.5px_1px_rgba(0,0,0,0.4)]">
+                    <span className="relative group inline-flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
                       <Check className="h-3.5 w-3.5" />
                       Verified
                       <span className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-[11px] text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 dark:bg-black dark:ring-1 dark:ring-white/10">
