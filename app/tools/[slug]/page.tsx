@@ -71,7 +71,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
 
   const { data: reviews } = await supabase
     .from("reviews")
-    .select("*, users(full_name, avatar_url)")
+    .select("*, users(full_name, avatar_url), reviewer_profiles(*)")
     .eq("tool_id", tool.id)
     .eq("is_approved", true)
     .order("created_at", { ascending: false })

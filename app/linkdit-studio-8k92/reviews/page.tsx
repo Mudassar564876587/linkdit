@@ -8,7 +8,7 @@ export default async function AdminReviewsPage() {
   const supabase = await createServerSupabaseClient()
   const { data: reviews } = await supabase
     .from("reviews")
-    .select("*, users(full_name, email), tools(name, slug)")
+    .select("*, users(full_name, email), tools(name, slug), reviewer_profiles(*)")
     .order("created_at", { ascending: false })
 
   return <AdminReviewsClient reviews={(reviews ?? [])} />

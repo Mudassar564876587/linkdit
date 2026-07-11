@@ -301,6 +301,14 @@ export interface Database {
           pros: string[] | null
           cons: string[] | null
           is_approved: boolean
+          reviewer_profile_id: string | null
+          best_for: string | null
+          would_recommend: boolean | null
+          helpful_count: number | null
+          usage_duration: string | null
+          primary_use_case: string | null
+          verified_user: boolean | null
+          verified_purchase: boolean | null
           created_at: string
           updated_at: string
         }
@@ -314,6 +322,14 @@ export interface Database {
           pros?: string[] | null
           cons?: string[] | null
           is_approved?: boolean
+          reviewer_profile_id?: string | null
+          best_for?: string | null
+          would_recommend?: boolean | null
+          helpful_count?: number | null
+          usage_duration?: string | null
+          primary_use_case?: string | null
+          verified_user?: boolean | null
+          verified_purchase?: boolean | null
           created_at?: string
           updated_at?: string
         }
@@ -327,6 +343,14 @@ export interface Database {
           pros?: string[] | null
           cons?: string[] | null
           is_approved?: boolean
+          reviewer_profile_id?: string | null
+          best_for?: string | null
+          would_recommend?: boolean | null
+          helpful_count?: number | null
+          usage_duration?: string | null
+          primary_use_case?: string | null
+          verified_user?: boolean | null
+          verified_purchase?: boolean | null
           created_at?: string
           updated_at?: string
         }
@@ -342,8 +366,68 @@ export interface Database {
             columns: ["tool_id"]
             referencedRelation: "tools"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_reviewer_profile_id_fkey"
+            columns: ["reviewer_profile_id"]
+            referencedRelation: "reviewer_profiles"
+            referencedColumns: ["id"]
           }
         ]
+      }
+      reviewer_profiles: {
+        Row: {
+          id: string
+          full_name: string
+          username: string
+          avatar_url: string | null
+          country: string
+          city: string | null
+          job_title: string
+          industry: string | null
+          experience_level: string
+          years_of_experience: number | null
+          joined_at: string
+          helpful_count: number | null
+          is_active: boolean | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          full_name?: string
+          username?: string
+          avatar_url?: string | null
+          country?: string
+          city?: string | null
+          job_title?: string
+          industry?: string | null
+          experience_level?: string
+          years_of_experience?: number | null
+          joined_at?: string
+          helpful_count?: number | null
+          is_active?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          full_name?: string
+          username?: string
+          avatar_url?: string | null
+          country?: string
+          city?: string | null
+          job_title?: string
+          industry?: string | null
+          experience_level?: string
+          years_of_experience?: number | null
+          joined_at?: string
+          helpful_count?: number | null
+          is_active?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       tool_submissions: {
         Row: {
