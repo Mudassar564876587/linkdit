@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 import Link from "next/link"
 import { Clock, CheckCircle, XCircle, FileText, type LucideProps } from "lucide-react"
 import type React from "react"
@@ -25,7 +26,9 @@ export default async function AdminSubmissionsPage() {
   const { data: adminUser } = await supabase.from("users").select("role").eq("id", user.id).single()
   if (adminUser?.role !== "admin") redirect("/dashboard")
 
-  const { data: raw } = await supabase
+  const admin = getAdminClient()
+
+  const { data: raw } = await admin
     .from("tool_submissions")
     .select("*, users(full_name, email)")
     .order("created_at", { ascending: false }) as unknown as { data: any; error: any }
