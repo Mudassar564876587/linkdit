@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { Search, CheckCircle, XCircle, ThumbsUp, Briefcase, MapPin, Star, ExternalLink } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import { adminApproveReview, adminDeleteReview } from "@/actions/admin/reviews"
+import { adminApproveReview, adminApproveAllReviews, adminSeedReviews, adminDeleteReview } from "@/actions/admin/reviews"
 import { formatDate } from "@/lib/utils"
 import Link from "next/link"
 
@@ -43,6 +43,8 @@ export default function AdminReviewsClient({ reviews }: { reviews: Review[] }) {
   const router = useRouter()
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
+  const [approvingAll, setApprovingAll] = useState(false)
+  const [seeding, setSeeding] = useState(false)
 
   const filtered = reviews.filter((r) => {
     const name = r.reviewer_profiles?.full_name ?? r.users?.full_name ?? ""
@@ -60,6 +62,26 @@ export default function AdminReviewsClient({ reviews }: { reviews: Review[] }) {
     else { toast.success("Review approved"); router.refresh() }
   }, [router])
 
+  const handleApproveAll = useCallback(async () => {
+    if (!confirm(`Approve all ${reviews.filter(r => !r.is_approved).length} pending reviews?`)) return
+    setApprovingAll(true)
+    const result = await adminApproveAllReviews()
+    setApprovingAll(false)
+    if (result.error) toast.error(result.error)
+    else { toast.success("All reviews approved"); router.refresh() }
+  }, [reviews, router])
+
+  const handleSeed = useCallback(async () => {
+    if (!confirm("This will add sample reviews to all tools that don't have reviews yet. Continue?")) return
+    setSeeding(true)
+    const result = await adminSeedReviews()
+    setSeeding(false)
+    if (result.error) toast.error(result.error)
+    else if (result.errors?.length) toast.warning(`Seeded ${result.inserted} reviews (${result.skipped} skipped). ${result.errors.length} errors.`)
+    else toast.success(`Seeded ${result.inserted} reviews (${result.skipped} tools skipped, ${result.total} total)`)
+    router.refresh()
+  }, [router])
+
   const handleDelete = useCallback(async (id: string) => {
     if (!confirm("Delete this review?")) return
     const result = await adminDeleteReview(id)
@@ -71,6 +93,16 @@ export default function AdminReviewsClient({ reviews }: { reviews: Review[] }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Reviews ({reviews.length})</h1>
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" size="sm" onClick={handleSeed} disabled={seeding}>
+            {seeding ? "Seeding..." : "Seed Reviews"}
+          </Button>
+          {reviews.some(r => !r.is_approved) && (
+            <Button variant="outline" size="sm" onClick={handleApproveAll} disabled={approvingAll}>
+              {approvingAll ? "Approving..." : `Approve All (${reviews.filter(r => !r.is_approved).length})`}
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-3">

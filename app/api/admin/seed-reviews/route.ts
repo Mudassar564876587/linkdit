@@ -15,10 +15,27 @@ async function seed() {
   const { data: { user } } = await userSupabase.auth.getUser()
   if (!user) return { error: "Not authenticated." }
 
-  const { data: adminUser } = await userSupabase.from("users").select("role").eq("id", user.id).single()
-  if (adminUser?.role !== "admin") return { error: "Permission denied." }
-
   const admin = getAdminClient()
+
+  // Ensure user exists in public.users
+  const { data: existingUser } = await admin
+    .from("users")
+    .select("id, role")
+    .eq("id", user.id)
+    .maybeSingle()
+
+  let userId = user.id
+  if (!existingUser) {
+    const { error: insertError } = await admin.from("users").insert({
+      id: user.id,
+      email: user.email ?? "admin@linkdit.com",
+      full_name: user.user_metadata?.full_name ?? "Admin",
+      role: "admin",
+    })
+    if (insertError) return { error: `Failed to create user profile: ${insertError.message}` }
+  } else if (existingUser.role !== "admin") {
+    return { error: "Permission denied." }
+  }
 
   const { data: tools } = await admin.from("tools").select("id, name")
   if (!tools || tools.length === 0) return { error: "No tools found." }
@@ -38,7 +55,7 @@ async function seed() {
     for (const review of selected) {
       const { error } = await admin.from("reviews").insert({
         tool_id: tool.id,
-        user_id: user.id,
+        user_id: userId,
         rating: review.rating,
         title: review.title,
         content: review.content,

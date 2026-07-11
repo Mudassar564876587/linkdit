@@ -229,7 +229,7 @@ function ReviewForm({
   if (success) {
     return (
       <p className="text-sm text-emerald-600 font-medium">
-        Review submitted! It will appear after approval.
+        Review submitted successfully!
       </p>
     )
   }

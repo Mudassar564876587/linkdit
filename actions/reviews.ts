@@ -27,6 +27,7 @@ export async function submitReview(
     content: content.trim(),
     pros: pros.length > 0 ? pros : null,
     cons: cons.length > 0 ? cons : null,
+    is_approved: true,
   })
 
   if (error) {
@@ -34,7 +35,7 @@ export async function submitReview(
     return { error: error.message }
   }
 
-  revalidatePath(`/tools/[slug]`)
+  revalidatePath(`/tools/[slug]`, "page")
   return { success: true }
 }
 
@@ -62,13 +63,14 @@ export async function updateReview(
       content: content.trim(),
       pros: pros.length > 0 ? pros : null,
       cons: cons.length > 0 ? cons : null,
+      is_approved: true,
     })
     .eq("id", reviewId)
     .eq("user_id", user.id)
 
   if (error) return { error: error.message }
 
-  revalidatePath(`/tools/[slug]`)
+  revalidatePath(`/tools/[slug]`, "page")
   return { success: true }
 }
 
@@ -85,6 +87,6 @@ export async function deleteToolReview(reviewId: string) {
 
   if (error) return { error: error.message }
 
-  revalidatePath(`/tools/[slug]`)
+  revalidatePath(`/tools/[slug]`, "page")
   return { success: true }
 }
