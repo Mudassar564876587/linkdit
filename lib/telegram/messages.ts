@@ -31,7 +31,7 @@ export function websiteMessage(): string {
   return (
     `🌐 *LinkDit*\n\n` +
     `Visit our website to explore the full directory:\n` +
-    `[linkdit.vercel.app](https://linkdit.vercel.app)`
+    `[linkdit.online](https://linkdit.online)`
   )
 }
 
@@ -143,7 +143,7 @@ export function compareMessage(
   fromDb: boolean
 ): string {
   if (!fromDb) {
-    return `We don't have a saved comparison for these tools yet.\n\nVisit [LinkDit](https://linkdit.vercel.app/compare) to create your own comparison!`
+    return `We don't have a saved comparison for these tools yet.\n\nVisit [LinkDit](https://linkdit.online/compare) to create your own comparison!`
   }
 
   return (
@@ -156,7 +156,7 @@ export function compareMessage(
     `⭐ Rating: ${tool2.rating.toFixed(1)} (${tool2.review_count} reviews)\n` +
     `💰 ${tool2.pricing ?? "N/A"}\n` +
     `${escapeMarkdown(tool2.description ?? "")}\n\n` +
-    `[View full comparison on LinkDit](https://linkdit.vercel.app/compare)`
+    `[View full comparison on LinkDit](https://linkdit.online/compare)`
   )
 }
 

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://linkdit-omega.vercel.app"
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://linkdit.online"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createServerSupabaseClient()

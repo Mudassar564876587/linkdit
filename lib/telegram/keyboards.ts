@@ -12,7 +12,7 @@ export function startKeyboard(): InlineKeyboardMarkup {
         { text: "🆓 Free AI Tools", callback_data: "cmd:free" },
       ],
       [
-        { text: "🌐 Open LinkDit", url: "https://linkdit.vercel.app" },
+        { text: "🌐 Open LinkDit", url: "https://linkdit.online" },
       ],
     ],
   }
@@ -53,7 +53,7 @@ export function categoriesKeyboard(categories: { name: string; slug: string }[])
 export function toolActionsKeyboard(slug: string, websiteUrl: string | null): InlineKeyboardMarkup {
   const buttons: InlineKeyboardMarkup["inline_keyboard"] = [
     [
-      { text: "👁 View on LinkDit", url: `https://linkdit.vercel.app/tools/${slug}` },
+      { text: "👁 View on LinkDit", url: `https://linkdit.online/tools/${slug}` },
     ],
   ]
   if (websiteUrl) {
