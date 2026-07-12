@@ -379,3 +379,95 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ─── Noise Texture ─── */
+@utility bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* ─── Shine animation for buttons ─── */
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(200%) rotate(25deg); }
+}
+@utility animate-shine {
+  animation: shine 3s ease-in-out infinite;
+}
+
+/* ─── Premium float ─── */
+@keyframes float-premium {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@utility animate-float-premium {
+  animation: float-premium 4s ease-in-out infinite;
+}
+
+@keyframes float-premium-delayed {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@utility animate-float-delayed {
+  animation: float-premium-delayed 5s ease-in-out infinite 1s;
+}
+
+@keyframes float-premium-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+@utility animate-float-slow {
+  animation: float-premium-slow 6s ease-in-out infinite 0.5s;
+}
+
+/* ─── Gradient border ─── */
+@utility gradient-border {
+  position: relative;
+}
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.4), hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* ─── Glow on hover ─── */
+@utility glow-hover {
+  transition: box-shadow 0.4s ease;
+}
+.glow-hover:hover {
+  box-shadow: 0 0 30px hsl(var(--primary) / 0.15), 0 0 60px hsl(var(--primary) / 0.08);
+}
+
+/* ─── Scale on hover ─── */
+@utility scale-hover {
+  transition: transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.scale-hover:hover {
+  transform: scale(1.03);
+}
+
+/* ─── Pulse glow ─── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.1); }
+  50% { box-shadow: 0 0 40px hsl(var(--primary) / 0.2); }
+}
+@utility animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* ─── Gradient text shimmer ─── */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@utility animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
