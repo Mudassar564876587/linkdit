@@ -31,16 +31,16 @@ export default function TrustedBy() {
         </motion.p>
 
         <div className="relative overflow-hidden">
-          <div className="absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-white to-transparent" />
-          <div className="absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-white to-transparent" />
+          <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-gradient-to-r from-white to-transparent" />
+          <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-gradient-to-l from-white to-transparent" />
 
           <div className="flex animate-scroll-left gap-12 items-center">
             {logos.map((logo, i) => (
               <div
                 key={`${logo.name}-${i}`}
-                className="flex shrink-0 items-center gap-3 rounded-xl border border-border/40 bg-white/60 backdrop-blur-sm px-4 py-2.5 shadow-soft-sm"
+                className="flex shrink-0 items-center gap-3 rounded-xl border border-border/40 bg-white/70 backdrop-blur-sm px-4 py-2.5 shadow-soft-sm transition-all duration-300 hover:shadow-soft-md hover:-translate-y-0.5 hover:border-border/60"
               >
-                <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br ${logo.gradient} text-xs font-bold text-white shadow-sm`}>
+                <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br ${logo.gradient} text-xs font-bold text-white shadow-sm transition-transform duration-300 group-hover:scale-110`}>
                   {logo.letter}
                 </div>
                 <span className="text-sm font-medium text-foreground whitespace-nowrap">{logo.name}</span>

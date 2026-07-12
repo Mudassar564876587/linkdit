@@ -3,20 +3,22 @@ import { Sparkles, ArrowUpRight } from "lucide-react"
 
 export default function CTASection() {
   return (
-    <section className="relative overflow-hidden border-t border-border bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
-      <div className="absolute left-1/2 top-0 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-blue-400/10 blur-3xl" />
+    <section className="relative overflow-hidden border-t border-border bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700">
+      {/* Animated gradient overlay */}
+      <div className="absolute inset-0 bg-[length:200%_200%] bg-gradient-to-r from-blue-600/0 via-indigo-500/20 to-violet-600/0 animate-gradient opacity-60" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/15 via-transparent to-transparent" />
+      <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-400/20 via-indigo-400/10 to-transparent blur-3xl animate-pulse-soft" />
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.04]"
         style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-          backgroundSize: "40px 40px",
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+          backgroundSize: "36px 36px",
         }}
         aria-hidden="true"
       />
 
       <div className="relative mx-auto max-w-3xl px-4 py-24 text-center sm:px-6 sm:py-32 lg:px-8 lg:py-36">
-        <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium text-white/90 backdrop-blur-sm sm:text-sm">
+        <div className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 backdrop-blur-md px-4 py-1.5 text-xs font-medium text-white/90 shadow-soft-sm sm:text-sm">
           <Sparkles className="h-3 w-3" />
           Contribute to the AI Ecosystem
         </div>
@@ -31,11 +33,11 @@ export default function CTASection() {
         <div className="mt-10">
           <Link
             href="/submit-tool"
-            className="inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-4 text-base font-semibold text-blue-700 shadow-premium-lg transition-all duration-200 hover:bg-blue-50 hover:-translate-y-0.5 active:translate-y-0"
+            className="group relative inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-4 text-base font-semibold text-blue-700 shadow-premium-lg transition-all duration-300 hover:bg-blue-50 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] active:translate-y-0"
           >
             <Sparkles className="h-5 w-5" />
             Submit Your AI Tool
-            <ArrowUpRight className="h-5 w-5" />
+            <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </div>
       </div>

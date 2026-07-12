@@ -21,7 +21,9 @@ function StarRating({ rating }: { rating: number }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
-          className={`h-3.5 w-3.5 ${i < rating ? "fill-amber-400 text-amber-400" : "text-gray-200"}`}
+          className={`h-3.5 w-3.5 transition-all duration-200 hover:scale-110 ${
+            i < rating ? "fill-amber-400 text-amber-400" : "text-gray-200 fill-gray-200"
+          }`}
         />
       ))}
     </div>
@@ -47,13 +49,14 @@ export default function CommunityReviewsClient({ reviews }: { reviews: Review[] 
           {reviews.map((review, i) => (
             <motion.div
               key={review.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
+              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1], delay: i * 0.08 }}
               viewport={{ once: true, margin: "-50px" }}
             >
-              <div className="relative h-full rounded-2xl border border-border/50 bg-white p-6 shadow-premium transition-all duration-200 hover:shadow-premium-lg">
-                <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/5" />
+              <div className="group relative h-full rounded-2xl border border-border/60 bg-white p-6 shadow-premium transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1.5">
+                <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/[0.02] to-violet-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/[0.04]" />
                 <div className="relative">
                   <div className="flex items-center justify-between gap-2">
                     <StarRating rating={review.rating} />
@@ -66,10 +69,10 @@ export default function CommunityReviewsClient({ reviews }: { reviews: Review[] 
                   {review.tools && (
                     <Link
                       href={`/tools/${review.tools.slug}`}
-                      className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+                      className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-primary hover:text-primary/80 transition-all duration-200 group-hover:gap-1.5"
                     >
                       {review.tools.name}
-                      <ArrowUpRight className="h-3 w-3" />
+                      <ArrowUpRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </Link>
                   )}
                 </div>

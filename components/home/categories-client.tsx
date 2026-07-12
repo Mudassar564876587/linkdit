@@ -40,28 +40,28 @@ export default function CategoriesClient({ categories }: { categories: CategoryI
         return (
           <motion.div
             key={category.id}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut", delay: index * 0.05 }}
+            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1], delay: index * 0.06 }}
             viewport={{ once: true, margin: "-50px" }}
           >
             <Link
               href={isEmpty ? "#" : `/categories/${category.slug}`}
-              className={`group relative block rounded-2xl border p-6 shadow-premium transition-all duration-200 ${
+              className={`group relative block rounded-2xl border p-6 shadow-premium transition-all duration-300 ${
                 isEmpty
                   ? "border-border/30 bg-muted/30 cursor-default opacity-60"
-                  : "border-border/50 bg-white hover:shadow-premium-lg hover:-translate-y-0.5"
+                  : "border-border/50 bg-white hover:shadow-card-hover hover:-translate-y-1.5"
               }`}
             >
               {!isEmpty && (
-                <div className={`pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br ${styles.gradient} opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300`} />
+                <div className={`pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br ${styles.gradient} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500`} />
               )}
 
               <div className="relative">
                 <div className="flex items-start justify-between">
                   <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${
                     isEmpty ? "bg-muted text-muted-foreground" : styles.iconBg
-                  } shadow-sm ring-1 ring-border/10`}>
+                  } shadow-sm ring-1 ring-border/10 transition-all duration-300 group-hover:scale-[1.08] group-hover:shadow-md`}>
                     <Icon className="h-5 w-5" />
                   </div>
                   {isEmpty ? (
