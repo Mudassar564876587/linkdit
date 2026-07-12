@@ -7,7 +7,7 @@ import { Check, ArrowLeft, Sparkles } from "lucide-react"
 import Navbar from "@/components/layout/navbar"
 import Footer from "@/components/layout/footer"
 
-const WHATSAPP_NUMBER = "923001234567"
+const WHATSAPP_NUMBER = "923197013743"
 
 const packages = [
   {
@@ -45,10 +45,15 @@ function getWhatsAppLink(pkg: typeof packages[number]) {
 
 I want to purchase AI Creator Prompt Vault.
 
-Package: ${pkg.name}
-Price: $${pkg.price.toFixed(2)}
+Package:
+${pkg.name}
 
-Please send payment instructions.`
+Price:
+$${pkg.price.toFixed(2)}
+
+Please send me the payment instructions.
+
+Thank you.`
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
 }
 
