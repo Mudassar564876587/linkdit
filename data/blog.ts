@@ -1,0 +1,287 @@
+export interface BlogPost {
+  id: string
+  title: string
+  description: string
+  slug: string
+  category: string
+  readingTime: string
+  date: string
+  author: string
+  authorRole: string
+  views: string
+  featured: boolean
+  trending: boolean
+  editorsPick: boolean
+  image: string
+}
+
+export const blogCategories = [
+  "AI News",
+  "Tutorials",
+  "Comparisons",
+  "Industry Insights",
+  "Product Reviews",
+  "Opinion",
+] as const
+
+export const blogPosts: BlogPost[] = [
+  {
+    id: "1",
+    title: "Claude 4 vs GPT-5: The Ultimate AI Model Comparison for 2026",
+    description: "We put Anthropic's Claude 4 and OpenAI's GPT-5 through 50 rigorous tests across coding, reasoning, creativity, and real-world tasks. Here are the results.",
+    slug: "claude-4-vs-gpt-5-comparison-2026",
+    category: "Comparisons",
+    readingTime: "18 min",
+    date: "Jul 12, 2026",
+    author: "Alex Chen",
+    authorRole: "Senior AI Analyst",
+    views: "48K",
+    featured: true,
+    trending: true,
+    editorsPick: true,
+    image: "comparison",
+  },
+  {
+    id: "2",
+    title: "The Rise of AI Coding Agents: How Development is Changing in 2026",
+    description: "From GitHub Copilot to autonomous coding agents, the software development landscape is transforming faster than anyone predicted.",
+    slug: "rise-of-ai-coding-agents-2026",
+    category: "Industry Insights",
+    readingTime: "12 min",
+    date: "Jul 11, 2026",
+    author: "Sarah Mitchell",
+    authorRole: "Tech Editor",
+    views: "32K",
+    featured: true,
+    trending: true,
+    editorsPick: false,
+    image: "coding",
+  },
+  {
+    id: "3",
+    title: "How to Build a RAG System from Scratch: A Practical Tutorial",
+    description: "Step-by-step guide to building a Retrieval-Augmented Generation system using open-source tools. Perfect for developers new to AI.",
+    slug: "build-rag-system-from-scratch",
+    category: "Tutorials",
+    readingTime: "25 min",
+    date: "Jul 10, 2026",
+    author: "Marcus Johnson",
+    authorRole: "AI Engineer",
+    views: "56K",
+    featured: true,
+    trending: false,
+    editorsPick: true,
+    image: "tutorial",
+  },
+  {
+    id: "4",
+    title: "Midjourney vs Flux vs DALL-E 4: AI Image Generation Showdown",
+    description: "We compare the three leading AI image generators across photorealism, prompt adherence, style variety, and pricing.",
+    slug: "midjourney-vs-flux-vs-dalle-4-2026",
+    category: "Comparisons",
+    readingTime: "14 min",
+    date: "Jul 9, 2026",
+    author: "Emily Zhang",
+    authorRole: "Creative Tech Writer",
+    views: "41K",
+    featured: false,
+    trending: true,
+    editorsPick: false,
+    image: "image",
+  },
+  {
+    id: "5",
+    title: "Google just Released Gemini 3.0: Everything You Need to Know",
+    description: "Google's latest model brings native video understanding, million-token context windows, and groundbreaking agent capabilities. Full breakdown inside.",
+    slug: "google-gemini-3-0-release",
+    category: "AI News",
+    readingTime: "8 min",
+    date: "Jul 8, 2026",
+    author: "Alex Chen",
+    authorRole: "Senior AI Analyst",
+    views: "89K",
+    featured: false,
+    trending: true,
+    editorsPick: false,
+    image: "news",
+  },
+  {
+    id: "6",
+    title: "Using AI for Customer Support: A Complete Guide for 2026",
+    description: "How businesses are deploying AI agents for customer support, the tools they use, and the surprising impact on customer satisfaction scores.",
+    slug: "ai-customer-support-complete-guide-2026",
+    category: "Tutorials",
+    readingTime: "15 min",
+    date: "Jul 7, 2026",
+    author: "David Park",
+    authorRole: "Business Technology Writer",
+    views: "23K",
+    featured: false,
+    trending: false,
+    editorsPick: true,
+    image: "support",
+  },
+  {
+    id: "7",
+    title: "The Environmental Cost of AI: What Every Developer Should Know",
+    description: "As AI compute demands skyrocket, understanding the environmental impact of model training and inference becomes crucial for responsible development.",
+    slug: "environmental-cost-of-ai",
+    category: "Industry Insights",
+    readingTime: "11 min",
+    date: "Jul 6, 2026",
+    author: "Sarah Mitchell",
+    authorRole: "Tech Editor",
+    views: "67K",
+    featured: false,
+    trending: false,
+    editorsPick: false,
+    image: "environment",
+  },
+  {
+    id: "8",
+    title: "Cursor vs Windsurf vs Trae: AI Code Editors Compared",
+    description: "The AI code editor market is heating up. We compare the top three contenders across features, performance, pricing, and developer experience.",
+    slug: "cursor-vs-windsurf-vs-trae-2026",
+    category: "Comparisons",
+    readingTime: "16 min",
+    date: "Jul 5, 2026",
+    author: "Marcus Johnson",
+    authorRole: "AI Engineer",
+    views: "34K",
+    featured: false,
+    trending: false,
+    editorsPick: false,
+    image: "comparison",
+  },
+  {
+    id: "9",
+    title: "I Built a SaaS with Bolt.new in 48 Hours: Honest Review",
+    description: "A hands-on review of Bolt.new's AI-powered development platform. Can you really build and launch a production-ready SaaS in two days?",
+    slug: "built-saas-with-bolt-new-review",
+    category: "Product Reviews",
+    readingTime: "10 min",
+    date: "Jul 4, 2026",
+    author: "Emily Zhang",
+    authorRole: "Creative Tech Writer",
+    views: "78K",
+    featured: false,
+    trending: true,
+    editorsPick: false,
+    image: "review",
+  },
+  {
+    id: "10",
+    title: "Why Open Source AI Models Are Winning in 2026",
+    description: "Open-source models like Llama 4, Mistral, and Qwen are closing the gap with proprietary models. Here's why open-source AI is having its moment.",
+    slug: "open-source-ai-models-winning-2026",
+    category: "Opinion",
+    readingTime: "9 min",
+    date: "Jul 3, 2026",
+    author: "Alex Chen",
+    authorRole: "Senior AI Analyst",
+    views: "45K",
+    featured: false,
+    trending: false,
+    editorsPick: true,
+    image: "opinion",
+  },
+  {
+    id: "11",
+    title: "The Complete Guide to AI Video Generation Tools in 2026",
+    description: "From Runway to Pika to Kling, we analyze the current state of AI video generation and what's coming next.",
+    slug: "complete-guide-ai-video-generation-2026",
+    category: "Tutorials",
+    readingTime: "20 min",
+    date: "Jul 2, 2026",
+    author: "David Park",
+    authorRole: "Business Technology Writer",
+    views: "29K",
+    featured: false,
+    trending: false,
+    editorsPick: false,
+    image: "tutorial",
+  },
+  {
+    id: "12",
+    title: "Perplexity AI vs Google Search: Is This the End of Traditional Search?",
+    description: "With Perplexity's Pro Search and real-time capabilities, many users are questioning whether traditional search engines are still relevant.",
+    slug: "perplexity-vs-google-search",
+    category: "Opinion",
+    readingTime: "7 min",
+    date: "Jul 1, 2026",
+    author: "Sarah Mitchell",
+    authorRole: "Tech Editor",
+    views: "92K",
+    featured: false,
+    trending: true,
+    editorsPick: false,
+    image: "opinion",
+  },
+  {
+    id: "13",
+    title: "How to Choose the Right AI Model for Your Application",
+    description: "A practical framework for evaluating and selecting AI models based on your specific use case, budget, and performance requirements.",
+    slug: "choose-right-ai-model-for-application",
+    category: "Tutorials",
+    readingTime: "13 min",
+    date: "Jun 30, 2026",
+    author: "Marcus Johnson",
+    authorRole: "AI Engineer",
+    views: "18K",
+    featured: false,
+    trending: false,
+    editorsPick: false,
+    image: "tutorial",
+  },
+  {
+    id: "14",
+    title: "The Future of Work: How AI Agents Will Reshape Every Industry",
+    description: "From legal to healthcare to finance, AI agents are automating complex workflows. What does this mean for the future of employment?",
+    slug: "future-of-work-ai-agents",
+    category: "Industry Insights",
+    readingTime: "14 min",
+    date: "Jun 29, 2026",
+    author: "Emily Zhang",
+    authorRole: "Creative Tech Writer",
+    views: "55K",
+    featured: false,
+    trending: false,
+    editorsPick: false,
+    image: "industry",
+  },
+  {
+    id: "15",
+    title: "Lovable vs Bolt.new vs v0: AI App Builders Compared",
+    description: "We built the same app in all three platforms to find out which AI app builder delivers the best results for different types of projects.",
+    slug: "lovable-vs-bolt-new-vs-v0-2026",
+    category: "Comparisons",
+    readingTime: "17 min",
+    date: "Jun 28, 2026",
+    author: "Marcus Johnson",
+    authorRole: "AI Engineer",
+    views: "39K",
+    featured: false,
+    trending: false,
+    editorsPick: false,
+    image: "comparison",
+  },
+]
+
+export const trendingPosts = blogPosts.filter((p) => p.trending)
+export const editorsPickPosts = blogPosts.filter((p) => p.editorsPick)
+export const featuredPosts = blogPosts.filter((p) => p.featured)
+
+export function getPostsByCategory(category: string): BlogPost[] {
+  return blogPosts.filter((p) => p.category.toLowerCase() === category.toLowerCase())
+}
+
+export function searchPosts(query: string): BlogPost[] {
+  const q = query.toLowerCase()
+  return blogPosts.filter(
+    (p) =>
+      p.title.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q) ||
+      p.author.toLowerCase().includes(q)
+  )
+}

@@ -19,11 +19,11 @@ const quickLinks = [
 ]
 
 const resources = [
-  { href: "/resources", label: "Tutorials" },
-  { href: "/resources", label: "Guides" },
-  { href: "/resources", label: "Glossary" },
-  { href: "/articles", label: "Blog" },
-  { href: "/resources", label: "FAQ" },
+  { href: "/tutorials", label: "Tutorials" },
+  { href: "/guides", label: "Guides" },
+  { href: "/glossary", label: "Glossary" },
+  { href: "/blog", label: "Blog" },
+  { href: "/faq", label: "FAQ" },
 ]
 
 export default function Footer() {
