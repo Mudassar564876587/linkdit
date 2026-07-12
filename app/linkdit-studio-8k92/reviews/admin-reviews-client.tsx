@@ -77,8 +77,8 @@ export default function AdminReviewsClient({ reviews }: { reviews: Review[] }) {
     try {
       const result = await adminSeedReviews()
       if (result.error) toast.error(result.error)
-      else if (result.errors?.length) toast.warning(`Seeded ${result.inserted} reviews (${result.skipped} skipped). ${result.errors.length} errors.`)
-      else toast.success(`Seeded ${result.inserted} reviews (${result.skipped} tools skipped, ${result.total} total)`)
+      else if (result.errors?.length) toast.warning(`Seeded ${result.inserted} reviews (${result.errors.length} errors)`)
+      else toast.success(`Seeded ${result.inserted} reviews across ${result.total} tools`)
     } catch (e: any) {
       toast.error(e?.message ?? "Something went wrong.")
     }

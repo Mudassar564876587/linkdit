@@ -13,6 +13,7 @@ import {
   FolderTree,
   Globe,
   GitCompare,
+  ShoppingBag,
   Info,
   LogIn,
   LogOut,
@@ -41,6 +42,7 @@ const drawerLinks = [
   { href: "/categories", label: "Categories", icon: FolderTree },
   { href: "/resources", label: "Resources", icon: Globe },
   { href: "/compare", label: "Compare", icon: GitCompare },
+  { href: "/store", label: "Store", icon: ShoppingBag },
   { href: "/about", label: "About", icon: Info },
 ]
 
