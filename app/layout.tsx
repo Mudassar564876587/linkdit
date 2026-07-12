@@ -5,6 +5,8 @@ import { AnalyticsScript } from "@/components/layout/analytics-script";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import TelegramBotWidget from "@/components/telegram-bot-widget";
+// Google Analytics 4 — change ID in NEXT_PUBLIC_GA_MEASUREMENT_ID env var
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,6 +39,10 @@ export default function RootLayout({
           <TelegramBotWidget />
         </ThemeProvider>
         <AnalyticsScript />
+        {/* Google Analytics 4 — loads after page becomes interactive (no performance impact) */}
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        )}
       </body>
     </html>
   );
