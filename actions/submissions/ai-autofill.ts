@@ -19,7 +19,7 @@ export async function aiAutofill(websiteUrl: string) {
     const res = await fetch(websiteUrl, {
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (compatible; LinkDitBot/1.0; +https://linkdit-omega.vercel.app)",
+          "Mozilla/5.0 (compatible; LinkDitBot/1.0; +https://linkdit.online)",
       },
       signal: AbortSignal.timeout(15000),
     })
@@ -162,7 +162,7 @@ async function extractEmail(html: string, baseUrl: string): Promise<string> {
       const url = new URL(page, baseUrl).href
       const res = await fetch(url, {
         headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; LinkDitBot/1.0; +https://linkdit-omega.vercel.app)",
+          "User-Agent": "Mozilla/5.0 (compatible; LinkDitBot/1.0; +https://linkdit.online)",
         },
         signal: AbortSignal.timeout(5000),
       })
