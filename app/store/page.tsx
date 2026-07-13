@@ -81,19 +81,19 @@ export default function StorePage() {
                   🔥 Premium AI Resources
                 </motion.div>
 
-                <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.1]">
+                <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.05]">
                   The{" "}
                   <span className="bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-500 bg-clip-text text-transparent">Creator&apos;s Toolkit</span>
                 </motion.h1>
 
-                <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg max-w-xl mx-auto lg:mx-0">
+                <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} className="mt-5 text-base leading-relaxed text-muted-foreground/90 sm:text-lg max-w-xl mx-auto lg:mx-0">
                   Premium prompt packs and AI resources designed to supercharge your content creation workflow. One-time purchase, lifetime access.
                 </motion.p>
 
-                <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-7 flex flex-wrap items-center gap-3 justify-center lg:justify-start">
+                <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-8 flex flex-wrap items-center gap-3 justify-center lg:justify-start">
                   <Link
                     href="#products"
-                    className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-violet-600 via-fuchsia-500 to-amber-500 px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                    className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-violet-600 via-fuchsia-500 to-amber-500 px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
                   >
                     <span className="absolute inset-0 bg-[length:200%_200%] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-all duration-700" />
                     <span className="relative flex items-center gap-2">
@@ -101,13 +101,13 @@ export default function StorePage() {
                       Browse Products
                     </span>
                   </Link>
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 rounded-xl border border-border bg-white/80 px-7 py-3.5 text-sm font-medium text-foreground shadow-soft-sm backdrop-blur-sm transition-all duration-300 hover:shadow-soft-md hover:-translate-y-0.5">
+                  <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 rounded-xl border border-border/80 bg-white/80 px-7 py-3.5 text-sm font-medium text-foreground shadow-soft-sm backdrop-blur-sm transition-all duration-300 hover:shadow-soft-md hover:-translate-y-0.5 active:scale-[0.97]">
                     <MessageCircle className="h-4 w-4" />
                     Chat on WhatsApp
                   </a>
                 </motion.div>
 
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-7 flex flex-wrap items-center gap-4 text-xs text-muted-foreground justify-center lg:justify-start">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground justify-center lg:justify-start">
                   {[
                     { icon: Gem, text: "Premium Quality" },
                     { icon: Shield, text: "Instant Delivery" },
@@ -116,7 +116,7 @@ export default function StorePage() {
                     const Icon = item.icon
                     return (
                       <span key={item.text} className="inline-flex items-center gap-1.5">
-                        <Icon className="h-3.5 w-3.5 text-primary" />
+                        <Icon className="h-3.5 w-3.5 text-primary/70" />
                         {item.text}
                       </span>
                     )
@@ -126,7 +126,7 @@ export default function StorePage() {
 
               <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.25, ease: easeOut }} className="hidden lg:block relative">
                 <div className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-violet-500/15 via-fuchsia-500/10 to-amber-500/15 blur-3xl" />
-                <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-white/80 shadow-premium-lg backdrop-blur-xl">
+                <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-white/70 shadow-premium-lg backdrop-blur-2xl">
                   <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-amber-500/5" />
                   <div className="absolute top-0 left-4 right-4 h-0.5 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-amber-500" />
                   <div className="relative p-7">
@@ -151,7 +151,7 @@ export default function StorePage() {
                         </div>
                       ))}
                     </div>
-                    <div className="mt-4 flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 px-3.5 py-2.5">
+                    <div className="mt-4 flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100/60 px-3.5 py-2.5">
                       <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
                       <span className="text-xs font-medium text-emerald-700">One-time payment. No subscriptions.</span>
                     </div>
@@ -168,10 +168,10 @@ export default function StorePage() {
         </section>
 
         {/* ═══ PRODUCTS ═══ */}
-        <section id="products" className="border-t border-border bg-gradient-to-b from-background via-secondary/20 to-background py-20 sm:py-24">
+        <section id="products" className="border-t border-border/60 bg-gradient-to-b from-background via-secondary/20 to-background py-20 sm:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center">
-              <span className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-primary/15 bg-primary/5 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-widest text-primary">
+              <span className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-primary/[0.04] px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80">
                 Products
               </span>
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Featured Product</h2>
@@ -180,7 +180,7 @@ export default function StorePage() {
               </p>
             </motion.div>
 
-            <div className="mt-12">
+            <div className="mt-14">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -189,10 +189,10 @@ export default function StorePage() {
         </section>
 
         {/* ═══ COMING SOON ═══ */}
-        <section className="border-t border-border py-20 sm:py-24">
+        <section className="border-t border-border/60 py-20 sm:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center">
-              <span className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-primary/15 bg-primary/5 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-widest text-primary">
+              <span className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-primary/[0.04] px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80">
                 Coming Soon
               </span>
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">More Vaults on the Way</h2>
@@ -201,7 +201,7 @@ export default function StorePage() {
               </p>
             </motion.div>
 
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {comingSoon.map((item, i) => (
                 <motion.div
                   key={item.name}
@@ -209,7 +209,7 @@ export default function StorePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.05 }}
-                  className="group relative overflow-hidden rounded-xl border border-border/60 bg-white/50 p-5 transition-all duration-300 hover:shadow-soft-md hover:-translate-y-0.5"
+                  className="group relative overflow-hidden rounded-xl border border-border/60 bg-white/60 p-5 transition-all duration-300 hover:shadow-premium hover:-translate-y-0.5"
                 >
                   <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${item.gradient} opacity-0 transition-opacity duration-300 group-hover:opacity-5`} />
                   <div className="relative">
@@ -228,7 +228,7 @@ export default function StorePage() {
         </section>
 
         {/* ═══ FINAL CTA ═══ */}
-        <section className="relative overflow-hidden border-t border-border">
+        <section className="relative overflow-hidden border-t border-border/60">
           <Blob className="-left-60 -top-60 h-[400px] w-[400px] bg-violet-500/10" />
           <Blob className="-right-60 -bottom-60 h-[400px] w-[400px] bg-amber-500/10" />
           <div className="relative mx-auto max-w-4xl px-4 py-20 text-center sm:py-24 sm:px-6 lg:px-8">
@@ -240,7 +240,7 @@ export default function StorePage() {
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <Link
                   href="/store/ai-creator-prompt-vault"
-                  className="group relative overflow-hidden rounded-xl bg-white px-8 py-3.5 text-sm font-semibold text-violet-600 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                  className="group relative overflow-hidden rounded-xl bg-white px-8 py-3.5 text-sm font-semibold text-violet-600 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
                 >
                   <span className="absolute inset-0 bg-[length:200%_200%] bg-gradient-to-r from-transparent via-violet-100 to-transparent -translate-x-full group-hover:translate-x-full transition-all duration-700" />
                   <span className="relative flex items-center gap-2">
@@ -248,7 +248,7 @@ export default function StorePage() {
                     View Products
                   </span>
                 </Link>
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-8 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5">
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/25 px-8 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 active:scale-[0.97]">
                   <MessageCircle className="h-4 w-4" />
                   Chat on WhatsApp
                 </a>
@@ -276,7 +276,7 @@ function ProductCard({ product }: { product: typeof products[number] }) {
     >
       <Link href={`/store/${product.id}`} className="group relative block">
         <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-violet-500/10 via-fuchsia-500/5 to-amber-500/10 opacity-0 blur-3xl transition-all duration-500 group-hover:opacity-100" />
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-300 group-hover:shadow-card-hover group-hover:-translate-y-1">
+        <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card shadow-premium transition-all duration-300 group-hover:shadow-card-hover group-hover:-translate-y-1">
           <div className={`h-1 w-full bg-gradient-to-r ${product.gradient}`} />
           <div className="absolute right-5 top-5 z-10">
             <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/50 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700 shadow-soft-sm">
@@ -293,7 +293,7 @@ function ProductCard({ product }: { product: typeof products[number] }) {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground/80 max-w-xl">{product.description}</p>
                 <div className="mt-4 flex flex-wrap gap-1.5">
                   {product.features.map((feat) => (
-                    <span key={feat} className="inline-flex items-center gap-1 rounded-lg bg-primary/5 px-2.5 py-1 text-[11px] font-medium text-primary">
+                    <span key={feat} className="inline-flex items-center gap-1 rounded-full bg-primary/5 px-3 py-1 text-[11px] font-medium text-primary">
                       <Check className="h-3 w-3" />
                       {feat}
                     </span>
@@ -301,7 +301,7 @@ function ProductCard({ product }: { product: typeof products[number] }) {
                 </div>
               </div>
               <div className="shrink-0 w-full sm:w-auto">
-                <div className="rounded-xl border border-border/60 bg-gradient-to-b from-secondary/50 to-background p-5 text-center sm:text-left transition-all duration-300 group-hover:shadow-soft-sm">
+                <div className="rounded-xl border border-border/40 bg-white p-5 text-center sm:text-left transition-all duration-300 group-hover:shadow-soft-sm">
                   <span className="text-xs text-muted-foreground">Starting at</span>
                   <p className="text-2xl font-bold text-foreground">{product.price}</p>
                   <p className="text-xs text-muted-foreground">One-time payment</p>
