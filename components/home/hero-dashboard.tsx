@@ -41,7 +41,7 @@ export default function HeroDashboard({
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-      className="relative overflow-hidden rounded-3xl border border-white/30 bg-white/60 backdrop-blur-2xl shadow-premium-lg"
+      className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/40 backdrop-blur-xl shadow-premium-lg"
     >
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-white/5" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/[0.03] to-violet-500/[0.03]" />

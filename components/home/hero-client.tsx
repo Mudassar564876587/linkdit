@@ -1,23 +1,21 @@
 "use client"
 
-import { type ReactNode, useEffect, useState } from "react"
+import { type ReactNode } from "react"
+import { motion } from "framer-motion"
 import { useParallax } from "@/hooks/use-parallax"
 
 export default function HeroClient({ children }: { children: ReactNode }) {
   const { ref, style } = useParallax(0.15)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => setMounted(true), [])
 
   return (
-    <div
+    <motion.div
       ref={ref}
       style={style}
-      className={`transition-all duration-[800ms] ease-out ${
-        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
+      initial={{ opacity: 0, y: 32 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
     >
       {children}
-    </div>
+    </motion.div>
   )
 }

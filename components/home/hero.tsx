@@ -27,7 +27,7 @@ export default async function Hero() {
     <HeroClient>
       <section className="relative min-h-[90vh] overflow-hidden">
         {/* Animated gradient mesh */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-50/60 via-white to-white" />
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-50/60 via-white to-white animate-gradient bg-[length:200%_200%]" />
         <div className="absolute left-1/2 top-0 h-[900px] w-[900px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-300/30 via-indigo-200/20 to-transparent blur-3xl animate-[pulse-soft_6s_ease-in-out_infinite]" />
         <div className="absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-gradient-to-br from-violet-400/20 via-fuchsia-300/10 to-transparent blur-3xl" />
         <div className="absolute -right-40 top-1/3 h-80 w-80 rounded-full bg-gradient-to-br from-cyan-300/20 via-sky-200/10 to-transparent blur-3xl" />
@@ -58,7 +58,7 @@ export default async function Hero() {
 
               <h1 className="text-[2.5rem] font-bold leading-tight tracking-tight text-foreground sm:text-[3.25rem] sm:leading-[1.1] lg:text-[3.75rem] lg:leading-[1.05]">
                 Discover, Compare &{" "}
-                <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-violet-600 bg-clip-text text-transparent">Master</span>
+                <span className="bg-gradient-to-r from-blue-500 via-indigo-400 to-violet-500 bg-clip-text text-transparent animate-gradient [filter:drop-shadow(0_0_12px_rgba(99,102,241,0.3))]">Master</span>
                 <br />
                 the World&apos;s Best AI Tools
               </h1>
@@ -81,8 +81,8 @@ export default async function Hero() {
 
               <div className="mx-auto mt-10 max-w-xl lg:mx-0">
                 <div className="group relative">
-                  <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 opacity-20 blur transition-all duration-500 group-hover:opacity-40 group-focus-within:opacity-40" />
-                  <div className="relative flex items-center rounded-2xl border border-input bg-white/90 backdrop-blur-sm shadow-soft-sm transition-all duration-300 group-focus-within:border-primary group-focus-within:ring-2 group-focus-within:ring-primary/20 group-focus-within:shadow-soft-md">
+                  <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 opacity-20 blur transition-all duration-500 group-hover:opacity-40 group-focus-within:opacity-50" />
+                  <div className="relative flex items-center rounded-2xl border border-input bg-white/90 backdrop-blur-sm shadow-soft-sm transition-all duration-300 group-focus-within:border-primary group-focus-within:ring-4 group-focus-within:ring-primary/10 group-focus-within:shadow-[0_0_24px_rgba(99,102,241,0.15)]">
                     <Search className="absolute left-4 h-5 w-5 text-muted-foreground" />
                     <input
                       type="text"
