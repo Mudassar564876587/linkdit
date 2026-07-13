@@ -3,16 +3,11 @@
 import Link from "next/link"
 import { Star, ArrowUpRight, Quote } from "lucide-react"
 import { motion } from "framer-motion"
-import { getAvatarColor, formatDate } from "@/lib/utils"
+import { formatDate } from "@/lib/utils"
 
 type Review = {
-  id: string
-  rating: number
-  title: string
-  content: string
-  created_at: string
-  tool_id: string
-  tools: { name: string; slug: string } | null
+  id: string; rating: number; title: string; content: string
+  created_at: string; tool_id: string; tools: { name: string; slug: string } | null
 }
 
 function StarRating({ rating }: { rating: number }) {
@@ -34,13 +29,13 @@ export default function CommunityReviewsClient({ reviews }: { reviews: Review[] 
   if (reviews.length === 0) return null
 
   return (
-    <section className="border-t border-border">
+    <section className="border-t border-border/50">
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-36">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-[1.75rem] font-bold leading-tight tracking-tight text-foreground sm:text-[2rem] lg:text-[2.25rem]">
+          <h2 className="text-[1.75rem] font-bold leading-[1.15] tracking-tight text-foreground sm:text-[2.25rem] lg:text-[2.75rem] lg:leading-[1.1]">
             Community Reviews
           </h2>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:text-base lg:text-lg">
+          <p className="mt-5 text-sm leading-relaxed text-muted-foreground sm:text-base lg:text-lg max-w-lg mx-auto">
             Real feedback from real users. See what the community is saying.
           </p>
         </div>
@@ -51,12 +46,15 @@ export default function CommunityReviewsClient({ reviews }: { reviews: Review[] 
               key={review.id}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1], delay: i * 0.08 }}
+              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1], delay: i * 0.08 }}
               viewport={{ once: true, margin: "-50px" }}
             >
-              <div className="group relative h-full rounded-2xl border border-border/60 bg-white p-6 shadow-premium transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1.5">
+              <div className="group relative h-full rounded-2xl border border-border/40 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 hover:border-primary/20">
                 <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/[0.02] to-violet-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/[0.04]" />
+                <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08), transparent 60%)" }} />
+                <div className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary/5 to-violet-500/5">
+                  <Quote className="h-5 w-5 text-primary/20" />
+                </div>
                 <div className="relative">
                   <div className="flex items-center justify-between gap-2">
                     <StarRating rating={review.rating} />

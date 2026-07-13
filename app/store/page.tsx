@@ -5,7 +5,8 @@ import { motion, useInView } from "framer-motion"
 import Link from "next/link"
 import {
   ArrowRight, Sparkles, Star, Shield, Zap, Check, Clock, Gem,
-  ShoppingBag, Layers, Award, MessageCircle,
+  ShoppingBag, Layers, Award, MessageCircle, Film, Briefcase,
+  Search, Video, Megaphone, Palette,
 } from "lucide-react"
 import Navbar from "@/components/layout/navbar"
 import Footer from "@/components/layout/footer"
@@ -19,23 +20,27 @@ const products = [
     tagline: "Premium AI video prompts for creators",
     description: "Hand-curated collection of 700+ high-converting AI video prompts for TikTok, Reels, and YouTube Shorts. Copy, paste, and create.",
     price: "From $1.49",
-    gradient: "from-violet-500 via-fuchsia-500 to-amber-500",
-    icon: "🎬",
+    gradient: "from-blue-600 via-indigo-500 to-violet-600",
+    icon: "Film",
     badge: "Best Seller",
     features: ["700+ Premium Prompts", "10+ AI Categories", "Commercial License", "Lifetime Updates"],
   },
 ]
 
 const comingSoon = [
-  { name: "AI Business Vault", icon: "💼", gradient: "from-blue-500 via-cyan-500 to-teal-500", desc: "AI prompts for business automation" },
-  { name: "AI SEO Vault", icon: "🔍", gradient: "from-emerald-500 via-green-500 to-teal-500", desc: "SEO-optimized content prompts" },
-  { name: "AI YouTube Vault", icon: "📹", gradient: "from-red-500 via-rose-500 to-pink-500", desc: "YouTube script & thumbnail prompts" },
-  { name: "AI Shopify Vault", icon: "🛍️", gradient: "from-emerald-500 via-teal-500 to-cyan-500", desc: "E-commerce product prompts" },
-  { name: "AI Marketing Vault", icon: "📢", gradient: "from-orange-500 via-amber-500 to-yellow-500", desc: "Multi-channel marketing prompts" },
-  { name: "AI Image Vault", icon: "🎨", gradient: "from-purple-500 via-pink-500 to-rose-500", desc: "Premium image generation prompts" },
+  { name: "AI Business Vault", icon: "Briefcase", gradient: "from-blue-600 to-indigo-600", desc: "AI prompts for business automation" },
+  { name: "AI SEO Vault", icon: "Search", gradient: "from-indigo-500 to-violet-600", desc: "SEO-optimized content prompts" },
+  { name: "AI YouTube Vault", icon: "Video", gradient: "from-blue-500 to-indigo-600", desc: "YouTube script & thumbnail prompts" },
+  { name: "AI Shopify Vault", icon: "ShoppingBag", gradient: "from-indigo-600 to-violet-700", desc: "E-commerce product prompts" },
+  { name: "AI Marketing Vault", icon: "Megaphone", gradient: "from-blue-600 to-violet-600", desc: "Multi-channel marketing prompts" },
+  { name: "AI Image Vault", icon: "Palette", gradient: "from-violet-500 to-indigo-600", desc: "Premium image generation prompts" },
 ]
 
 const easeOut = [0.25, 0.1, 0.25, 1] as const
+
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  Film, Briefcase, Search, Video, ShoppingBag, Megaphone, Palette,
+}
 
 function Blob({ className }: { className: string }) {
   return (
@@ -78,12 +83,12 @@ export default function StorePage() {
               <div className="text-center lg:text-left">
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }} className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-amber-200/50 bg-gradient-to-r from-amber-50 to-orange-50 px-4 py-1.5 text-xs font-semibold text-amber-700 shadow-soft-sm">
                   <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-                  🔥 Premium AI Resources
+                  Premium AI Resources
                 </motion.div>
 
-                <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.05]">
+                <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="text-3xl font-bold tracking-tight text-foreground xs:text-4xl sm:text-5xl lg:text-6xl leading-[1.05]">
                   The{" "}
-                  <span className="bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-500 bg-clip-text text-transparent">Creator&apos;s Toolkit</span>
+                    <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-violet-600 bg-clip-text text-transparent">Creator&apos;s Toolkit</span>
                 </motion.h1>
 
                 <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} className="mt-5 text-base leading-relaxed text-muted-foreground/90 sm:text-lg max-w-xl mx-auto lg:mx-0">
@@ -93,7 +98,7 @@ export default function StorePage() {
                 <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-8 flex flex-wrap items-center gap-3 justify-center lg:justify-start">
                   <Link
                     href="#products"
-                    className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-violet-600 via-fuchsia-500 to-amber-500 px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
+                    className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-indigo-500 to-violet-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
                   >
                     <span className="absolute inset-0 bg-[length:200%_200%] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-all duration-700" />
                     <span className="relative flex items-center gap-2">
@@ -125,13 +130,13 @@ export default function StorePage() {
               </div>
 
               <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.25, ease: easeOut }} className="hidden lg:block relative">
-                <div className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-violet-500/15 via-fuchsia-500/10 to-amber-500/15 blur-3xl" />
+                <div className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-blue-500/15 via-indigo-500/10 to-violet-500/15 blur-3xl" />
                 <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-white/70 shadow-premium-lg backdrop-blur-2xl">
-                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-amber-500/5" />
-                  <div className="absolute top-0 left-4 right-4 h-0.5 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-amber-500" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-violet-500/5" />
+                  <div className="absolute top-0 left-4 right-4 h-0.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500" />
                   <div className="relative p-7">
                     <div className="flex items-center gap-3 mb-5">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white shadow-sm">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-sm">
                         <Gem className="h-4.5 w-4.5" />
                       </div>
                       <div>
@@ -213,7 +218,7 @@ export default function StorePage() {
                 >
                   <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${item.gradient} opacity-0 transition-opacity duration-300 group-hover:opacity-5`} />
                   <div className="relative">
-                    <span className="mb-2.5 block text-xl">{item.icon}</span>
+                    {(() => { const Icon = iconMap[item.icon] || Film; return <Icon className="mb-2.5 block h-6 w-6 text-primary" />; })()}
                     <h3 className="text-sm font-semibold text-foreground">{item.name}</h3>
                     <p className="mt-1 text-xs text-muted-foreground">{item.desc}</p>
                     <div className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground/60">
@@ -232,7 +237,7 @@ export default function StorePage() {
           <Blob className="-left-60 -top-60 h-[400px] w-[400px] bg-violet-500/10" />
           <Blob className="-right-60 -bottom-60 h-[400px] w-[400px] bg-amber-500/10" />
           <div className="relative mx-auto max-w-4xl px-4 py-20 text-center sm:py-24 sm:px-6 lg:px-8">
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: easeOut }} className="rounded-2xl bg-gradient-to-br from-violet-600 via-fuchsia-500 to-amber-500 px-8 py-14 shadow-2xl sm:px-14 sm:py-16">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: easeOut }}                     className="rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700 px-8 py-14 shadow-2xl sm:px-14 sm:py-16">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Start Creating Better AI Content</h2>
               <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-white/80">
                 Join thousands of creators using LinkDit premium prompts. One payment, lifetime access.
@@ -240,7 +245,7 @@ export default function StorePage() {
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <Link
                   href="/store/ai-creator-prompt-vault"
-                  className="group relative overflow-hidden rounded-xl bg-white px-8 py-3.5 text-sm font-semibold text-violet-600 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
+                  className="group relative overflow-hidden rounded-xl bg-white px-8 py-3.5 text-sm font-semibold text-blue-700 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
                 >
                   <span className="absolute inset-0 bg-[length:200%_200%] bg-gradient-to-r from-transparent via-violet-100 to-transparent -translate-x-full group-hover:translate-x-full transition-all duration-700" />
                   <span className="relative flex items-center gap-2">
@@ -275,7 +280,7 @@ function ProductCard({ product }: { product: typeof products[number] }) {
       transition={{ duration: 0.6, ease: easeOut }}
     >
       <Link href={`/store/${product.id}`} className="group relative block">
-        <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-violet-500/10 via-fuchsia-500/5 to-amber-500/10 opacity-0 blur-3xl transition-all duration-500 group-hover:opacity-100" />
+        <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-blue-500/10 via-indigo-500/5 to-violet-500/10 opacity-0 blur-3xl transition-all duration-500 group-hover:opacity-100" />
         <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card shadow-premium transition-all duration-300 group-hover:shadow-card-hover group-hover:-translate-y-1">
           <div className={`h-1 w-full bg-gradient-to-r ${product.gradient}`} />
           <div className="absolute right-5 top-5 z-10">
@@ -287,7 +292,7 @@ function ProductCard({ product }: { product: typeof products[number] }) {
           <div className="p-6 sm:p-8">
             <div className="flex items-start gap-4 sm:gap-6 flex-wrap sm:flex-nowrap">
               <div className="min-w-0 flex-1">
-                <span className="mb-3 block text-4xl">{product.icon}</span>
+                {(() => { const Icon = iconMap[product.icon] || Film; return <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/10 to-violet-500/10"><Icon className="h-6 w-6 text-primary" /></div>; })()}
                 <h3 className="text-xl font-bold text-foreground sm:text-2xl group-hover:text-primary transition-colors duration-300">{product.name}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{product.tagline}</p>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground/80 max-w-xl">{product.description}</p>
@@ -305,7 +310,7 @@ function ProductCard({ product }: { product: typeof products[number] }) {
                   <span className="text-xs text-muted-foreground">Starting at</span>
                   <p className="text-2xl font-bold text-foreground">{product.price}</p>
                   <p className="text-xs text-muted-foreground">One-time payment</p>
-                  <span className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-violet-600 via-fuchsia-500 to-amber-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-300 group-hover:shadow-lg">
+                    <span className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-500 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-300 group-hover:shadow-lg">
                     View Details
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </span>

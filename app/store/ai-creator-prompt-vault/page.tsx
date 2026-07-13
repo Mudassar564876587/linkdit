@@ -40,7 +40,7 @@ const packages = [
       "Lifetime Updates",
     ],
     popular: true,
-    gradient: "from-violet-500 via-fuchsia-500 to-amber-500",
+    gradient: "from-blue-600 via-indigo-500 to-violet-600",
     icon: Zap,
   },
   {
@@ -57,7 +57,7 @@ const packages = [
       "Early Access to New Prompt Packs",
     ],
     popular: false,
-    gradient: "from-amber-500 via-orange-500 to-rose-500",
+    gradient: "from-blue-500 via-indigo-600 to-violet-700",
     icon: Award,
   },
 ]
@@ -198,10 +198,10 @@ export default function AiCreatorPromptVaultPage() {
         <section className="relative overflow-hidden pb-16 pt-24 sm:pb-20 sm:pt-32">
           <div className="pointer-events-none absolute inset-0 bg-noise" />
           <Blob className="-left-40 -top-40 h-80 w-80 bg-violet-500/10" />
-          <Blob className="-right-40 top-1/4 h-64 w-64 bg-fuchsia-500/10" />
+          <Blob className="-right-40 top-1/4 h-64 w-64 bg-indigo-500/10" />
           <Blob className="-bottom-40 left-1/4 h-64 w-64 bg-amber-500/10" />
           <FloatingCircle className="left-[12%] top-24 h-2.5 w-2.5 border-primary/30 bg-primary/10" />
-          <FloatingCircle className="right-[15%] top-32 h-2 w-2 border-fuchsia-500/30 bg-fuchsia-500/10" delay={1} />
+          <FloatingCircle className="right-[15%] top-32 h-2 w-2 border-indigo-500/30 bg-indigo-500/10" delay={1} />
           <FloatingCircle className="right-[20%] top-1/2 h-2 w-2 border-violet-500/30 bg-violet-500/10" delay={0.5} />
 
           <div className="pointer-events-none absolute inset-0 opacity-[0.012]" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, #2563eb 1px, transparent 0)`, backgroundSize: '40px 40px' }} />
@@ -218,12 +218,13 @@ export default function AiCreatorPromptVaultPage() {
               <div className="text-center lg:text-left">
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, delay: 0.1 }} className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-amber-200/50 bg-gradient-to-r from-amber-50 to-orange-50 px-4 py-1.5 text-xs font-semibold text-amber-700 shadow-soft-sm">
                   <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-                  🔥 Launch Special
+                  <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                  Launch Special
                 </motion.div>
 
-                <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.05]">
+                <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} className="text-3xl font-bold tracking-tight text-foreground xs:text-4xl sm:text-5xl lg:text-6xl leading-[1.05]">
                   AI Creator{" "}
-                  <span className="bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-500 bg-clip-text text-transparent">Prompt Vault</span>
+                  <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-violet-600 bg-clip-text text-transparent">Prompt Vault</span>
                 </motion.h1>
 
                 <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-5 text-base leading-relaxed text-muted-foreground/90 sm:text-lg max-w-xl mx-auto lg:mx-0">
@@ -235,7 +236,7 @@ export default function AiCreatorPromptVaultPage() {
                     href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi! I'm interested in the AI Creator Prompt Vault.")}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-violet-600 via-fuchsia-500 to-amber-500 px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
+                    className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-indigo-500 to-violet-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
                   >
                     <span className="absolute inset-0 bg-[length:200%_200%] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-all duration-700" />
                     <span className="relative flex items-center gap-2">
@@ -269,10 +270,10 @@ export default function AiCreatorPromptVaultPage() {
               </div>
 
               <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.3, ease: easeOut }} className="hidden lg:block relative">
-                <div className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-violet-500/15 via-fuchsia-500/10 to-amber-500/15 blur-3xl" />
+                <div className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-blue-500/15 via-indigo-500/10 to-violet-500/15 blur-3xl" />
                 <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-white/70 shadow-premium-lg backdrop-blur-2xl">
-                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-amber-500/5" />
-                  <div className="absolute top-0 left-4 right-4 h-0.5 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-amber-500" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-violet-500/5" />
+                  <div className="absolute top-0 left-4 right-4 h-0.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500" />
                   <div className="relative p-7">
                     <div className="flex items-center gap-2 mb-5">
                       <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-100">
@@ -409,7 +410,7 @@ export default function AiCreatorPromptVaultPage() {
                 href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi! I want to unlock the full AI Creator Prompt Vault.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative overflow-hidden inline-flex items-center gap-2 rounded-xl bg-gradient-to-br from-violet-600 via-fuchsia-500 to-amber-500 px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
+                className="group relative overflow-hidden inline-flex items-center gap-2 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-500 to-violet-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
               >
                 <span className="absolute inset-0 bg-[length:200%_200%] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-all duration-700" />
                 <span className="relative flex items-center gap-2">
@@ -444,7 +445,7 @@ export default function AiCreatorPromptVaultPage() {
           <Blob className="-left-60 -top-60 h-[400px] w-[400px] bg-violet-500/10" />
           <Blob className="-right-60 -bottom-60 h-[400px] w-[400px] bg-amber-500/10" />
           <div className="relative mx-auto max-w-4xl px-4 py-20 text-center sm:py-24 sm:px-6 lg:px-8">
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: easeOut }} className="rounded-2xl bg-gradient-to-br from-violet-600 via-fuchsia-500 to-amber-500 px-8 py-14 shadow-2xl sm:px-14 sm:py-16">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: easeOut }} className="rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-500 to-violet-600 px-8 py-14 shadow-2xl sm:px-14 sm:py-16">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Ready to Create Better AI Content?</h2>
               <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-white/80">
                 Get instant access to the AI Creator Prompt Vault. One payment, lifetime access.
@@ -454,7 +455,7 @@ export default function AiCreatorPromptVaultPage() {
                   href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi! I want to purchase the AI Creator Prompt Vault.")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative overflow-hidden rounded-xl bg-white px-8 py-3.5 text-sm font-semibold text-violet-600 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
+                  className="group relative overflow-hidden rounded-xl bg-white px-8 py-3.5 text-sm font-semibold text-blue-700 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
                 >
                   <span className="absolute inset-0 bg-[length:200%_200%] bg-gradient-to-r from-transparent via-violet-100/80 to-transparent -translate-x-full group-hover:translate-x-full transition-all duration-700" />
                   <span className="relative flex items-center gap-2">
@@ -521,7 +522,7 @@ function PricingCard({
 
       {isPopular && (
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.4 }} className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
-          <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500 px-3.5 py-1 text-[11px] font-semibold text-white shadow-lg">
+          <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-blue-600 to-indigo-500 px-3.5 py-1 text-[11px] font-semibold text-white shadow-lg">
             <Star className="h-3 w-3 fill-white" /> Recommended
           </span>
         </motion.div>
@@ -561,7 +562,7 @@ function PricingCard({
             disabled={isLoading}
             className={`relative w-full overflow-hidden rounded-xl py-3 text-sm font-semibold transition-all duration-300 active:scale-[0.97] disabled:opacity-60 disabled:cursor-not-allowed ${
               isPopular
-                ? "bg-gradient-to-br from-violet-600 via-fuchsia-500 to-amber-500 text-white shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                ? "bg-gradient-to-br from-blue-600 via-indigo-500 to-violet-600 text-white shadow-md hover:shadow-lg hover:-translate-y-0.5"
                 : "border border-input bg-background text-foreground hover:bg-accent/50 hover:-translate-y-0.5"
             }`}
           >

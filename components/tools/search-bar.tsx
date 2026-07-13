@@ -89,37 +89,47 @@ export default function SearchBar() {
 
   return (
     <div ref={ref} className="relative w-full max-w-md" role="combobox" aria-expanded={open} aria-haspopup="listbox">
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder="Search AI tools..."
-          value={query}
-          onChange={(e) => {
-            const val = e.target.value
-            if (!val.trim()) {
-              setSuggestions([])
-              setOpen(false)
-              setActiveIndex(-1)
-            }
-            setQuery(val)
-          }}
-          onKeyDown={handleKeyDown}
-          onFocus={() => { if (suggestions.length) setOpen(true) }}
-          className="h-11 w-full rounded-xl border border-input bg-background pl-10 pr-4 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          aria-label="Search AI tools"
-          aria-autocomplete="list"
-          aria-controls="search-suggestions"
-          aria-activedescendant={activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined}
-          role="searchbox"
-        />
-      </div>
+      <form onSubmit={(e) => { e.preventDefault(); handleSearch(query) }} role="search" aria-label="Search tools">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Search AI tools..."
+            value={query}
+            onChange={(e) => {
+              const val = e.target.value
+              if (!val.trim()) {
+                setSuggestions([])
+                setOpen(false)
+                setActiveIndex(-1)
+              }
+              setQuery(val)
+            }}
+            onKeyDown={handleKeyDown}
+            onFocus={() => { if (suggestions.length) setOpen(true) }}
+            className="h-11 w-full rounded-xl border border-input bg-background pl-10 pr-28 sm:pr-36 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            aria-label="Search AI tools"
+            aria-autocomplete="list"
+            aria-controls="search-suggestions"
+            aria-activedescendant={activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined}
+            role="searchbox"
+          />
+          <button
+            type="submit"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 h-11 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+            aria-label="Search"
+          >
+            Search
+          </button>
+        </div>
+      </form>
 
       {open && suggestions.length > 0 && (
         <div
           id="search-suggestions"
           role="listbox"
+          aria-label="Search suggestions"
           className="absolute left-0 right-0 top-full mt-1 rounded-xl border border-border bg-background p-1 shadow-lg z-50"
         >
           {suggestions.map((s, i) => (
@@ -130,7 +140,7 @@ export default function SearchBar() {
               aria-selected={i === activeIndex}
               onClick={() => selectSuggestion(s)}
               onMouseEnter={() => setActiveIndex(i)}
-              className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground transition-colors ${
+              className={`flex w-full items-center gap-2 rounded-lg px-3 min-h-[44px] text-sm text-foreground transition-colors ${
                 i === activeIndex ? "bg-accent" : "hover:bg-accent"
               }`}
             >
@@ -142,7 +152,7 @@ export default function SearchBar() {
       )}
 
       {open && suggestions.length === 0 && query.trim().length >= 2 && (
-        <div className="absolute left-0 right-0 top-full mt-1 rounded-xl border border-border bg-background p-4 text-center text-sm text-muted-foreground shadow-lg z-50">
+        <div role="status" aria-live="polite" className="absolute left-0 right-0 top-full mt-1 rounded-xl border border-border bg-background p-4 text-center text-sm text-muted-foreground shadow-lg z-50">
           No tools found for &ldquo;{query}&rdquo;
         </div>
       )}

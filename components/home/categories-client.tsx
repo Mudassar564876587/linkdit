@@ -8,17 +8,17 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   PenLine, Image, Video, Code2, Zap, BarChart3, Music, TrendingUp, BookOpen, Palette,
 }
 
-const categoryStyles: Record<string, { iconBg: string; gradient: string }> = {
-  "ai-writing": { iconBg: "bg-blue-100 text-blue-600", gradient: "from-blue-500 to-blue-600" },
-  "image-generation": { iconBg: "bg-violet-100 text-violet-600", gradient: "from-violet-500 to-violet-600" },
-  video: { iconBg: "bg-rose-100 text-rose-600", gradient: "from-rose-500 to-rose-600" },
-  coding: { iconBg: "bg-emerald-100 text-emerald-600", gradient: "from-emerald-500 to-emerald-600" },
-  productivity: { iconBg: "bg-amber-100 text-amber-600", gradient: "from-amber-500 to-amber-600" },
-  marketing: { iconBg: "bg-cyan-100 text-cyan-600", gradient: "from-cyan-500 to-cyan-600" },
-  audio: { iconBg: "bg-purple-100 text-purple-600", gradient: "from-purple-500 to-purple-600" },
-  analytics: { iconBg: "bg-orange-100 text-orange-600", gradient: "from-orange-500 to-orange-600" },
-  education: { iconBg: "bg-teal-100 text-teal-600", gradient: "from-teal-500 to-teal-600" },
-  design: { iconBg: "bg-pink-100 text-pink-600", gradient: "from-pink-500 to-pink-600" },
+const categoryStyles: Record<string, { gradient: string; ring: string }> = {
+  "ai-writing": { gradient: "from-blue-500 to-blue-600", ring: "ring-blue-200/50" },
+  "image-generation": { gradient: "from-violet-500 to-violet-600", ring: "ring-violet-200/50" },
+  video: { gradient: "from-rose-500 to-rose-600", ring: "ring-rose-200/50" },
+  coding: { gradient: "from-emerald-500 to-emerald-600", ring: "ring-emerald-200/50" },
+  productivity: { gradient: "from-amber-500 to-amber-600", ring: "ring-amber-200/50" },
+  marketing: { gradient: "from-cyan-500 to-cyan-600", ring: "ring-cyan-200/50" },
+  audio: { gradient: "from-purple-500 to-purple-600", ring: "ring-purple-200/50" },
+  analytics: { gradient: "from-orange-500 to-orange-600", ring: "ring-orange-200/50" },
+  education: { gradient: "from-teal-500 to-teal-600", ring: "ring-teal-200/50" },
+  design: { gradient: "from-pink-500 to-pink-600", ring: "ring-pink-200/50" },
 }
 
 type CategoryItem = { id: string; name: string; slug: string; toolCount: number; iconName: string }
@@ -42,27 +42,30 @@ export default function CategoriesClient({ categories }: { categories: CategoryI
             key={category.id}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1], delay: index * 0.06 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1], delay: index * 0.06 }}
             viewport={{ once: true, margin: "-50px" }}
           >
             <Link
               href={isEmpty ? "#" : `/categories/${category.slug}`}
-              className={`group relative block rounded-2xl border p-6 shadow-premium transition-all duration-300 ${
+              className={`group relative block rounded-2xl border p-6 shadow-sm transition-all duration-300 ${
                 isEmpty
                   ? "border-border/30 bg-muted/30 cursor-default opacity-60"
-                  : "border-border/50 bg-white hover:shadow-card-hover hover:-translate-y-1.5"
+                  : "border-border/40 bg-white hover:shadow-xl hover:-translate-y-1.5 hover:border-primary/20"
               }`}
             >
               {!isEmpty && (
-                <div className={`pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br ${styles.gradient} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500`} />
+                <>
+                  <div className={`pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br ${styles.gradient} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500`} />
+                  <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08), transparent 60%)" }} />
+                </>
               )}
 
               <div className="relative">
                 <div className="flex items-start justify-between">
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${
-                    isEmpty ? "bg-muted text-muted-foreground" : styles.iconBg
-                  } shadow-sm ring-1 ring-border/10 transition-all duration-300 group-hover:scale-[1.08] group-hover:shadow-md`}>
-                    <Icon className="h-5 w-5" />
+                  <div className={`flex h-14 w-14 items-center justify-center rounded-xl shadow-sm ring-1 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg ${
+                    isEmpty ? "bg-muted text-muted-foreground ring-border/10" : `bg-gradient-to-br ${styles.gradient} text-white ${styles.ring}`
+                  }`}>
+                    <Icon className="h-6 w-6" />
                   </div>
                   {isEmpty ? (
                     <span className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
@@ -75,12 +78,10 @@ export default function CategoriesClient({ categories }: { categories: CategoryI
                     </span>
                   )}
                 </div>
-                <h3 className={`mt-5 text-base font-semibold sm:text-lg ${
-                  isEmpty ? "text-muted-foreground" : "text-foreground"
-                }`}>
+                <h3 className={`mt-5 text-base font-semibold sm:text-lg ${isEmpty ? "text-muted-foreground" : "text-foreground"}`}>
                   {category.name}
                 </h3>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-1.5 text-sm text-muted-foreground">
                   {isEmpty ? "No tools yet" : `${category.toolCount} ${category.toolCount === 1 ? "tool" : "tools"} available`}
                 </p>
               </div>

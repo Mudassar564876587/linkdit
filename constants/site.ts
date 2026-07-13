@@ -12,7 +12,7 @@ export const SOCIAL = {
   github: "https://github.com/linkdit",
   twitter: "https://twitter.com/linkdit",
   linkedin: "https://linkedin.com/company/linkdit",
-  email: "hello@linkdit.com",
+  email: "contact@linkdit.online",
 } as const
 
 export const TELEGRAM_BOT = {

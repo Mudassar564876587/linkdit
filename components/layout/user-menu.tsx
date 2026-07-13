@@ -114,7 +114,7 @@ export default function UserMenu() {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-64 rounded-xl border border-border bg-background p-2 shadow-lg">
+        <div className="absolute right-0 mt-2 w-64 rounded-xl border border-border bg-background p-2 shadow-lg animate-reveal">
           <div className="border-b border-border px-3 pb-3 pt-2">
             <p className="truncate text-sm font-medium text-foreground">
               {user.fullName}

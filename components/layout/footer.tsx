@@ -2,8 +2,9 @@
 
 import { useState, type FormEvent } from "react"
 import Link from "next/link"
-import { Sparkles, CheckCircle2, Mail } from "lucide-react"
+import { Sparkles, CheckCircle2, Mail, ChevronDown } from "lucide-react"
 import { subscribeToNewsletter } from "@/services/newsletter.service"
+import { cn } from "@/lib/utils"
 
 const quickLinks = [
   { href: "/tools", label: "AI Tools" },
@@ -26,6 +27,36 @@ const resources = [
   { href: "/faq", label: "FAQ" },
 ]
 
+function AccordionGroup({ title, links }: { title: string; links: { href: string; label: string }[] }) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="border-b border-border/30 pb-4 sm:pb-0">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between py-3 text-xs font-semibold tracking-wider text-foreground uppercase sm:pointer-events-none sm:py-0"
+      >
+        {title}
+        <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-300 sm:hidden", open && "rotate-180")} />
+      </button>
+      <ul className={cn("overflow-hidden transition-all duration-300", open ? "mt-3 max-h-96" : "max-h-0 sm:max-h-96 sm:mt-4")}>
+        <div className={cn("space-y-2.5", open ? "pb-2" : "")}>
+          {links.map((link) => (
+            <li key={link.href + link.label}>
+              <Link
+                href={link.href}
+                className="text-sm text-muted-foreground transition-all duration-200 hover:text-foreground"
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </div>
+      </ul>
+    </div>
+  )
+}
+
 export default function Footer() {
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
@@ -34,10 +65,8 @@ export default function Footer() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     if (!email) return
-
     setStatus("loading")
     const result = await subscribeToNewsletter(email)
-
     if (result.success) {
       setStatus("success")
       setMessage("Thanks for subscribing!")
@@ -49,11 +78,11 @@ export default function Footer() {
   }
 
   return (
-    <footer className="border-t border-border bg-gradient-to-b from-background to-secondary/50">
+    <footer className="border-t border-border/50 bg-gradient-to-b from-white to-secondary/30">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-12">
-          <div className="sm:col-span-2 lg:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-2 text-xl font-bold text-foreground">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-12">
+          <div className="lg:col-span-2">
+            <Link href="/" className="inline-flex items-center gap-2 text-lg font-bold text-foreground">
               <Sparkles className="h-5 w-5 text-primary" />
               LinkDit
             </Link>
@@ -63,54 +92,56 @@ export default function Footer() {
               developers and businesses work smarter with curated tutorials,
               guides, and expert comparisons.
             </p>
+
+            <div className="mt-6">
+              <p className="text-xs font-semibold tracking-wider text-foreground/80 uppercase">
+                Follow Us
+              </p>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <a
+                  href="https://www.instagram.com/linkditofficial/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-border/30 bg-white/60 px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/20"
+                >
+                  <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                  </svg>
+                  <span>Instagram</span>
+                </a>
+                <a
+                  href="https://www.facebook.com/profile.php?id=61591639121453"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-border/30 bg-white/60 px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/20"
+                >
+                  <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                  </svg>
+                  <span>Facebook</span>
+                </a>
+              </div>
+            </div>
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold tracking-wide text-foreground uppercase">
-              Quick Links
-            </h3>
-            <ul className="mt-4 space-y-3">
-              {quickLinks.map((link) => (
-                <li key={link.href + link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground transition-all duration-200 hover:text-foreground hover:translate-x-0.5 inline-block"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <AccordionGroup title="Quick Links" links={quickLinks} />
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold tracking-wide text-foreground uppercase">
-              Resources
-            </h3>
-            <ul className="mt-4 space-y-3">
-              {resources.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground transition-all duration-200 hover:text-foreground hover:translate-x-0.5 inline-block"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <AccordionGroup title="Resources" links={resources} />
           </div>
 
-          <div className="sm:col-span-2 lg:col-span-1">
-            <h3 className="text-xs font-semibold tracking-wide text-foreground uppercase">
-              Newsletter
-            </h3>
+          <div className="lg:col-span-1">
+            <h3 className="text-xs font-semibold tracking-wider text-foreground uppercase">Newsletter</h3>
             <p className="mt-2 text-sm text-muted-foreground">
               Get the latest AI tools and tutorials delivered to your inbox.
             </p>
 
             {status === "success" ? (
-              <div className="mt-4 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+              <div className="mt-4 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50/80 px-4 py-3">
                 <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-500" />
                 <p className="text-sm font-medium text-emerald-700">{message}</p>
               </div>
@@ -124,30 +155,22 @@ export default function Footer() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
                     required
-                    className="h-11 w-full rounded-xl border border-input bg-background pl-10 pr-4 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                    className="h-11 w-full rounded-xl border border-input bg-white/80 pl-10 pr-4 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/10"
                   />
                 </div>
-                <button
-                  type="submit"
-                  disabled={status === "loading"}
-                  className="btn-primary mt-2 w-full justify-center rounded-xl py-2.5 text-sm"
-                >
+                <button type="submit" disabled={status === "loading"} className="btn-primary mt-2 w-full justify-center rounded-xl py-2.5 text-sm">
                   {status === "loading" ? "Subscribing..." : "Subscribe"}
                 </button>
-                {status === "error" && (
-                  <p className="mt-1.5 text-xs text-destructive">{message}</p>
-                )}
+                {status === "error" && <p className="mt-1.5 text-xs text-destructive">{message}</p>}
               </form>
             )}
             <p className="mt-2 text-[10px] text-muted-foreground">No spam. Unsubscribe anytime.</p>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border pt-8 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
-          <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} LinkDit. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+        <div className="mt-12 border-t border-border/50 pt-8 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
+          <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} LinkDit. All rights reserved.</p>
+          <div className="flex items-center gap-5 text-xs text-muted-foreground">
             <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
             <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>

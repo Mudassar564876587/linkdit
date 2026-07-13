@@ -88,8 +88,8 @@ export default function PrivacyPage() {
               <h2 className="mb-4 text-xl font-semibold text-foreground">Contact</h2>
               <p>
                 If you have any questions about this Privacy Policy, please reach out to us at{" "}
-                <a href="mailto:privacy@linkdit.com" className="text-primary hover:underline">
-                  privacy@linkdit.com
+                <a href="mailto:contact@linkdit.online" className="text-primary hover:underline">
+                  contact@linkdit.online
                 </a>
                 .
               </p>

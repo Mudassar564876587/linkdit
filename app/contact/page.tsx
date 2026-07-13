@@ -1,7 +1,10 @@
 import type { Metadata } from "next"
+import Link from "next/link"
+import { Mail } from "lucide-react"
 import Navbar from "@/components/layout/navbar"
 import Footer from "@/components/layout/footer"
 import { SITE } from "@/constants/site"
+import { ContactForm } from "@/components/forms/contact-form"
 
 export const metadata: Metadata = {
   title: "Contact Us | LinkDit",
@@ -28,67 +31,22 @@ export default function ContactPage() {
       <main className="flex-1">
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="text-center">
-            <h1 className="brand-gradient-text text-[1.75rem] font-bold leading-tight tracking-tight sm:text-[2rem] lg:text-[2.25rem]">
+            <h1 className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent text-[1.75rem] font-bold leading-tight tracking-tight sm:text-[2rem] lg:text-[2.25rem]">
               Contact Us
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:text-base sm:leading-relaxed lg:text-lg">
               Have a question, suggestion, or want to get in touch? We&apos;d love to hear from you.
             </p>
           </div>
-          <div className="card-depth mt-10 rounded-2xl p-6 sm:p-8">
-            <form className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-foreground">
-                  Name
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  placeholder="Your name"
-                  className="mt-1 h-10 w-full rounded-xl border border-input bg-background px-3 text-sm shadow-soft-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-foreground">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="your@email.com"
-                  className="mt-1 h-10 w-full rounded-xl border border-input bg-background px-3 text-sm shadow-soft-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-foreground">
-                  Subject
-                </label>
-                <select
-                  id="subject"
-                  className="mt-1 h-10 w-full rounded-xl border border-input bg-background px-3 text-sm shadow-soft-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                >
-                  <option value="">Select a subject</option>
-                  <option value="general">General Inquiry</option>
-                  <option value="suggestion">Tool Suggestion</option>
-                  <option value="bug">Bug Report</option>
-                  <option value="partnership">Partnership</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-foreground">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  rows={5}
-                  placeholder="Your message..."
-                  className="mt-1 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm shadow-soft-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-              </div>
-              <button type="submit" className="btn-primary w-full">
-                Send Message
-              </button>
-            </form>
+          <div className="mt-10 rounded-2xl border border-border bg-background p-6 shadow-sm sm:p-8">
+            <div className="mb-8 flex items-center justify-center gap-3 rounded-xl bg-primary/5 px-4 py-3 text-sm">
+              <Mail className="h-4 w-4 text-primary" />
+              <span className="text-muted-foreground">Or email us directly at</span>
+              <Link href="mailto:contact@linkdit.online" className="font-medium text-primary hover:underline">
+                contact@linkdit.online
+              </Link>
+            </div>
+            <ContactForm />
           </div>
         </div>
       </main>
@@ -96,3 +54,5 @@ export default function ContactPage() {
     </>
   )
 }
+
+

@@ -34,17 +34,19 @@ export default async function SubmitToolPage() {
     <div className="min-h-screen bg-gradient-to-b from-background via-blue-50/30 to-background">
       {/* Hero */}
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
-        <picture className="block w-full rounded-[24px] shadow-premium-lg overflow-hidden">
-          <source media="(min-width: 768px)" srcSet="/images/submit-tool-hero-desktop.png" />
-          <Image
-            src="/images/submit-tool-hero-mobile.png"
-            alt="Submit your AI tool"
-            width={1080}
-            height={1350}
-            priority
-            className="w-full h-auto"
-          />
-        </picture>
+        <div className="w-full rounded-[24px] shadow-premium-lg overflow-hidden bg-muted/20" style={{ aspectRatio: "1080 / 720" }}>
+          <picture>
+            <source media="(min-width: 768px)" srcSet="/images/submit-tool-hero-desktop.png" />
+            <Image
+              src="/images/submit-tool-hero-mobile.png"
+              alt="Submit your AI tool"
+              width={1080}
+              height={720}
+              priority
+              className="w-full h-full object-cover"
+            />
+          </picture>
+        </div>
       </div>
 
       {/* Title section */}

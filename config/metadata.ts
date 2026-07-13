@@ -37,16 +37,12 @@ export const defaultMetadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon/favicon.png", type: "image/png", sizes: "32x32" },
-      { url: "/favicon/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon/favicon.png", type: "image/png", sizes: "96x96" },
       { url: "/favicon/favicon.png", type: "image/png", sizes: "192x192" },
+      { url: "/favicon/favicon.png", type: "image/png", sizes: "96x96" },
+      { url: "/favicon/favicon.png", type: "image/png", sizes: "32x32" },
     ],
     apple: [
       { url: "/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    other: [
-      { rel: "mask-icon", url: "/favicon/favicon.svg", color: "#2563eb" },
     ],
   },
   manifest: "/manifest.webmanifest",

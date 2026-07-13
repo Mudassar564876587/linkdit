@@ -18,7 +18,7 @@ export default function TrustedBy() {
   const logos = useMemo(() => [...fallbackLogos, ...fallbackLogos], [])
 
   return (
-    <section className="border-t border-border/40 bg-gradient-to-b from-secondary/80 to-white">
+    <section className="border-t border-border/30 bg-gradient-to-b from-secondary/50 to-white">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
@@ -31,19 +31,19 @@ export default function TrustedBy() {
         </motion.p>
 
         <div className="relative overflow-hidden">
-          <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-gradient-to-r from-white to-transparent" />
-          <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-gradient-to-l from-white to-transparent" />
+          <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-48 bg-gradient-to-r from-white via-white/80 to-transparent" />
+          <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-48 bg-gradient-to-l from-white via-white/80 to-transparent" />
 
-          <div className="flex animate-scroll-left gap-12 items-center">
+          <div className="flex animate-scroll-left gap-16 items-center">
             {logos.map((logo, i) => (
               <div
                 key={`${logo.name}-${i}`}
-                className="flex shrink-0 items-center gap-3 rounded-xl border border-border/40 bg-white/70 backdrop-blur-sm px-4 py-2.5 shadow-soft-sm transition-all duration-300 hover:shadow-soft-md hover:-translate-y-0.5 hover:border-border/60"
+                className="flex shrink-0 items-center gap-3 rounded-xl border border-border/30 bg-white/60 backdrop-blur-sm px-5 py-3 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/20"
               >
-                <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br ${logo.gradient} text-xs font-bold text-white shadow-sm transition-transform duration-300 group-hover:scale-110`}>
+                <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${logo.gradient} text-sm font-bold text-white shadow-sm transition-all duration-300 group-hover:scale-110`}>
                   {logo.letter}
                 </div>
-                <span className="text-sm font-medium text-foreground whitespace-nowrap">{logo.name}</span>
+                <span className="text-sm font-semibold text-foreground whitespace-nowrap">{logo.name}</span>
               </div>
             ))}
           </div>

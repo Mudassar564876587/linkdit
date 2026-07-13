@@ -4,25 +4,14 @@ import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { createBrowserClient } from "@supabase/ssr"
 import {
-  Search,
-  X,
-  Plus,
-  FileEdit,
-  LayoutGrid,
-  BookOpen,
-  FolderTree,
-  Globe,
-  GitCompare,
-  ShoppingBag,
-  Info,
-  LogIn,
-  LogOut,
-  User,
-  Loader2,
+  Search, X, Plus, FileEdit, LayoutGrid, BookOpen,
+  FolderTree, GitCompare, ShoppingBag, Info,
+  LogIn, LogOut, User, Loader2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Logo from "@/components/ui/logo"
 import { logout } from "@/actions/auth/logout"
+import { cn } from "@/lib/utils"
 
 interface MobileDrawerProps {
   isOpen: boolean
@@ -37,10 +26,9 @@ type UserData = {
 } | null
 
 const drawerLinks = [
-  { href: "/ai-tools", label: "AI Tools", icon: LayoutGrid },
+  { href: "/tools", label: "AI Tools", icon: LayoutGrid },
   { href: "/articles", label: "Articles", icon: BookOpen },
   { href: "/categories", label: "Categories", icon: FolderTree },
-  { href: "/resources", label: "Resources", icon: Globe },
   { href: "/compare", label: "Compare", icon: GitCompare },
   { href: "/store", label: "Store", icon: ShoppingBag },
   { href: "/about", label: "About", icon: Info },
@@ -55,9 +43,7 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
     if (!isOpen) return
     const prev = document.body.style.overflow
     document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = prev
-    }
+    return () => { document.body.style.overflow = prev }
   }, [isOpen])
 
   useEffect(() => {
@@ -74,27 +60,21 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
-
     supabase.auth.getUser().then(({ data: { user: u } }) => {
       if (u) {
         setUser({
-          id: u.id,
-          email: u.email,
+          id: u.id, email: u.email,
           fullName: u.user_metadata?.full_name ?? u.email?.split("@")[0] ?? "User",
           avatarUrl: u.user_metadata?.avatar_url,
         })
-      } else {
-        setUser(null)
       }
       setLoading(false)
     })
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       const u = session?.user ?? null
       if (u) {
         setUser({
-          id: u.id,
-          email: u.email,
+          id: u.id, email: u.email,
           fullName: u.user_metadata?.full_name ?? u.email?.split("@")[0] ?? "User",
           avatarUrl: u.user_metadata?.avatar_url,
         })
@@ -102,32 +82,23 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
         setUser(null)
       }
     })
-
     return () => subscription.unsubscribe()
   }, [])
 
-  const initials = (user?.fullName ?? "U")
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2)
+  const initials = (user?.fullName ?? "U").split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
 
   return (
-    <div
-      className={`fixed inset-0 z-[60] transition-opacity duration-300 ${
-        isOpen ? "opacity-100" : "pointer-events-none opacity-0"
-      }`}
-    >
-      <div className="absolute inset-0 bg-white/70 backdrop-blur-xl" onClick={onClose} />
+    <div className={cn("fixed inset-0 z-[60] transition-all duration-400", isOpen ? "opacity-100" : "pointer-events-none opacity-0")}>
+      <div className="absolute inset-0 bg-white/50 backdrop-blur-2xl" onClick={onClose} />
 
       <div
         ref={drawerRef}
-        className={`absolute right-0 top-0 flex h-full w-[85%] max-w-sm flex-col border-l border-border bg-background shadow-2xl transition-transform duration-300 ${
+        className={cn(
+          "absolute right-0 top-0 flex h-full w-4/5 max-w-sm flex-col border-l border-white/20 bg-white shadow-2xl transition-all duration-500 ease-out",
           isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        )}
       >
-        <div className="flex h-16 items-center justify-between border-b border-border px-5">
+        <div className="flex h-16 items-center justify-between border-b border-border/50 px-5">
           <Logo />
           <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close menu">
             <X className="h-5 w-5" />
@@ -139,9 +110,9 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <Link
               href="/tools"
               onClick={onClose}
-              className="flex items-center gap-3 rounded-xl bg-accent/50 px-4 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-accent"
+              className="flex items-center gap-3 rounded-xl bg-primary/5 px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-primary/10"
             >
-              <Search className="h-5 w-5" />
+              <Search className="h-4 w-4 text-muted-foreground" />
               Search AI tools...
             </Link>
           </div>
@@ -153,10 +124,10 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                   onClick={onClose}
                 >
-                  <Icon className="h-5 w-5 text-muted-foreground" />
+                  <Icon className="h-4 w-4 text-muted-foreground" />
                   {link.label}
                 </Link>
               )
@@ -167,13 +138,13 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <p className="px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Contribute
             </p>
-            <Button asChild className="w-full items-center gap-1.5">
+            <Button asChild className="w-full items-center gap-1.5 rounded-xl">
               <Link href="/submit-tool" onClick={onClose}>
                 <Plus className="h-4 w-4" />
                 Submit Tool
               </Link>
             </Button>
-            <Button variant="secondary" asChild className="w-full items-center gap-1.5">
+            <Button variant="outline" asChild className="w-full items-center gap-1.5 rounded-xl">
               <Link href="/submit-article" onClick={onClose}>
                 <FileEdit className="h-4 w-4" />
                 Write Article
@@ -182,7 +153,7 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           </div>
         </div>
 
-        <div className="border-t border-border px-4 py-5">
+        <div className="border-t border-border/50 px-4 py-5">
           {loading ? (
             <div className="flex justify-center py-2">
               <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
@@ -191,52 +162,33 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <div className="space-y-3">
               <div className="flex items-center gap-3 px-1">
                 {user.avatarUrl ? (
-                  <img
-                    src={user.avatarUrl}
-                    alt=""
-                    className="h-10 w-10 rounded-full object-cover"
-                  />
+                  <img src={user.avatarUrl} alt="" className="h-10 w-10 rounded-full object-cover" />
                 ) : (
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-indigo-600 text-sm font-semibold text-white">
                     {initials}
                   </span>
                 )}
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-foreground">
-                    {user.fullName}
-                  </p>
-                  <p className="truncate text-xs text-muted-foreground">
-                    {user.email}
-                  </p>
+                  <p className="truncate text-sm font-medium text-foreground">{user.fullName}</p>
+                  <p className="truncate text-xs text-muted-foreground">{user.email}</p>
                 </div>
               </div>
-              <form
-                action={async () => {
-                  onClose()
-                  await logout()
-                }}
-              >
-                <Button
-                  type="submit"
-                  variant="outline"
-                  className="w-full items-center gap-2"
-                >
+              <form action={async () => { onClose(); await logout() }}>
+                <Button type="submit" variant="outline" className="w-full items-center gap-2 rounded-xl">
                   <LogOut className="h-4 w-4" />
                   Sign Out
                 </Button>
               </form>
             </div>
           ) : (
-            <Button asChild variant="outline" className="w-full">
+            <Button asChild variant="outline" className="w-full rounded-xl">
               <Link href="/login" onClick={onClose}>
                 <LogIn className="h-4 w-4" />
                 Sign In
               </Link>
             </Button>
           )}
-          <p className="mt-3 text-center text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} LinkDit
-          </p>
+          <p className="mt-3 text-center text-xs text-muted-foreground">&copy; {new Date().getFullYear()} LinkDit</p>
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ async function DashboardStats() {
   ]
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2">
       {stats.map((s) => (
         <StatsCard key={s.label} label={s.label} value={s.value} icon={s.icon} />
       ))}
