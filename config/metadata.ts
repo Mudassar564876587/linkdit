@@ -49,6 +49,8 @@ export const defaultMetadata: Metadata = {
   other: {
     "apple-mobile-web-app-capable": "yes",
   },
+  themeColor: "#ffffff",
+  referrer: "origin-when-cross-origin",
 }
 
 export function createMetadata(overrides?: Partial<Metadata>): Metadata {

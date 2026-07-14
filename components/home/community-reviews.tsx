@@ -11,7 +11,7 @@ export default async function CommunityReviews() {
     .order("created_at", { ascending: false })
     .limit(6)
 
-  if (!reviews || reviews.length === 0) return null
+  if (!reviews?.length) return null
 
   return <CommunityReviewsClient reviews={reviews as never} />
 }

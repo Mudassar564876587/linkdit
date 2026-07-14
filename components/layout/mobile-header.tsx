@@ -21,19 +21,20 @@ export default function MobileHeader() {
     <>
       <header
         className={cn(
-          "fixed top-[calc(0.5rem+env(safe-area-inset-top,0px))] left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-7xl rounded-2xl transition-all duration-500",
+          "fixed top-[calc(0.5rem+env(safe-area-inset-top,0px))] left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-7xl rounded-2xl transition-all duration-500 ease-out",
           scrolled
-            ? "bg-white/75 backdrop-blur-2xl border border-white/30 shadow-[0_8px_32px_rgba(0,0,0,0.06)]"
-            : "bg-white/40 backdrop-blur-xl border border-white/20"
+            ? "glass-nav-scrolled h-14"
+            : "bg-white/40 backdrop-blur-xl border border-white/20 shadow-sm h-16"
         )}
       >
-        <div className="flex h-14 items-center justify-between px-5">
+        <div className="flex h-full items-center justify-between px-5">
           <Logo />
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setIsOpen(true)}
-            aria-label="Open menu"
+            aria-label="Open navigation menu"
+            className="h-11 w-11"
           >
             <Menu className="h-5 w-5" />
           </Button>

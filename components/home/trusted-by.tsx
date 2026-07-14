@@ -18,7 +18,7 @@ export default function TrustedBy() {
   const logos = useMemo(() => [...fallbackLogos, ...fallbackLogos], [])
 
   return (
-    <section className="border-t border-border/30 bg-gradient-to-b from-secondary/50 to-white">
+    <section className="border-t border-border bg-gradient-to-b from-secondary/30 to-white">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
@@ -38,9 +38,9 @@ export default function TrustedBy() {
             {logos.map((logo, i) => (
               <div
                 key={`${logo.name}-${i}`}
-                className="flex shrink-0 items-center gap-3 rounded-xl border border-border/30 bg-white/60 backdrop-blur-sm px-5 py-3 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/20"
+                className="flex shrink-0 items-center gap-3 rounded-xl border border-border/40 bg-white/60 backdrop-blur-sm px-5 py-3 shadow-sm transition-all duration-250 hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/20"
               >
-                <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${logo.gradient} text-sm font-bold text-white shadow-sm transition-all duration-300 group-hover:scale-110`}>
+                <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${logo.gradient} text-sm font-bold text-white shadow-sm`}>
                   {logo.letter}
                 </div>
                 <span className="text-sm font-semibold text-foreground whitespace-nowrap">{logo.name}</span>

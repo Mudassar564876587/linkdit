@@ -6,6 +6,7 @@ import { createBrowserClient } from "@supabase/ssr"
 import { User, LogOut, ChevronDown, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { logout } from "@/actions/auth/logout"
+import { cn } from "@/lib/utils"
 
 type UserData = {
   id: string
@@ -94,29 +95,43 @@ export default function UserMenu() {
     <div ref={dropdownRef} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 rounded-full p-0.5 pr-2 transition-colors hover:bg-accent"
+        className={cn(
+          "flex items-center gap-2 rounded-full p-0.5 pr-2.5 transition-all duration-200",
+          open ? "bg-accent/80" : "hover:bg-accent/60"
+        )}
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-label={user.fullName ? `User menu: ${user.fullName}` : "User menu"}
       >
         {user.avatarUrl ? (
           <img
             src={user.avatarUrl}
             alt=""
-            className="h-8 w-8 rounded-full object-cover"
+            className="h-8 w-8 rounded-full object-cover ring-2 ring-border/50"
           />
         ) : (
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-indigo-600 text-xs font-semibold text-white shadow-sm">
             {initials}
           </span>
         )}
         <span className="hidden text-sm font-medium text-foreground sm:block">
           {user.fullName}
         </span>
-        <ChevronDown className={`hidden h-4 w-4 text-muted-foreground transition-transform sm:block ${open ? "rotate-180" : ""}`} />
+        <ChevronDown
+          className={cn(
+            "hidden h-4 w-4 text-muted-foreground transition-transform duration-200 sm:block",
+            open && "rotate-180"
+          )}
+        />
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-64 rounded-xl border border-border bg-background p-2 shadow-lg animate-reveal">
-          <div className="border-b border-border px-3 pb-3 pt-2">
-            <p className="truncate text-sm font-medium text-foreground">
+        <div
+          className="absolute right-0 mt-2 w-64 rounded-xl border border-border/60 bg-white p-1.5 shadow-xl animate-dropdown"
+          role="menu"
+        >
+          <div className="border-b border-border/50 px-3 pb-3 pt-2.5">
+            <p className="truncate text-sm font-semibold text-foreground">
               {user.fullName}
             </p>
             <p className="truncate text-xs text-muted-foreground">
@@ -124,13 +139,14 @@ export default function UserMenu() {
             </p>
           </div>
 
-          <div className="mt-1 space-y-1">
+          <div className="mt-1 space-y-0.5">
             <Link
               href="/onboarding"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent"
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-all duration-150 hover:bg-accent/70"
+              role="menuitem"
             >
-              <User className="h-4 w-4" />
+              <User className="h-4 w-4 text-muted-foreground" />
               Profile settings
             </Link>
             <form
@@ -141,7 +157,8 @@ export default function UserMenu() {
             >
               <button
                 type="submit"
-                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-destructive transition-colors hover:bg-destructive/10"
+                className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-destructive transition-all duration-150 hover:bg-destructive/8"
+                role="menuitem"
               >
                 <LogOut className="h-4 w-4" />
                 Sign out

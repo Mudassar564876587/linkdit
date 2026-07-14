@@ -37,9 +37,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <ThemeProvider>
-          <div id="main-content">
-            {children}
-          </div>
+          {children}
           <Toaster position="top-right" richColors closeButton />
           <TelegramBotWidget />
         </ThemeProvider>

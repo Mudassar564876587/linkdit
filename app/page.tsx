@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { Suspense } from "react"
 import { SITE } from "@/constants/site"
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 import Navbar from "@/components/layout/navbar"
 import Hero from "@/components/home/hero"
 import TrustedBy from "@/components/home/trusted-by"
@@ -49,10 +49,12 @@ export default function Home() {
     {
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": `${SITE.url}#organization`,
       name: SITE.name,
       url: SITE.url,
       logo: `${SITE.url}/favicon/favicon.png`,
       description,
+      inLanguage: "en-US",
       sameAs: [
         "https://twitter.com/linkdit",
         "https://github.com/linkdit",
@@ -62,9 +64,11 @@ export default function Home() {
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": `${SITE.url}#website`,
       name: SITE.name,
       url: SITE.url,
       description,
+      inLanguage: "en-US",
       potentialAction: {
         "@type": "SearchAction",
         target: {
@@ -77,10 +81,43 @@ export default function Home() {
     {
       "@context": "https://schema.org",
       "@type": "DataCatalog",
+      "@id": `${SITE.url}#datacatalog`,
       name: "LinkDit AI Tools Directory",
       url: SITE.url,
       description: "Curated directory of 1,000+ AI tools, in-depth comparisons, tutorials and resources.",
-      keywords: "AI Tools, Artificial Intelligence, AI Directory, ChatGPT, Claude, Midjourney, Cursor AI",
+      inLanguage: "en-US",
+      about: {
+        "@type": "Thing",
+        name: "AI Tools Directory",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "@id": `${SITE.url}#breadcrumb`,
+      name: "Breadcrumb",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: SITE.url,
+        },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": `${SITE.url}#collectionpage`,
+      name: "LinkDit – Discover, Compare & Master the World's Best AI Tools",
+      url: SITE.url,
+      description,
+      inLanguage: "en-US",
+      isPartOf: { "@id": `${SITE.url}#website` },
+      about: {
+        "@type": "Thing",
+        name: "AI Tools Directory",
+      },
     },
   ]
 
@@ -91,7 +128,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Navbar />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <Hero />
         <TrustedBy />
         <Suspense fallback={<FeaturedToolsSkeleton />}>

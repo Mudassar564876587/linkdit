@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { ArrowUpRight } from "lucide-react"
 import { motion } from "framer-motion"
 import { PenLine, Image, Video, Code2, Zap, BarChart3, Music, TrendingUp, BookOpen, Palette } from "lucide-react"
 
@@ -21,7 +22,9 @@ const categoryStyles: Record<string, { gradient: string; ring: string }> = {
   design: { gradient: "from-pink-500 to-pink-600", ring: "ring-pink-200/50" },
 }
 
-type CategoryItem = { id: string; name: string; slug: string; toolCount: number; iconName: string }
+type CategoryItem = {
+  id: string; name: string; slug: string; toolCount: number; iconName: string; description: string
+}
 
 export default function CategoriesClient({ categories }: { categories: CategoryItem[] }) {
   const sorted = [...categories].sort((a, b) => {
@@ -46,46 +49,57 @@ export default function CategoriesClient({ categories }: { categories: CategoryI
             viewport={{ once: true, margin: "-50px" }}
           >
             <Link
-              href={isEmpty ? "#" : `/categories/${category.slug}`}
-              className={`group relative block rounded-2xl border p-6 shadow-sm transition-all duration-300 ${
+              href={isEmpty ? "/submit-tool" : `/categories/${category.slug}`}
+              className={`group relative flex h-full flex-col rounded-2xl border p-5 shadow-premium-card transition-all duration-250 ${
                 isEmpty
-                  ? "border-border/30 bg-muted/30 cursor-default opacity-60"
-                  : "border-border/40 bg-white hover:shadow-xl hover:-translate-y-1.5 hover:border-primary/20"
+                  ? "border-border/30 bg-muted/20 cursor-default opacity-60"
+                    : "border-border/40 bg-white hover:shadow-premium-xl hover:-translate-y-2 focus-visible:shadow-premium-xl focus-visible:-translate-y-2"
               }`}
             >
+              {/* Top accent bar on hover */}
               {!isEmpty && (
-                <>
-                  <div className={`pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br ${styles.gradient} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500`} />
-                  <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08), transparent 60%)" }} />
-                </>
+                <div className="pointer-events-none absolute top-0 left-5 right-5 h-[2px] rounded-full bg-gradient-to-r from-blue-500/0 via-indigo-500/0 to-violet-500/0 transition-all duration-250 group-hover:from-blue-500/50 group-hover:via-indigo-500/30 group-hover:to-violet-500/50" />
               )}
 
-              <div className="relative">
-                <div className="flex items-start justify-between">
-                  <div className={`flex h-14 w-14 items-center justify-center rounded-xl shadow-sm ring-1 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg ${
-                    isEmpty ? "bg-muted text-muted-foreground ring-border/10" : `bg-gradient-to-br ${styles.gradient} text-white ${styles.ring}`
-                  }`}>
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  {isEmpty ? (
-                    <span className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-                      Coming Soon
-                    </span>
-                  ) : (
-                    <span className={`inline-flex items-center gap-1 rounded-full bg-gradient-to-r ${styles.gradient} px-3 py-1 text-xs font-semibold text-white shadow-sm`}>
-                      {category.toolCount}
-                      <span className="hidden sm:inline">{category.toolCount === 1 ? "tool" : "tools"}</span>
-                    </span>
-                  )}
+              {/* Icon + Name + Tool count */}
+              <div className="flex items-start gap-4">
+                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl shadow-sm ring-1 transition-all duration-250 group-hover:scale-105 group-hover:shadow-md ${
+                  isEmpty
+                    ? "bg-muted text-muted-foreground ring-border/10"
+                    : `bg-gradient-to-br ${styles.gradient} text-white ${styles.ring} group-hover:ring-2`
+                }`}>
+                  <Icon className="h-5 w-5" />
                 </div>
-                <h3 className={`mt-5 text-base font-semibold sm:text-lg ${isEmpty ? "text-muted-foreground" : "text-foreground"}`}>
-                  {category.name}
-                </h3>
-                {!isEmpty && (
-                <p className="mt-1.5 text-sm text-muted-foreground">
-                  {category.toolCount} {category.toolCount === 1 ? "tool" : "tools"} available
+                <div className="min-w-0 flex-1">
+                  <h3 className={`text-[0.9375rem] font-semibold leading-snug ${
+                    isEmpty ? "text-muted-foreground" : "text-foreground group-hover:text-primary transition-colors"
+                  }`}>
+                    {category.name}
+                  </h3>
+                  <span className={`mt-1 inline-block text-xs font-medium ${
+                    isEmpty ? "text-muted-foreground/60" : "text-muted-foreground"
+                  }`}>
+                    {isEmpty ? "No tools yet" : `${category.toolCount} ${category.toolCount === 1 ? "tool" : "tools"}`}
+                  </span>
+                </div>
+              </div>
+
+              {/* Description */}
+              {category.description && !isEmpty && (
+                <p className="mt-3 line-clamp-2 text-sm text-muted-foreground leading-relaxed flex-1">
+                  {category.description}
                 </p>
-                )}
+              )}
+
+              {/* Spacer when no description */}
+              {(!category.description || isEmpty) && <div className="flex-1" />}
+
+              {/* Footer */}
+              <div className="mt-4 flex items-center gap-1.5 border-t border-border/30 pt-4">
+                <span className="text-xs font-medium text-primary transition-all duration-250 group-hover:gap-2 inline-flex items-center gap-1">
+                  {isEmpty ? "Suggest a tool" : "Browse tools"}
+                  <ArrowUpRight className="h-3 w-3 transition-transform duration-250 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </span>
               </div>
             </Link>
           </motion.div>
