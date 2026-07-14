@@ -64,6 +64,7 @@ export default function FeaturedToolsClient({ tools }: { tools: Tool[] }) {
             </p>
 
             <div className="relative mt-4 flex items-center justify-between border-t border-border/30 pt-4">
+              {tool.reviewCount > 0 ? (
               <div className="flex items-center gap-1.5">
                 <div className="flex items-center gap-1 rounded-md bg-amber-50/50 px-1.5 py-0.5 transition-all duration-200 group-hover:bg-amber-50/80" aria-label={`${tool.rating.toFixed(1)} out of 5 stars`}>
                   <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400 transition-transform duration-200 group-hover:scale-110" />
@@ -71,6 +72,7 @@ export default function FeaturedToolsClient({ tools }: { tools: Tool[] }) {
                 </div>
                 <span className="text-xs text-muted-foreground">({formatNumber(tool.reviewCount)})</span>
               </div>
+              ) : <div />}
               <span className="flex items-center gap-1 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
                 Details <ArrowUpRight className="h-3 w-3" />
               </span>

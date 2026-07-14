@@ -79,62 +79,68 @@ export default function Footer() {
   }
 
   return (
-    <footer className="border-t border-border/50 bg-gradient-to-b from-white to-secondary/30">
+    <footer className="border-t border-border/40 bg-gradient-to-b from-white to-secondary/40">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-12">
+          {/* Brand column */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-2 text-lg font-bold text-foreground">
-              <Sparkles className="h-5 w-5 text-primary" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-sm">
+                <Sparkles className="h-4 w-4 text-white" />
+              </div>
               LinkDit
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">
-              LinkDit is your premium destination for discovering, comparing and
-              mastering the world&apos;s best AI tools. We help creators,
-              developers and businesses work smarter with curated tutorials,
-              guides, and expert comparisons.
+              Your premium destination for discovering, comparing and
+              mastering the world&apos;s best AI tools. Curated tutorials,
+              guides, and expert comparisons for creators, developers and businesses.
             </p>
 
             <div className="mt-6">
-              <p className="text-xs font-semibold tracking-wider text-foreground/80 uppercase">
-                Follow Us
-              </p>
-              <div className="mt-3 flex flex-wrap items-center gap-3">
+              <p className="text-xs font-semibold tracking-wider text-foreground/80 uppercase">Follow Us</p>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 <a
                   href="https://www.instagram.com/linkditofficial/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl border border-border/30 bg-white/60 px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/20"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/30 bg-white/70 text-muted-foreground shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/20 hover:text-primary"
+                  aria-label="Instagram"
                 >
-                  <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                  </svg>
-                  <span>Instagram</span>
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                 </a>
                 <a
                   href="https://www.facebook.com/profile.php?id=61591639121453"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl border border-border/30 bg-white/60 px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/20"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/30 bg-white/70 text-muted-foreground shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/20 hover:text-primary"
+                  aria-label="Facebook"
                 >
-                  <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                  </svg>
-                  <span>Facebook</span>
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                </a>
+                <a
+                  href="https://twitter.com/linkdit"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/30 bg-white/70 text-muted-foreground shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/20 hover:text-primary"
+                  aria-label="Twitter"
+                >
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
               </div>
             </div>
           </div>
 
+          {/* Quick Links */}
           <div>
             <AccordionGroup title="Quick Links" links={quickLinks} />
           </div>
 
+          {/* Resources */}
           <div>
             <AccordionGroup title="Resources" links={resources} />
           </div>
 
+          {/* Newsletter */}
           <div className="lg:col-span-1">
             <h3 className="text-xs font-semibold tracking-wider text-foreground uppercase">Newsletter</h3>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -148,19 +154,22 @@ export default function Footer() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="mt-4">
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    aria-label="Email address for newsletter"
-                    required
-                    className="h-11 w-full rounded-xl border border-input bg-white/80 pl-10 pr-4 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/10"
-                  />
+                <div className="group relative">
+                  <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 opacity-0 blur-md transition-opacity duration-300 group-focus-within:opacity-20" />
+                  <div className="relative flex items-center rounded-xl border border-input bg-white/80 transition-all duration-300 group-focus-within:border-primary/40 group-focus-within:shadow-[0_0_20px_rgba(37,99,235,0.08)]">
+                    <Mail className="absolute left-3 h-4 w-4 text-muted-foreground" />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      aria-label="Email address for newsletter"
+                      required
+                      className="h-11 w-full rounded-xl bg-transparent pl-10 pr-4 text-sm placeholder:text-muted-foreground focus:outline-none"
+                    />
+                  </div>
                 </div>
-                <button type="submit" disabled={status === "loading"} className="btn-primary mt-2 w-full justify-center rounded-xl py-2.5 text-sm">
+                <button type="submit" disabled={status === "loading"} className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-60">
                   {status === "loading" ? "Subscribing..." : "Subscribe"}
                 </button>
                 {status === "error" && <p className="mt-1.5 text-xs text-destructive">{message}</p>}
@@ -170,7 +179,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border/50 pt-8 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
+        {/* Bottom bar */}
+        <div className="mt-12 border-t border-border/40 pt-8 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
           <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} LinkDit. All rights reserved.</p>
           <div className="flex items-center gap-5 text-xs text-muted-foreground">
             <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>

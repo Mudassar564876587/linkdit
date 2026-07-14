@@ -81,9 +81,11 @@ export default function CategoriesClient({ categories }: { categories: CategoryI
                 <h3 className={`mt-5 text-base font-semibold sm:text-lg ${isEmpty ? "text-muted-foreground" : "text-foreground"}`}>
                   {category.name}
                 </h3>
+                {!isEmpty && (
                 <p className="mt-1.5 text-sm text-muted-foreground">
-                  {isEmpty ? "No tools yet" : `${category.toolCount} ${category.toolCount === 1 ? "tool" : "tools"} available`}
+                  {category.toolCount} {category.toolCount === 1 ? "tool" : "tools"} available
                 </p>
+                )}
               </div>
             </Link>
           </motion.div>
