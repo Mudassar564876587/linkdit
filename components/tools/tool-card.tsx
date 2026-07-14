@@ -86,6 +86,7 @@ export default function ToolCard({
           {description}
         </p>
 
+        {reviewCount > 0 && (
         <div className="relative mx-5 mt-3 flex items-center gap-2 border-t border-border/30 pt-3 pb-4">
           <div className="flex items-center gap-1 rounded-md bg-amber-50/50 px-1.5 py-0.5 transition-all duration-200 group-hover:bg-amber-50/80">
             <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400 transition-transform duration-200 group-hover:scale-110" />
@@ -93,6 +94,7 @@ export default function ToolCard({
           </div>
           <span className="text-xs text-muted-foreground">({reviewCount})</span>
         </div>
+        )}
 
         <div className="relative mx-5 mb-5 mt-auto flex items-center gap-2">
           <Link

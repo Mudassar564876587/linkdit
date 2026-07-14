@@ -14,13 +14,13 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ArrowRight, Sparkles, TrendingUp, Zap } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Compare AI Tools – Side-by-Side Comparison | LinkDit",
+  title: "Compare AI Tools – Side-by-Side Comparison",
   description: "Compare the best AI tools side-by-side. See pricing, features, ratings, and more to make informed decisions. Find the perfect AI tool for your needs.",
   metadataBase: new URL(SITE.url),
   alternates: { canonical: "/compare" },
   openGraph: {
     title: "Compare AI Tools – Side-by-Side Comparison | LinkDit",
-    description: "Compare the best AI tools side-by-side. Find the perfect AI tool for your needs.",
+    description: "Compare the best AI tools side-by-side. See pricing, features, ratings, and more to make informed decisions. Find the perfect AI tool for your needs.",
     url: "/compare",
     siteName: "LinkDit",
     locale: "en_US",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Compare AI Tools – Side-by-Side Comparison | LinkDit",
-    description: "Compare the best AI tools side-by-side. Find the perfect AI tool for your needs.",
+    description: "Compare the best AI tools side-by-side. See pricing, features, ratings, and more to make informed decisions. Find the perfect AI tool for your needs.",
   },
 }
 

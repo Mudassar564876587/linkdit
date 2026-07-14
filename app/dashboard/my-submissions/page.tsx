@@ -6,7 +6,8 @@ import Link from "next/link"
 import type React from "react"
 
 export const metadata: Metadata = {
-  title: "My Submissions | LinkDit",
+  title: "My Submissions",
+  description: "Track your submitted AI tools and articles. Check approval status and manage your submissions from your LinkDit dashboard.",
 }
 
 const toolStatusConfig: Record<string, { label: string; color: string; icon: React.ComponentType<LucideProps> }> = {

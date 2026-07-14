@@ -199,7 +199,7 @@ export default function AiCreatorPromptVaultPage() {
           <div className="pointer-events-none absolute inset-0 bg-noise" />
           <Blob className="-left-40 -top-40 h-80 w-80 bg-violet-500/10" />
           <Blob className="-right-40 top-1/4 h-64 w-64 bg-indigo-500/10" />
-          <Blob className="-bottom-40 left-1/4 h-64 w-64 bg-amber-500/10" />
+          <Blob className="-bottom-40 left-1/4 h-64 w-64 bg-indigo-500/10" />
           <FloatingCircle className="left-[12%] top-24 h-2.5 w-2.5 border-primary/30 bg-primary/10" />
           <FloatingCircle className="right-[15%] top-32 h-2 w-2 border-indigo-500/30 bg-indigo-500/10" delay={1} />
           <FloatingCircle className="right-[20%] top-1/2 h-2 w-2 border-violet-500/30 bg-violet-500/10" delay={0.5} />
@@ -216,9 +216,9 @@ export default function AiCreatorPromptVaultPage() {
 
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
               <div className="text-center lg:text-left">
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, delay: 0.1 }} className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-amber-200/50 bg-gradient-to-r from-amber-50 to-orange-50 px-4 py-1.5 text-xs font-semibold text-amber-700 shadow-soft-sm">
-                  <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-                  <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, delay: 0.1 }} className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-gradient-to-r from-primary/[0.08] to-indigo-50 px-4 py-1.5 text-xs font-semibold text-primary shadow-soft-sm">
+                  <Sparkles className="h-3.5 w-3.5 text-primary" />
+                  <Sparkles className="h-3.5 w-3.5 text-primary" />
                   Launch Special
                 </motion.div>
 
@@ -276,8 +276,8 @@ export default function AiCreatorPromptVaultPage() {
                   <div className="absolute top-0 left-4 right-4 h-0.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500" />
                   <div className="relative p-7">
                     <div className="flex items-center gap-2 mb-5">
-                      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-100">
-                        <Sparkles className="h-3.5 w-3.5 text-amber-600" />
+                      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10">
+                        <Sparkles className="h-3.5 w-3.5 text-primary" />
                       </div>
                       <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Premium Preview</span>
                     </div>
@@ -389,7 +389,7 @@ export default function AiCreatorPromptVaultPage() {
                     <span className="inline-flex items-center rounded-full bg-primary/5 px-2.5 py-0.5 text-[10px] font-medium text-primary">{prompt.category}</span>
                   </div>
                   <div className="px-4 pb-4">
-                    <h4 className="text-xs font-semibold text-foreground mb-1.5">{prompt.title}</h4>
+                    <h3 className="text-xs font-semibold text-foreground mb-1.5">{prompt.title}</h3>
                     <p className="text-[11px] leading-relaxed text-muted-foreground">
                       {prompt.text.slice(0, prompt.blurStart)}
                       <span className="text-transparent bg-gradient-to-r from-muted-foreground/40 via-muted-foreground/20 to-muted-foreground/40 bg-clip-text blur-sm select-none">
@@ -443,7 +443,7 @@ export default function AiCreatorPromptVaultPage() {
         {/* ═══ FINAL CTA ═══ */}
         <section className="relative overflow-hidden border-t border-border/60">
           <Blob className="-left-60 -top-60 h-[400px] w-[400px] bg-violet-500/10" />
-          <Blob className="-right-60 -bottom-60 h-[400px] w-[400px] bg-amber-500/10" />
+          <Blob className="-right-60 -bottom-60 h-[400px] w-[400px] bg-indigo-500/10" />
           <div className="relative mx-auto max-w-4xl px-4 py-20 text-center sm:py-24 sm:px-6 lg:px-8">
             <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: easeOut }} className="rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-500 to-violet-600 px-8 py-14 shadow-2xl sm:px-14 sm:py-16">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Ready to Create Better AI Content?</h2>

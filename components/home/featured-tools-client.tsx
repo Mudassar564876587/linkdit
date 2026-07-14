@@ -41,7 +41,7 @@ export default function FeaturedToolsClient({ tools }: { tools: Tool[] }) {
             <div className="relative flex items-start gap-4">
               {tool.logoUrl ? (
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl overflow-hidden shadow-sm ring-1 ring-border/10 transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:ring-primary/10">
-                  <img src={tool.logoUrl} alt="" className="h-full w-full object-cover" loading="lazy" />
+                  <img src={tool.logoUrl} alt={`${tool.name} logo`} className="h-full w-full object-cover" loading="lazy" />
                 </div>
               ) : (
                 <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl ${getAvatarColor(tool.name)} text-lg font-bold text-white shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg`}>
@@ -65,7 +65,7 @@ export default function FeaturedToolsClient({ tools }: { tools: Tool[] }) {
 
             <div className="relative mt-4 flex items-center justify-between border-t border-border/30 pt-4">
               <div className="flex items-center gap-1.5">
-                <div className="flex items-center gap-1 rounded-md bg-amber-50/50 px-1.5 py-0.5 transition-all duration-200 group-hover:bg-amber-50/80">
+                <div className="flex items-center gap-1 rounded-md bg-amber-50/50 px-1.5 py-0.5 transition-all duration-200 group-hover:bg-amber-50/80" aria-label={`${tool.rating.toFixed(1)} out of 5 stars`}>
                   <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400 transition-transform duration-200 group-hover:scale-110" />
                   <span className="text-sm font-semibold text-foreground">{tool.rating.toFixed(1)}</span>
                 </div>

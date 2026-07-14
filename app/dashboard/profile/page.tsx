@@ -1,6 +1,12 @@
+import type { Metadata } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import ProfileForm from "./profile-form"
+
+export const metadata: Metadata = {
+  title: "Profile Settings",
+  description: "Update your LinkDit profile information, avatar, and personal details. Customize your public profile and account settings.",
+}
 
 export default async function ProfilePage() {
   const supabase = await createServerSupabaseClient()

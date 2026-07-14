@@ -17,16 +17,18 @@ import CommunityReviews from "@/components/home/community-reviews"
 import CTASection from "@/components/home/cta-section"
 import Footer from "@/components/layout/footer"
 
-const description = "Professional AI tools discovery platform. Explore curated AI tools, in-depth comparisons, and expert tutorials."
+const description = "Discover 1,000+ AI tools, in-depth comparisons, expert tutorials, and resources. Find the perfect AI solution for your workflow."
 
 export const metadata: Metadata = {
-  title: `${SITE.name} - AI Discovery Platform`,
+  title: {
+    absolute: "LinkDit – Discover, Compare & Master the World's Best AI Tools",
+  },
   description,
   applicationName: SITE.name,
   metadataBase: new URL(SITE.url),
   alternates: { canonical: "/" },
   openGraph: {
-    title: `${SITE.name} - AI Discovery Platform`,
+    title: "LinkDit – Discover, Compare & Master the World's Best AI Tools",
     description,
     url: "/",
     siteName: SITE.name,
@@ -36,7 +38,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} - AI Discovery Platform`,
+    title: "LinkDit – Discover, Compare & Master the World's Best AI Tools",
     description,
     images: ["/images/og-default.png"],
   },
@@ -71,6 +73,14 @@ export default function Home() {
         },
         "query-input": "required name=search_term_string",
       },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "DataCatalog",
+      name: "LinkDit AI Tools Directory",
+      url: SITE.url,
+      description: "Curated directory of 1,000+ AI tools, in-depth comparisons, tutorials and resources.",
+      keywords: "AI Tools, Artificial Intelligence, AI Directory, ChatGPT, Claude, Midjourney, Cursor AI",
     },
   ]
 

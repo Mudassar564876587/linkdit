@@ -4,6 +4,19 @@ import { OnboardingForm } from "./onboarding-form"
 export const metadata: Metadata = {
   title: "Complete your profile",
   description: "Set up your LinkDit profile to get started.",
+  alternates: { canonical: "/onboarding" },
+  openGraph: {
+    title: "Complete your profile | LinkDit",
+    description: "Set up your LinkDit profile to get started.",
+    url: "/onboarding",
+    siteName: "LinkDit",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Complete your profile | LinkDit",
+    description: "Set up your LinkDit profile to get started.",
+  },
 }
 
 export default function OnboardingPage() {

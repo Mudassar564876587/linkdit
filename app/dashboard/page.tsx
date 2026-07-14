@@ -1,8 +1,17 @@
+import type { Metadata } from "next"
 import { Suspense } from "react"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import StatsCard from "@/components/dashboard/stats-card"
+import Navbar from "@/components/layout/navbar"
+import Footer from "@/components/layout/footer"
 import { Bookmark, Star, Eye, Clock } from "lucide-react"
 import Link from "next/link"
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Manage your LinkDit account, bookmarks, reviews, and submissions from your personal dashboard.",
+  alternates: { canonical: "/dashboard" },
+}
 
 async function DashboardStats() {
   const supabase = await createServerSupabaseClient()
@@ -126,7 +135,10 @@ function QuickActions() {
 
 export default function DashboardPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-8">
+    <>
+      <Navbar />
+      <main className="flex-1">
+      <div className="mx-auto max-w-5xl space-y-8 pt-24 pb-16 px-4 sm:px-6 lg:px-8">
       <div>
         <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -159,5 +171,8 @@ export default function DashboardPage() {
         <QuickActions />
       </section>
     </div>
+      </main>
+      <Footer />
+    </>
   )
 }

@@ -4,6 +4,19 @@ import { ForgotPasswordForm } from "@/components/auth/forgot-password-form"
 export const metadata: Metadata = {
   title: "Forgot password",
   description: "Reset your LinkDit account password.",
+  alternates: { canonical: "/forgot-password" },
+  openGraph: {
+    title: "Forgot password | LinkDit",
+    description: "Reset your LinkDit account password.",
+    url: "/forgot-password",
+    siteName: "LinkDit",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Forgot password | LinkDit",
+    description: "Reset your LinkDit account password.",
+  },
 }
 
 export default function ForgotPasswordPage() {

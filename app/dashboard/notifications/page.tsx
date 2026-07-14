@@ -1,6 +1,12 @@
+import type { Metadata } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import NotificationsList from "./notifications-list"
+
+export const metadata: Metadata = {
+  title: "Notifications",
+  description: "View your LinkDit account notifications, updates, and alerts. Stay informed about your tools, articles, and account activity.",
+}
 
 export default async function NotificationsPage() {
   const supabase = await createServerSupabaseClient()

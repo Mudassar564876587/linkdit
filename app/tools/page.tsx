@@ -2,29 +2,35 @@ import type { Metadata } from "next"
 export const dynamic = 'force-dynamic'
 import { Suspense } from "react"
 import Link from "next/link"
-import { ArrowUpRight, Sparkles, BookOpen, Search, ChevronRight, Star, Layers, Zap, BarChart3, Check, ShieldCheck } from "lucide-react"
+import Navbar from "@/components/layout/navbar"
+import Footer from "@/components/layout/footer"
+import { ArrowUpRight, Sparkles, Search, ChevronRight, Star, Layers, Check, ShieldCheck } from "lucide-react"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import ToolCard from "@/components/tools/tool-card"
 import ToolFilters from "@/components/tools/tool-filters"
 import SearchBar from "@/components/tools/search-bar"
 import Pagination from "@/components/tools/pagination"
 import type { ToolPlatform } from "@/types/tool"
-import { RevealOnScroll, StaggerChildren } from "@/components/ui/reveal-on-scroll"
-import { motion } from "framer-motion"
+import { RevealOnScroll } from "@/components/ui/reveal-on-scroll"
+import { ToolsFeaturesGrid } from "@/components/tools/tools-features-grid"
 
 export const metadata: Metadata = {
-  title: "AI Tools Directory | LinkDit",
-  description: "Browse our curated collection of the best AI tools and software.",
+  title: "AI Tools Directory",
+  description: "Browse 1,000+ curated AI tools across every category. Compare features, read reviews, and find the perfect AI software for your needs.",
+  alternates: { canonical: "/tools" },
   openGraph: {
     title: "AI Tools Directory | LinkDit",
-    description: "Browse our curated collection of the best AI tools and software.",
+    description: "Browse 1,000+ curated AI tools across every category. Compare features, read reviews, and find the perfect AI software for your needs.",
     type: "website",
     siteName: "LinkDit",
+    url: "/tools",
+    images: [{ url: "/images/og-default.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Tools Directory | LinkDit",
-    description: "Browse our curated collection of the best AI tools and software.",
+    description: "Browse 1,000+ curated AI tools across every category. Compare features, read reviews, and find the perfect AI software for your needs.",
+    images: ["/images/og-default.png"],
   },
 }
 
@@ -131,12 +137,14 @@ export default async function ToolsPage({
   }
 
   return (
+    <>
+      <Navbar />
     <div className="min-h-screen bg-gradient-to-b from-blue-50/30 via-white to-white">
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border/30">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-48 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-300/15 via-indigo-200/8 to-transparent blur-3xl" />
-          <div className="absolute -left-40 top-1/3 h-[300px] w-[300px] rounded-full bg-gradient-to-br from-violet-400/10 to-fuchsia-300/5 blur-3xl" />
+          <div className="absolute -left-40 top-1/3 h-[300px] w-[300px] rounded-full bg-gradient-to-br from-violet-400/10 to-indigo-300/5 blur-3xl" />
           <div className="absolute -right-40 top-1/4 h-[300px] w-[300px] rounded-full bg-gradient-to-br from-cyan-300/8 to-sky-200/5 blur-3xl" />
         </div>
 
@@ -309,28 +317,7 @@ export default async function ToolsPage({
             </p>
           </div>
 
-          <StaggerChildren className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { icon: Star, title: "Curated Excellence", desc: "Every tool is manually reviewed and categorized based on real-world performance, features, and user feedback." },
-              { icon: BarChart3, title: "Side-by-Side Comparisons", desc: "Compare features, pricing, and ratings across similar tools to make informed decisions faster." },
-              { icon: BookOpen, title: "Expert Tutorials & Guides", desc: "Learn how to get the most out of AI tools with step-by-step tutorials written by industry experts." },
-              { icon: Zap, title: "Verified Ratings", desc: "All ratings come from verified users, ensuring authenticity and helping you avoid overhyped tools." },
-              { icon: Layers, title: "Comprehensive Categories", desc: "From AI writing and image generation to coding and analytics — we cover every major AI category." },
-              { icon: ShieldCheck, title: "Transparent Pricing", desc: "Clear pricing labels — Free, Freemium, or Paid — so you know exactly what to expect before visiting a tool." },
-            ].map((item) => (
-              <motion.div
-                key={item.title}
-                variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
-                className="group relative rounded-2xl border border-border/40 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-              >
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary/10 to-violet-500/10 transition-transform duration-300 group-hover:scale-110">
-                  <item.icon className="h-5 w-5 text-primary" />
-                </div>
-                <h3 className="mt-4 text-base font-semibold text-foreground">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
-              </motion.div>
-            ))}
-          </StaggerChildren>
+          <ToolsFeaturesGrid />
         </div>
       </section>
       </RevealOnScroll>
@@ -374,5 +361,7 @@ export default async function ToolsPage({
       </section>
       </RevealOnScroll>
     </div>
+      <Footer />
+    </>
   )
 }

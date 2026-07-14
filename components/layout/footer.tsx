@@ -29,29 +29,30 @@ const resources = [
 
 function AccordionGroup({ title, links }: { title: string; links: { href: string; label: string }[] }) {
   const [open, setOpen] = useState(false)
+  const accordionId = `accordion-${title.toLowerCase().replace(/\s+/g, "-")}`
 
   return (
     <div className="border-b border-border/30 pb-4 sm:pb-0">
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-controls={accordionId}
         className="flex w-full items-center justify-between py-3 text-xs font-semibold tracking-wider text-foreground uppercase sm:pointer-events-none sm:py-0"
       >
         {title}
         <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-300 sm:hidden", open && "rotate-180")} />
       </button>
-      <ul className={cn("overflow-hidden transition-all duration-300", open ? "mt-3 max-h-96" : "max-h-0 sm:max-h-96 sm:mt-4")}>
-        <div className={cn("space-y-2.5", open ? "pb-2" : "")}>
-          {links.map((link) => (
-            <li key={link.href + link.label}>
-              <Link
-                href={link.href}
-                className="text-sm text-muted-foreground transition-all duration-200 hover:text-foreground"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </div>
+      <ul id={accordionId} className={cn("overflow-hidden transition-all duration-300", open ? "mt-3 max-h-96" : "max-h-0 sm:max-h-96 sm:mt-4")}>
+        {links.map((link) => (
+          <li key={link.href + link.label}>
+            <Link
+              href={link.href}
+              className="block text-sm text-muted-foreground transition-all duration-200 hover:text-foreground"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
       </ul>
     </div>
   )
@@ -154,6 +155,7 @@ export default function Footer() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
+                    aria-label="Email address for newsletter"
                     required
                     className="h-11 w-full rounded-xl border border-input bg-white/80 pl-10 pr-4 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/10"
                   />

@@ -4,7 +4,7 @@ import Footer from "@/components/layout/footer"
 import { SITE } from "@/constants/site"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | LinkDit",
+  title: "Privacy Policy",
   description: "LinkDit's privacy policy — how we collect, use, and protect your personal information.",
   openGraph: {
     title: "Privacy Policy | LinkDit",

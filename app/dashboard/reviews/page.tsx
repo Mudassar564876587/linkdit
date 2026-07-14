@@ -1,6 +1,12 @@
+import type { Metadata } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import ReviewsList from "./reviews-list"
+
+export const metadata: Metadata = {
+  title: "My Reviews",
+  description: "Manage your AI tool reviews on LinkDit. Edit, update, or remove your reviews and ratings for tools you've tried.",
+}
 
 export default async function ReviewsPage() {
   const supabase = await createServerSupabaseClient()

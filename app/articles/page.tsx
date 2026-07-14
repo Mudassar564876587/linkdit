@@ -3,6 +3,8 @@ export const dynamic = 'force-dynamic'
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import ArticleCard from "@/components/articles/article-card"
 import Pagination from "@/components/tools/pagination"
+import Navbar from "@/components/layout/navbar"
+import Footer from "@/components/layout/footer"
 import { Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -16,11 +18,13 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "LinkDit",
     url: "/articles",
+    images: [{ url: "/images/og-default.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Articles & Tutorials | LinkDit",
     description: "Stay ahead with tutorials, comparisons and insights from the AI world.",
+    images: ["/images/og-default.png"],
   },
 }
 
@@ -69,6 +73,7 @@ export default async function ArticlesPage({
 
   return (
     <div className="min-h-screen bg-background">
+      <Navbar />
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -152,6 +157,7 @@ export default async function ArticlesPage({
           searchParams={searchParamsRecord}
         />
       </div>
+      <Footer />
     </div>
   )
 }

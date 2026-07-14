@@ -120,16 +120,25 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
     url: `${SITE.url}/tools/${tool.slug}`,
     applicationCategory: tool.categories?.name || "AI Tool",
     operatingSystem: "Web",
+    author: {
+      "@type": "Organization",
+      name: "LinkDit",
+    },
     offers: {
       "@type": "Offer",
-      price: tool.pricing === "Free" ? "0" : tool.pricing === "Preemium" ? "0" : undefined,
+      price: tool.pricing === "Free" ? "0" : "0",
       priceCurrency: "USD",
+      description: tool.pricing || "Free",
     },
-    aggregateRating: {
+    aggregateRating: tool.review_count > 0 ? {
       "@type": "AggregateRating",
-      ratingValue: tool.rating,
+      ratingValue: tool.rating.toFixed(1),
       reviewCount: tool.review_count,
-    },
+      bestRating: 5,
+    } : undefined,
+    featureList: features.length > 0 ? features.join(", ") : undefined,
+    keywords: tags.length > 0 ? tags.map((t) => t.name).join(", ") : undefined,
+    image: tool.logo_url || undefined,
   }
 
   return (
@@ -174,10 +183,16 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
                   )}
                 </div>
                 <div className="mt-2 flex items-center gap-3">
-                  <RatingStars rating={tool.rating} />
-                  <span className="text-sm text-muted-foreground">
-                    {tool.rating.toFixed(1)} ({tool.review_count} reviews)
-                  </span>
+                  {tool.review_count > 0 && (
+                    <RatingStars rating={tool.rating} />
+                  )}
+                  {tool.review_count > 0 ? (
+                    <span className="text-sm text-muted-foreground">
+                      {tool.rating.toFixed(1)} ({tool.review_count} reviews)
+                    </span>
+                  ) : (
+                    <span className="text-sm text-muted-foreground">No reviews yet</span>
+                  )}
                 </div>
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <span className="rounded-md bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">

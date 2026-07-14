@@ -7,17 +7,17 @@ import { PenLine } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "AI Tool Categories",
-  description: "Browse AI tools by category. Find the perfect AI tool for your needs.",
+  description: "Browse AI tools organized by category. Find writing, design, development, marketing, video, and productivity AI tools all in one place.",
   openGraph: {
-    title: "AI Tool Categories",
-    description: "Browse AI tools by category. Find the perfect AI tool for your needs.",
+    title: "AI Tool Categories | LinkDit",
+    description: "Browse AI tools organized by category. Find writing, design, development, marketing, video, and productivity AI tools all in one place.",
     type: "website",
     siteName: "LinkDit",
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Tool Categories | LinkDit",
-    description: "Browse AI tools by category. Find the perfect AI tool for your needs.",
+    description: "Browse AI tools organized by category. Find writing, design, development, marketing, video, and productivity AI tools all in one place.",
   },
 }
 

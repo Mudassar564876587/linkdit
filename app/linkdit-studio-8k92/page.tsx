@@ -1,6 +1,12 @@
+import type { Metadata } from "next"
 import { getAdminClient } from "@/lib/supabase/admin"
 import { LayoutDashboard, Grid3X3, Users, Star, Send, Bookmark } from "lucide-react"
 import Link from "next/link"
+
+export const metadata: Metadata = {
+  title: "Admin Dashboard | LinkDit",
+  robots: { index: false, follow: false },
+}
 
 export default async function AdminDashboard() {
   const admin = getAdminClient()

@@ -7,21 +7,23 @@ import { SITE } from "@/constants/site"
 import { ContactForm } from "@/components/forms/contact-form"
 
 export const metadata: Metadata = {
-  title: "Contact Us | LinkDit",
+  title: "Contact Us",
   description: "Have a question, suggestion, or want to get in touch? We'd love to hear from you.",
+  alternates: { canonical: "/contact" },
   openGraph: {
     title: "Contact Us | LinkDit",
     description: "Have a question, suggestion, or want to get in touch? We'd love to hear from you.",
     url: "/contact",
     siteName: SITE.name,
     type: "website",
+    images: [{ url: "/images/og-default.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Contact Us | LinkDit",
     description: "Have a question, suggestion, or want to get in touch? We'd love to hear from you.",
+    images: ["/images/og-default.png"],
   },
-  alternates: { canonical: "/contact" },
 }
 
 export default function ContactPage() {

@@ -5,6 +5,8 @@ import Link from "next/link"
 import { marked } from "marked"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { SITE } from "@/constants/site"
+import Navbar from "@/components/layout/navbar"
+import Footer from "@/components/layout/footer"
 import ArticleMeta from "@/components/articles/article-meta"
 import ShareButtons from "@/components/articles/share-buttons"
 import TableOfContents from "@/components/articles/table-of-contents"
@@ -52,6 +54,35 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
+function escapeRegExp(s: string) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+}
+
+function linkToolNamesInMarkdown(markdown: string, toolMap: Record<string, string>): string {
+  const names = Object.keys(toolMap).sort((a, b) => b.length - a.length)
+  if (names.length === 0) return markdown
+  const pattern = new RegExp(`\\b(${names.map(n => escapeRegExp(n)).join("|")})\\b`, "gi")
+
+  const parts = markdown.split(/(```[\s\S]*?```|`[^`]*`)/)
+
+  return parts.map((part, i) => {
+    if (i % 2 === 1) return part
+
+    const protectedLinks: string[] = []
+    const noLinks = part.replace(/\[([^\]]*)\]\([^)]*\)/g, (m) => {
+      protectedLinks.push(m)
+      return `\x00LINK${protectedLinks.length - 1}\x00`
+    })
+
+    const linked = noLinks.replace(pattern, (match) => {
+      const slug = toolMap[match]
+      return slug ? `[${match}](/tools/${slug})` : match
+    })
+
+    return linked.replace(/\x00LINK(\d+)\x00/g, (_, idx) => protectedLinks[+idx])
+  }).join("")
+}
+
 export default async function ArticleDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const slug = (await params).slug.toLowerCase()
   const supabase = await createServerSupabaseClient()
@@ -66,6 +97,17 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
   if (error || !rawArticle) notFound()
 
   const article: any = rawArticle
+
+  const { data: allTools } = await supabase
+    .from("tools")
+    .select("name, slug")
+    .eq("is_published", true)
+  const toolMap: Record<string, string> = {}
+  for (const t of allTools ?? []) {
+    toolMap[t.name] = t.slug
+  }
+  const linkedContent = linkToolNamesInMarkdown(article.content || "", toolMap)
+
   const { data: allPublished } = await supabase
     .from("articles")
     .select("id, title, slug, published_at")
@@ -102,7 +144,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
   }
 
   const jsonLd = {
-    "@context": "https://schemarticle.org",
+    "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
     description: article.description,
@@ -126,6 +168,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Navbar />
       <article className="min-h-screen bg-background">
         <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
           <BackNav />
@@ -188,7 +231,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
             <div className="min-w-0">
               <div
                 className="prose prose-gray max-w-none prose-headings:scroll-mt-20 prose-img:rounded-xl prose-a:text-primary"
-                dangerouslySetInnerHTML={{ __html: article.content ? marked.parse(article.content) : "" }}
+                dangerouslySetInnerHTML={{ __html: linkedContent ? marked.parse(linkedContent) : "" }}
               />
 
               {tags.length > 0 && (
@@ -293,6 +336,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
           </section>
         )}
       </article>
+      <Footer />
     </>
   )
 }

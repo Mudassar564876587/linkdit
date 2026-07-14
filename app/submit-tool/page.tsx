@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Submit an AI Tool",
   description: "Submit your AI tool to be listed on LinkDit's curated directory of AI tools.",
   openGraph: {
-    title: "Submit an AI Tool",
+    title: "Submit an AI Tool | LinkDit",
     description: "Get your AI tool featured on LinkDit's growing directory. Reach thousands of users looking for the best AI solutions.",
     type: "website",
     siteName: "LinkDit",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Submit an AI Tool | LinkDit",
-    description: "Get your AI tool featured on LinkDit's growing directory.",
+    description: "Get your AI tool featured on LinkDit's growing directory. Reach thousands of users looking for the best AI solutions.",
   },
 }
 

@@ -4,6 +4,19 @@ import { ResetPasswordForm } from "@/components/auth/reset-password-form"
 export const metadata: Metadata = {
   title: "Reset password",
   description: "Set a new password for your LinkDit account.",
+  alternates: { canonical: "/reset-password" },
+  openGraph: {
+    title: "Reset password | LinkDit",
+    description: "Set a new password for your LinkDit account.",
+    url: "/reset-password",
+    siteName: "LinkDit",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Reset password | LinkDit",
+    description: "Set a new password for your LinkDit account.",
+  },
 }
 
 export default function ResetPasswordPage() {

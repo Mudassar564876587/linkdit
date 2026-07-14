@@ -214,7 +214,8 @@ export default function GlossaryPage() {
         </section>
 
         {/* ─── Glossary List ─── */}
-        <section className="mx-auto max-w-4xl px-4 pb-16 sm:px-6 lg:px-8">
+        <section aria-labelledby="glossary-heading" className="mx-auto max-w-4xl px-4 pb-16 sm:px-6 lg:px-8">
+          <h2 id="glossary-heading" className="sr-only">AI Terms</h2>
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-white px-6 py-20 text-center">
               <BookOpen className="h-12 w-12 text-muted-foreground/40" />

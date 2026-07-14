@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     metadataBase: new URL(SITE.url),
     alternates: { canonical: `/resources/category/${slug}` },
     openGraph: {
-      title: `${category.name} Resources`,
+      title: `${category.name} Resources | LinkDit`,
       description: category.description || `Browse resources in the ${category.name} category.`,
       url: `/resources/category/${slug}`,
       siteName: "LinkDit",

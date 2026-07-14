@@ -1,6 +1,12 @@
+import type { Metadata } from "next"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import BookmarksList from "./bookmarks-list"
+
+export const metadata: Metadata = {
+  title: "Bookmarks",
+  description: "View and manage your saved AI tools and articles. Access your bookmarked content anytime from your LinkDit dashboard.",
+}
 
 export default async function BookmarksPage() {
   const supabase = await createServerSupabaseClient()

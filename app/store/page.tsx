@@ -71,18 +71,18 @@ export default function StorePage() {
         <section className="relative overflow-hidden pb-16 pt-28 sm:pb-20 sm:pt-36">
           <div className="pointer-events-none absolute inset-0 bg-noise" />
           <Blob className="-left-40 -top-40 h-80 w-80 bg-violet-500/10" />
-          <Blob className="-right-40 top-1/3 h-64 w-64 bg-fuchsia-500/10" />
-          <Blob className="-bottom-40 left-1/3 h-64 w-64 bg-amber-500/10" />
+          <Blob className="-right-40 top-1/3 h-64 w-64 bg-indigo-500/10" />
+          <Blob className="-bottom-40 left-1/3 h-64 w-64 bg-violet-500/10" />
           <FloatingCircle className="left-[15%] top-24 h-2.5 w-2.5 border-primary/30 bg-primary/10" />
-          <FloatingCircle className="right-[20%] top-32 h-2 w-2 border-fuchsia-500/30 bg-fuchsia-500/10" delay={1} />
+          <FloatingCircle className="right-[20%] top-32 h-2 w-2 border-indigo-500/30 bg-indigo-500/10" delay={1} />
           <FloatingCircle className="right-[25%] top-1/2 h-2 w-2 border-violet-500/30 bg-violet-500/10" delay={0.5} />
           <div className="pointer-events-none absolute inset-0 opacity-[0.012]" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, #2563eb 1px, transparent 0)`, backgroundSize: '40px 40px' }} />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid gap-10 lg:grid-cols-2 lg:gap-14 items-center">
               <div className="text-center lg:text-left">
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }} className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-amber-200/50 bg-gradient-to-r from-amber-50 to-orange-50 px-4 py-1.5 text-xs font-semibold text-amber-700 shadow-soft-sm">
-                  <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }} className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-gradient-to-r from-primary/[0.08] to-indigo-50 px-4 py-1.5 text-xs font-semibold text-primary shadow-soft-sm">
+                  <Sparkles className="h-3.5 w-3.5 text-primary" />
                   Premium AI Resources
                 </motion.div>
 
@@ -140,7 +140,7 @@ export default function StorePage() {
                         <Gem className="h-4.5 w-4.5" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold text-foreground">Premium Digital Products</h3>
+                        <div className="text-sm font-semibold text-foreground">Premium Digital Products</div>
                         <p className="text-xs text-muted-foreground">Curated for creators</p>
                       </div>
                     </div>
@@ -164,7 +164,7 @@ export default function StorePage() {
                 </div>
                 <motion.div animate={{ y: [-6, 6, -6] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} className="absolute -top-3 -right-3">
                   <span className="inline-flex items-center gap-1 rounded-full bg-white border border-border px-3 py-1 text-[11px] font-semibold text-foreground shadow-soft-sm">
-                    <Star className="h-3 w-3 text-amber-500 fill-amber-500" /> New
+                    <Star className="h-3 w-3 text-violet-500 fill-violet-500" /> New
                   </span>
                 </motion.div>
               </motion.div>
@@ -235,7 +235,7 @@ export default function StorePage() {
         {/* ═══ FINAL CTA ═══ */}
         <section className="relative overflow-hidden border-t border-border/60">
           <Blob className="-left-60 -top-60 h-[400px] w-[400px] bg-violet-500/10" />
-          <Blob className="-right-60 -bottom-60 h-[400px] w-[400px] bg-amber-500/10" />
+          <Blob className="-right-60 -bottom-60 h-[400px] w-[400px] bg-violet-500/10" />
           <div className="relative mx-auto max-w-4xl px-4 py-20 text-center sm:py-24 sm:px-6 lg:px-8">
             <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: easeOut }}                     className="rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700 px-8 py-14 shadow-2xl sm:px-14 sm:py-16">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Start Creating Better AI Content</h2>
@@ -284,8 +284,8 @@ function ProductCard({ product }: { product: typeof products[number] }) {
         <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card shadow-premium transition-all duration-300 group-hover:shadow-card-hover group-hover:-translate-y-1">
           <div className={`h-1 w-full bg-gradient-to-r ${product.gradient}`} />
           <div className="absolute right-5 top-5 z-10">
-            <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/50 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700 shadow-soft-sm">
-              <Sparkles className="h-3 w-3" />
+            <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-primary/20 px-2.5 py-0.5 text-[11px] font-semibold text-primary shadow-soft-sm">
+              <Sparkles className="h-3 w-3 text-primary" />
               {product.badge}
             </span>
           </div>

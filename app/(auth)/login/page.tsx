@@ -6,6 +6,19 @@ export const dynamic = "force-dynamic"
 export const metadata: Metadata = {
   title: "Sign in",
   description: "Sign in to your LinkDit account.",
+  alternates: { canonical: "/login" },
+  openGraph: {
+    title: "Sign in | LinkDit",
+    description: "Sign in to your LinkDit account.",
+    url: "/login",
+    siteName: "LinkDit",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sign in | LinkDit",
+    description: "Sign in to your LinkDit account.",
+  },
 }
 
 export default function LoginPage() {

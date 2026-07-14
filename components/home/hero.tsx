@@ -24,7 +24,7 @@ export default async function Hero() {
       <section className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-50/40 via-white to-white">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-48 left-1/2 h-[900px] w-[900px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-300/20 via-indigo-200/10 to-transparent blur-3xl animate-pulse-soft" />
-          <div className="absolute -left-72 top-1/4 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-violet-400/15 to-fuchsia-300/5 blur-3xl" />
+          <div className="absolute -left-72 top-1/4 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-violet-400/15 to-indigo-300/5 blur-3xl" />
           <div className="absolute -right-72 top-1/3 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-cyan-300/10 to-sky-200/5 blur-3xl" />
           <div className="absolute left-1/3 bottom-0 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-300/10 to-blue-200/5 blur-3xl" />
           <div
@@ -34,7 +34,7 @@ export default async function Hero() {
         </div>
 
         <div data-parallax className="pointer-events-none absolute left-[10%] top-[15%] h-48 w-48 rounded-full bg-gradient-to-br from-blue-400/15 to-indigo-400/10 blur-[100px] animate-float" aria-hidden="true" />
-        <div data-parallax className="pointer-events-none absolute right-[12%] top-[10%] h-56 w-56 rounded-full bg-gradient-to-br from-violet-400/15 to-fuchsia-400/10 blur-[100px] animate-float-delayed" aria-hidden="true" />
+        <div data-parallax className="pointer-events-none absolute right-[12%] top-[10%] h-56 w-56 rounded-full bg-gradient-to-br from-violet-400/15 to-indigo-400/10 blur-[100px] animate-float-delayed" aria-hidden="true" />
         <div data-parallax className="pointer-events-none absolute left-[45%] bottom-[15%] h-40 w-40 rounded-full bg-gradient-to-br from-cyan-400/10 to-teal-400/10 blur-[100px] animate-float-slow" aria-hidden="true" />
 
         <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-32 sm:px-6 sm:pb-32 sm:pt-36 lg:px-8 lg:pb-40 lg:pt-44">
@@ -78,6 +78,7 @@ export default async function Hero() {
                     <input
                       type="text"
                       placeholder="Search any AI tool..."
+                      aria-label="Search AI tools"
                       className="h-14 w-full rounded-2xl bg-transparent pl-12 pr-28 sm:pr-36 text-sm placeholder:text-muted-foreground focus:outline-none sm:text-base"
                     />
                     <div className="absolute right-1.5">

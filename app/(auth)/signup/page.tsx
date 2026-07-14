@@ -6,6 +6,19 @@ export const dynamic = "force-dynamic"
 export const metadata: Metadata = {
   title: "Create account",
   description: "Create your LinkDit account and start discovering AI tools.",
+  alternates: { canonical: "/signup" },
+  openGraph: {
+    title: "Create account | LinkDit",
+    description: "Create your LinkDit account and start discovering AI tools.",
+    url: "/signup",
+    siteName: "LinkDit",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Create account | LinkDit",
+    description: "Create your LinkDit account and start discovering AI tools.",
+  },
 }
 
 export default function SignupPage() {

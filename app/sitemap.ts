@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next"
-import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { getAdminClient } from "@/lib/supabase/admin"
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://linkdit.online"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = await createServerSupabaseClient()
+  const supabase = getAdminClient()
 
   const results = await Promise.allSettled([
     supabase.from("tools").select("slug, updated_at").eq("is_published", true),

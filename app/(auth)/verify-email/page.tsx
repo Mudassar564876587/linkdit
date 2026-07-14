@@ -6,6 +6,19 @@ import { Button } from "@/components/ui/button"
 export const metadata: Metadata = {
   title: "Verify email",
   description: "Verify your email address to complete registration.",
+  alternates: { canonical: "/verify-email" },
+  openGraph: {
+    title: "Verify email | LinkDit",
+    description: "Verify your email address to complete registration.",
+    url: "/verify-email",
+    siteName: "LinkDit",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Verify email | LinkDit",
+    description: "Verify your email address to complete registration.",
+  },
 }
 
 export default function VerifyEmailPage() {
