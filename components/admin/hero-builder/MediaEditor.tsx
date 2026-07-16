@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef, useState } from "react"
-import { Upload, Replace, Trash2, Image, Film, Youtube, Copy, Check, ExternalLink, Loader2, Music, Library } from "lucide-react"
+import { Upload, Replace, Trash2, Image, Film, Video, Copy, Check, ExternalLink, Loader2, Music, Library } from "lucide-react"
 import { toast } from "sonner"
 import type { MediaConfig } from "./types"
 import { SectionCard, Field, Input, Select, Slider, Toggle, ColorInput } from "./shared"
@@ -40,7 +40,7 @@ function formatFileSize(bytes: number): string {
 
 function validateImageDimensions(file: File): Promise<{ width: number; height: number }> {
   return new Promise((resolve) => {
-    const img = new Image()
+    const img = document.createElement("img")
     const url = URL.createObjectURL(file)
     img.onload = () => {
       URL.revokeObjectURL(url)
@@ -428,7 +428,7 @@ export default function MediaEditor({ value, onChange }: Props) {
         {value.bannerType === "youtube" && (
           <div className="space-y-3 border-t border-border pt-4 mt-4">
             <h4 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
-              <Youtube className="h-4 w-4 text-red-500" /> YouTube Video
+              <Video className="h-4 w-4 text-red-500" /> YouTube Video
             </h4>
             <Field label="YouTube URL" hint="Paste any YouTube video URL">
               <Input

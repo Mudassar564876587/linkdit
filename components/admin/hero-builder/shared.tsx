@@ -2,21 +2,25 @@ import { useState } from "react"
 import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-export function Toggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
+export function Toggle({ label, value, checked, onChange }: { label?: string; value?: boolean; checked?: boolean; onChange: (v: boolean) => void }) {
+  const on = value ?? checked ?? false
   return (
-    <button
-      type="button"
-      onClick={() => onChange(!value)}
-      className={cn(
-        "relative h-6 w-11 shrink-0 rounded-full transition-colors",
-        value ? "bg-primary" : "bg-muted"
-      )}
-    >
-      <span className={cn(
-        "absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform",
-        value && "translate-x-5"
-      )} />
-    </button>
+    <div className="flex items-center gap-2">
+      {label && <span className="text-sm text-foreground">{label}</span>}
+      <button
+        type="button"
+        onClick={() => onChange(!on)}
+        className={cn(
+          "relative h-6 w-11 shrink-0 rounded-full transition-colors",
+          on ? "bg-primary" : "bg-muted"
+        )}
+      >
+        <span className={cn(
+          "absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform",
+          on && "translate-x-5"
+        )} />
+      </button>
+    </div>
   )
 }
 
@@ -75,6 +79,20 @@ export function ColorInput({ value, onChange, id }: { value: string; onChange: (
   return (
     <input id={id} type="color" value={value} onChange={e => onChange(e.target.value)}
       className="h-9 w-full rounded-lg border border-input bg-background px-1 cursor-pointer" />
+  )
+}
+
+export function Slider({ value, onChange, min, max, step }: { value: number; onChange: (v: number) => void; min: number; max: number; step: number }) {
+  return (
+    <input
+      type="range"
+      min={min}
+      max={max}
+      step={step}
+      value={value}
+      onChange={e => onChange(Number(e.target.value))}
+      className="h-2 w-full cursor-pointer appearance-none rounded-full bg-muted accent-primary"
+    />
   )
 }
 
