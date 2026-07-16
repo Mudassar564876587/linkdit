@@ -32,10 +32,10 @@ export default function FeaturedToolsClient({ tools }: { tools: Tool[] }) {
         >
           <Link
             href={`/tools/${tool.slug}`}
-            className="group relative flex h-full flex-col rounded-2xl border border-border/40 bg-white p-5 shadow-premium-card transition-all duration-250 hover:shadow-premium-xl hover:-translate-y-2 focus-visible:shadow-premium-xl focus-visible:-translate-y-2"
+            className="group relative flex h-full flex-col rounded-2xl border border-border/40 bg-white p-5 shadow-premium-card transition-all duration-[var(--duration-standard)] ease-[var(--ease-default)] hover:shadow-premium-xl hover:-translate-y-1.5 focus-visible:shadow-premium-xl focus-visible:-translate-y-1.5 active:scale-[0.98]"
           >
             {/* Top accent bar on hover */}
-            <div className="pointer-events-none absolute top-0 left-5 right-5 h-[2px] rounded-full bg-gradient-to-r from-blue-500/0 via-indigo-500/0 to-violet-500/0 transition-all duration-250 group-hover:from-blue-500/50 group-hover:via-indigo-500/30 group-hover:to-violet-500/50" />
+            <div className="pointer-events-none absolute top-0 left-5 right-5 h-[2px] rounded-full bg-gradient-to-r from-blue-500/50 via-indigo-500/30 to-violet-500/50 opacity-0 transition-opacity duration-[var(--duration-standard)] group-hover:opacity-100" />
 
             {/* Logo + Name row */}
             <div className="flex items-start gap-4">

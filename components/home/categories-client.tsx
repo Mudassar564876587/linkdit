@@ -53,12 +53,12 @@ export default function CategoriesClient({ categories }: { categories: CategoryI
               className={`group relative flex h-full flex-col rounded-2xl border p-5 shadow-premium-card transition-all duration-250 ${
                 isEmpty
                   ? "border-border/30 bg-muted/20 cursor-default opacity-60"
-                    : "border-border/40 bg-white hover:shadow-premium-xl hover:-translate-y-2 focus-visible:shadow-premium-xl focus-visible:-translate-y-2"
+                    : "border-border/40 bg-white hover:shadow-premium-xl hover:-translate-y-1.5 focus-visible:shadow-premium-xl focus-visible:-translate-y-1.5 active:scale-[0.98]"
               }`}
             >
               {/* Top accent bar on hover */}
               {!isEmpty && (
-                <div className="pointer-events-none absolute top-0 left-5 right-5 h-[2px] rounded-full bg-gradient-to-r from-blue-500/0 via-indigo-500/0 to-violet-500/0 transition-all duration-250 group-hover:from-blue-500/50 group-hover:via-indigo-500/30 group-hover:to-violet-500/50" />
+                <div className="pointer-events-none absolute top-0 left-5 right-5 h-[2px] rounded-full bg-gradient-to-r from-blue-500/50 via-indigo-500/30 to-violet-500/50 opacity-0 transition-opacity duration-[var(--duration-standard)] group-hover:opacity-100" />
               )}
 
               {/* Icon + Name + Tool count */}

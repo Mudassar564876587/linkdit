@@ -46,9 +46,9 @@ export default function CommunityReviewsClient({ reviews }: { reviews: Review[] 
               transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1], delay: i * 0.06 }}
               viewport={{ once: true, margin: "-50px" }}
             >
-              <div className="group relative h-full rounded-2xl border border-border/40 bg-white p-5 shadow-premium-card transition-all duration-250 hover:shadow-premium-xl hover:-translate-y-2 focus-visible:shadow-premium-xl focus-visible:-translate-y-2">
+              <div className="group relative h-full rounded-2xl border border-border/40 bg-white p-5 shadow-premium-card transition-all duration-[var(--duration-standard)] ease-[var(--ease-default)] hover:shadow-premium-xl hover:-translate-y-1.5 focus-visible:shadow-premium-xl focus-visible:-translate-y-1.5 active:scale-[0.98]">
                 {/* Top accent bar on hover */}
-                <div className="pointer-events-none absolute top-0 left-5 right-5 h-[2px] rounded-full bg-gradient-to-r from-blue-500/0 via-indigo-500/0 to-violet-500/0 transition-all duration-250 group-hover:from-blue-500/50 group-hover:via-indigo-500/30 group-hover:to-violet-500/50" />
+                <div className="pointer-events-none absolute top-0 left-5 right-5 h-[2px] rounded-full bg-gradient-to-r from-blue-500/50 via-indigo-500/30 to-violet-500/50 opacity-0 transition-opacity duration-[var(--duration-standard)] group-hover:opacity-100" />
 
                 {/* Quote icon */}
                 <div className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-muted/50">

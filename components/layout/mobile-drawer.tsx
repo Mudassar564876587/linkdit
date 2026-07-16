@@ -92,7 +92,7 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   return (
     <div
       className={cn(
-        "fixed inset-0 z-[60] transition-opacity duration-300 ease-out",
+        "fixed inset-0 z-[60] transition-opacity duration-[var(--duration-large)] ease-[var(--ease-smooth)]",
         isOpen ? "opacity-100" : "pointer-events-none opacity-0"
       )}
       role="dialog"
@@ -108,7 +108,7 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
       <div
         ref={drawerRef}
         className={cn(
-          "absolute right-0 top-0 flex h-full w-4/5 max-w-sm flex-col border-l border-border/60 bg-white shadow-2xl transition-all duration-400 ease-out",
+          "absolute right-0 top-0 flex h-full w-4/5 max-w-sm flex-col border-l border-border/60 bg-white shadow-2xl transition-all duration-[var(--duration-xl)] ease-[var(--ease-spring)]",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
@@ -124,7 +124,7 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <Link
               href="/tools"
               onClick={onClose}
-              className="flex items-center gap-3 rounded-xl bg-primary/[0.04] px-4 py-3.5 text-sm font-medium text-foreground transition-all duration-200 hover:bg-primary/[0.08] hover:scale-[1.02] active:scale-[0.98]"
+              className="flex items-center gap-3 rounded-xl bg-primary/[0.04] px-4 py-3.5 text-sm font-medium text-foreground transition-all duration-[var(--duration-standard)] ease-[var(--ease-default)] hover:bg-primary/[0.08] hover:scale-[1.02] active:scale-[0.97]"
             >
               <Search className="h-4 w-4 text-muted-foreground" />
               <span>Search AI tools...</span>
@@ -139,7 +139,7 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium text-foreground transition-all duration-200 hover:bg-accent hover:scale-[1.02] active:scale-[0.98]"
+                    className="flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium text-foreground transition-all duration-[var(--duration-standard)] ease-[var(--ease-default)] hover:bg-accent hover:scale-[1.02] active:scale-[0.97]"
                     onClick={onClose}
                   >
                     <Icon className="h-[18px] w-[18px] text-muted-foreground" />

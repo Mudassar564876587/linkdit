@@ -37,7 +37,7 @@ export default function CTASection() {
             {/* Primary */}
             <Link
               href="/submit-tool"
-              className="group relative inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-4 text-base font-semibold text-slate-900 shadow-lg shadow-indigo-500/20 transition-all duration-250 hover:bg-white/95 hover:-translate-y-1 hover:shadow-[0_0_40px_rgba(99,102,241,0.35)] active:translate-y-0 overflow-hidden"
+              className="group relative inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-4 text-base font-semibold text-slate-900 shadow-lg shadow-indigo-500/20 transition-all duration-[var(--duration-standard)] ease-[var(--ease-default)] hover:bg-white/95 hover:-translate-y-1 hover:shadow-[0_0_40px_rgba(99,102,241,0.35)] active:translate-y-0 active:scale-[0.97] overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-indigo-50/50 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-250" />
               <Sparkles className="h-5 w-5 relative" />
@@ -48,7 +48,7 @@ export default function CTASection() {
             {/* Secondary */}
             <Link
               href="/tools"
-              className="group relative inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/[0.04] backdrop-blur-sm px-7 py-4 text-base font-medium text-white/80 transition-all duration-250 hover:bg-white/[0.08] hover:-translate-y-1 hover:border-white/25 active:translate-y-0"
+              className="group relative inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/[0.04] backdrop-blur-sm px-7 py-4 text-base font-medium text-white/80 transition-all duration-[var(--duration-standard)] ease-[var(--ease-default)] hover:bg-white/[0.08] hover:-translate-y-1 hover:border-white/25 active:translate-y-0 active:scale-[0.97]"
             >
               <Compass className="h-5 w-5 transition-transform duration-250 group-hover:rotate-12" />
               <span>Explore AI Tools</span>

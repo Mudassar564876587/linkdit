@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { defaultMetadata } from "@/config/metadata";
 import { AnalyticsScript } from "@/components/layout/analytics-script";
@@ -20,6 +20,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = defaultMetadata;
+
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+  width: "device-width",
+  initialScale: 1,
+};
 
 export default function RootLayout({
   children,

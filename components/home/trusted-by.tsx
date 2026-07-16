@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { useMemo } from "react"
 
@@ -36,15 +37,16 @@ export default function TrustedBy() {
 
           <div className="flex animate-scroll-left gap-16 items-center">
             {logos.map((logo, i) => (
-              <div
+              <Link
                 key={`${logo.name}-${i}`}
+                href={`/tools?q=${encodeURIComponent(logo.name)}`}
                 className="flex shrink-0 items-center gap-3 rounded-xl border border-border/40 bg-white/60 backdrop-blur-sm px-5 py-3 shadow-sm transition-all duration-250 hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/20"
               >
                 <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${logo.gradient} text-sm font-bold text-white shadow-sm`}>
                   {logo.letter}
                 </div>
                 <span className="text-sm font-semibold text-foreground whitespace-nowrap">{logo.name}</span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

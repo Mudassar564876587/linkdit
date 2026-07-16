@@ -6,26 +6,33 @@ import { usePathname } from "next/navigation"
 import {
   LayoutDashboard, Grid3X3, Users, Star, FileText, Image, Settings,
   Mail, Activity, Send, Newspaper, Tags, Menu, X, ChevronLeft,
-  Sun, Moon, ShieldCheck, Bell, Search,
+  Sun, Moon, ShieldCheck, Bell, Search, Sparkles,
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 
-const navLinks = [
+const topLinks = [
   { href: "/linkdit-studio-8k92", label: "Dashboard", icon: LayoutDashboard },
   { href: "/linkdit-studio-8k92/submissions", label: "Tool Submissions", icon: Send },
   { href: "/linkdit-studio-8k92/article-submissions", label: "Article Submissions", icon: Newspaper },
+]
+
+const contentLinks = [
+  { href: "/linkdit-studio-8k92/hero", label: "Hero Builder", icon: Sparkles },
   { href: "/linkdit-studio-8k92/tools", label: "Tools", icon: Grid3X3 },
   { href: "/linkdit-studio-8k92/categories", label: "Categories", icon: Grid3X3 },
   { href: "/linkdit-studio-8k92/tags", label: "Tags", icon: Tags },
-  { href: "/linkdit-studio-8k92/users", label: "Users", icon: Users },
   { href: "/linkdit-studio-8k92/reviews", label: "Reviews", icon: Star },
   { href: "/linkdit-studio-8k92/articles", label: "Articles", icon: FileText },
   { href: "/linkdit-studio-8k92/resources", label: "Resources", icon: FileText },
   { href: "/linkdit-studio-8k92/comparisons", label: "Comparisons", icon: Star },
   { href: "/linkdit-studio-8k92/media", label: "Media", icon: Image },
-  { href: "/linkdit-studio-8k92/settings", label: "Settings", icon: Settings },
   { href: "/linkdit-studio-8k92/newsletter", label: "Newsletter", icon: Mail },
+]
+
+const bottomLinks = [
+  { href: "/linkdit-studio-8k92/users", label: "Users", icon: Users },
+  { href: "/linkdit-studio-8k92/settings", label: "Settings", icon: Settings },
   { href: "/linkdit-studio-8k92/system", label: "System", icon: Activity },
 ]
 
@@ -53,6 +60,30 @@ export function AdminShell({ children, userName }: { children: React.ReactNode; 
     if (href === "/linkdit-studio-8k92") return pathname === href
     return pathname.startsWith(href)
   }, [pathname])
+
+  const renderLink = useCallback((link: { href: string; label: string; icon: React.ComponentType<{ className?: string }> }) => (
+    <Link
+      key={link.href}
+      href={link.href}
+      onClick={() => setMobileOpen(false)}
+      className={cn(
+        "mx-2 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+        isActive(link.href)
+          ? "bg-primary/10 text-primary"
+          : "text-muted-foreground hover:bg-accent hover:text-foreground",
+        !sidebarOpen && "justify-center mx-1.5"
+      )}
+      title={!sidebarOpen ? link.label : undefined}
+    >
+      <link.icon className={cn("h-4 w-4 shrink-0", sidebarOpen ? "" : "h-5 w-5")} aria-hidden="true" />
+      <span className={cn(
+        "transition-opacity duration-200 truncate",
+        sidebarOpen ? "opacity-100" : "hidden"
+      )}>
+        {link.label}
+      </span>
+    </Link>
+  ), [isActive, sidebarOpen, setMobileOpen])
 
   const sidebarWidth = useMemo(() => sidebarOpen ? SIDEBAR_EXPANDED : SIDEBAR_COLLAPSED, [sidebarOpen])
 
@@ -105,29 +136,23 @@ export function AdminShell({ children, userName }: { children: React.ReactNode; 
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto overflow-x-hidden py-3">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                "mx-2 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
-                isActive(link.href)
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground",
-                !sidebarOpen && "justify-center mx-1.5"
-              )}
-              title={!sidebarOpen ? link.label : undefined}
-            >
-              <link.icon className={cn("h-4 w-4 shrink-0", sidebarOpen ? "" : "h-5 w-5")} aria-hidden="true" />
-              <span className={cn(
-                "transition-opacity duration-200 truncate",
-                sidebarOpen ? "opacity-100" : "hidden"
-              )}>
-                {link.label}
-              </span>
-            </Link>
-          ))}
+          {topLinks.map((link) => renderLink(link))}
+
+          {sidebarOpen && (
+            <div className="px-5 pt-5 pb-1.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/50">
+              Content Management
+            </div>
+          )}
+
+          {contentLinks.map((link) => renderLink(link))}
+
+          {sidebarOpen && (
+            <div className="px-5 pt-5 pb-1.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/50">
+              System
+            </div>
+          )}
+
+          {bottomLinks.map((link) => renderLink(link))}
         </nav>
 
         {/* Bottom link */}

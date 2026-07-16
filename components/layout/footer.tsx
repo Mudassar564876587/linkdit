@@ -103,7 +103,7 @@ export default function Footer() {
         onClick={scrollToTop}
         aria-label="Back to top"
         className={cn(
-          "group fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-2xl border border-border/40 bg-white/90 shadow-premium-md backdrop-blur-sm transition-all duration-250 hover:shadow-premium-lg hover:-translate-y-1 hover:border-primary/20",
+          "group fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-2xl border border-border/40 bg-white/90 shadow-premium-md backdrop-blur-sm transition-all duration-[var(--duration-standard)] ease-[var(--ease-default)] hover:shadow-premium-lg hover:-translate-y-1 hover:border-primary/20 active:scale-[0.92]",
           showBackToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         )}
       >
@@ -139,7 +139,7 @@ export default function Footer() {
                     href="https://www.instagram.com/linkditofficial/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-border/30 bg-white text-muted-foreground shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-pink-300 hover:text-pink-500"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-border/30 bg-white text-muted-foreground shadow-sm transition-all duration-[var(--duration-standard)] ease-[var(--ease-default)] hover:shadow-md hover:-translate-y-0.5 hover:border-pink-300 hover:text-pink-500 active:scale-[0.92]"
                     aria-label="Instagram (opens in new tab)"
                   >
                     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -148,7 +148,7 @@ export default function Footer() {
                     href="https://www.facebook.com/profile.php?id=61591639121453"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-border/30 bg-white text-muted-foreground shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-blue-400 hover:text-blue-600"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-border/30 bg-white text-muted-foreground shadow-sm transition-all duration-[var(--duration-standard)] ease-[var(--ease-default)] hover:shadow-md hover:-translate-y-0.5 hover:border-blue-400 hover:text-blue-600 active:scale-[0.92]"
                     aria-label="Facebook (opens in new tab)"
                   >
                     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
@@ -157,7 +157,7 @@ export default function Footer() {
                     href="https://twitter.com/linkdit"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-border/30 bg-white text-muted-foreground shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-neutral-400 hover:text-neutral-900"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-border/30 bg-white text-muted-foreground shadow-sm transition-all duration-[var(--duration-standard)] ease-[var(--ease-default)] hover:shadow-md hover:-translate-y-0.5 hover:border-neutral-400 hover:text-neutral-900 active:scale-[0.92]"
                     aria-label="Twitter (opens in new tab)"
                   >
                     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>

@@ -16,6 +16,7 @@ import LatestArticles, {
 import CommunityReviews from "@/components/home/community-reviews"
 import CTASection from "@/components/home/cta-section"
 import Footer from "@/components/layout/footer"
+import ScrollRevealSection from "@/components/ui/scroll-reveal-section"
 
 const description = "Discover 1,000+ AI tools, in-depth comparisons, expert tutorials, and resources. Find the perfect AI solution for your workflow."
 
@@ -143,7 +144,9 @@ export default function Home() {
         <Suspense fallback={null}>
           <CommunityReviews />
         </Suspense>
-        <CTASection />
+        <ScrollRevealSection animation="fade-in">
+          <CTASection />
+        </ScrollRevealSection>
       </main>
       <Footer />
     </>
